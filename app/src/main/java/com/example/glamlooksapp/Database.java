@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,7 +30,6 @@ public class Database {
 //    private CategoryCallBack categoryCallBack;
     private FirebaseFirestore db;
 
-    GoogleSignInClient googleSignInClient;
 
     public Database(){
         mAuth = FirebaseAuth.getInstance();
@@ -114,5 +112,6 @@ public class Database {
     public void logout() {
         this.mAuth.signOut();
     }
+
 
 }

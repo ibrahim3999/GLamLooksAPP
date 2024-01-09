@@ -19,4 +19,5 @@
     <string name="confirmpassword">ConfirmPassword</string>
     <string name="customer_profile">Customer Profile</string>
     <string name="gmail">Gmail</string>
+    <string name="logout">logout</string>
 </resources>

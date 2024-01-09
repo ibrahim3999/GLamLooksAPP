@@ -12,7 +12,20 @@
           "package_name": "com.example.glamlooksapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.glamlooksapp",
+            "certificate_hash": "538bcdc7d759370fca54006818c1dbcfe8193356"
+          }
+        },
+        {
+          "client_id": "974118326374-12kl38t0b41ae8f76erb5jd4bn269jf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCSXv0-m9Qpwqg6WpbQtUHRUq_-U4miD6M"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974118326374-12kl38t0b41ae8f76erb5jd4bn269jf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

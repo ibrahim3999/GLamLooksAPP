@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +10,7 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_centerInParent="true"
         android:text="@string/customer_profile"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -18,4 +18,17 @@
         android:textSize="34sp"
         android:textStyle="bold" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btnGoogleAuth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/Lavender"
+        android:onClick="onClick"
+        android:text="@string/logout"
+        android:textSize="18sp"
+        app:cornerRadius="20dp" />
+
+</RelativeLayout>
