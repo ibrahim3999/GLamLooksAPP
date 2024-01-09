@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">GlamLooks</string>
+    <string name="not_yet_registered_sign_up">not_yet_registered_sign_up</string>
+    <string name="password1">password</string>
+    <string name="loginEmail">loginEmail</string>
+    <string name="login1">Login</string>
+    <string name="not_yet_registered_">No Account? Sign Up</string>
+    <string name="login">GalmLooks</string>
+    <string name="sign_up1">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_up">sign up</string>
+    <string name="already_an_user_login">"Already,have Account? "</string>
+    <string name="LastName">LastName</string>
+    <string name="FirstName">FirstName</string>
+    <string name="backbutton">BackButton</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="confirmpassword">ConfirmPassword</string>
+    <string name="customer_profile">Customer Profile</string>
+    <string name="gmail">Gmail</string>
+</resources>

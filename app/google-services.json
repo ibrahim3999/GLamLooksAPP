@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "974118326374",
+    "project_id": "glamlooksapp",
+    "storage_bucket": "glamlooksapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974118326374:android:4d8ed79f2facc1fedd9da7",
+        "android_client_info": {
+          "package_name": "com.example.glamlooksapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSXv0-m9Qpwqg6WpbQtUHRUq_-U4miD6M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
