@@ -44,7 +44,7 @@ public class CustomerActivity extends AppCompatActivity {
         database = new Database();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
 

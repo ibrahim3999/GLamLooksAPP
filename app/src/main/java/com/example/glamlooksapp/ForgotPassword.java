@@ -1,5 +1,6 @@
 package com.example.glamlooksapp;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,13 +13,15 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.glamlooksapp.LoginActivity;
+import com.example.glamlooksapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity {
 
-    //Declaration
+    // Declaration
     Button btnReset, btnBack;
     EditText edtEmail;
     ProgressBar progressBar;
@@ -33,7 +36,7 @@ public class ForgotPassword extends AppCompatActivity {
         findView();
         mAuth = FirebaseAuth.getInstance();
 
-        //Reset Button Listener
+        // Reset Button Listener
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,18 +49,28 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
 
+        // Back Button Code using OnBackPressedDispatcher
+       btnBack.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               onBackPressed();
+           }
+       });
 
-        //Back Button Code
-        btnBack.setOnClickListener(new View.OnClickListener() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
-            public void onClick(View v) {
-                onBackPressed();
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(ForgotPassword.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
             }
-        });
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
 
     }
 
-    private void findView(){
+    private void findView() {
         btnBack = findViewById(R.id.btnForgotPasswordBack);
         btnReset = findViewById(R.id.btnReset);
         edtEmail = findViewById(R.id.edtForgotPasswordEmail);
