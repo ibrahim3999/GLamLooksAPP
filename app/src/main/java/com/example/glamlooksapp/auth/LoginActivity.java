@@ -1,4 +1,4 @@
-package com.example.glamlooksapp;
+package com.example.glamlooksapp.auth;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.glamlooksapp.SignUpActivity;
+
+import com.example.glamlooksapp.home.CustomerActivity;
+import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -47,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         initVars();
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
+                .requestIdToken("974118326374-12kl38t0b41ae8f76erb5jd4bn269jf0.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         client = GoogleSignIn.getClient(this,options);
@@ -68,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         database.setAuthCallBack(new AuthCallBack() {
             @Override
             public void onLoginComplete(Task<AuthResult> task) {
-                loginButton.setVisibility((View.INVISIBLE));
+                loginButton.setVisibility((View.VISIBLE));
                 if (task.isSuccessful()) {
                     Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                     startActivity(intent);

@@ -1,4 +1,4 @@
-package com.example.glamlooksapp;
+package com.example.glamlooksapp.utils;
 
 
 import androidx.annotation.NonNull;

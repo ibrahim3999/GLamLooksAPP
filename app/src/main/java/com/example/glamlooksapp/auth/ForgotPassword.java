@@ -1,4 +1,4 @@
-package com.example.glamlooksapp;
+package com.example.glamlooksapp.auth;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.glamlooksapp.LoginActivity;
 import com.example.glamlooksapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

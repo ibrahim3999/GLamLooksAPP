@@ -1,6 +1,6 @@
 package com.example.glamlooksapp.callback;
 
-import com.example.glamlooksapp.Customer;
+import com.example.glamlooksapp.utils.Customer;
 import com.google.android.gms.tasks.Task;
 
 public interface CustomerCallBack {
