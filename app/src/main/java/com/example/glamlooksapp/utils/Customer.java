@@ -12,6 +12,7 @@ public class Customer extends FirebaseKey implements Serializable {
     private String lastname;
     private String password;
     private String phoneNumber;
+    private int account_type;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -49,16 +50,20 @@ public class Customer extends FirebaseKey implements Serializable {
         return password;
     }
 
+    public  int getAccount_type(){return account_type;}
+
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public  void setAccount_type(int account_type){this.account_type = account_type;}
     public Customer(String firstname, String email, String lastname, String password,String phoneNumber) {
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
         this.password = password;
         this.phoneNumber =phoneNumber;
+        this.account_type = 0;
     }
 
     public Customer(){}

@@ -29,19 +29,7 @@
             android:layout_height="match_parent"
             android:id="@+id/fragment_container"/>
 
-        <!--    <Button--><Button
-        android:id="@+id/btnGoogleAuth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/Lavender"
-        android:onClick="onClick"
-        android:text="@string/logout"
-        android:textSize="18sp"
-        app:cornerRadius="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 

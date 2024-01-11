@@ -50,25 +50,25 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        googleAuth = findViewById(R.id.btnGoogleAuth);
+//        googleAuth = findViewById(R.id.btnGoogleAuth);
 
         database = new Database();
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-                googleAuth.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
+//                .requestEmail()
+//                .build();
+//
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//
+//                googleAuth.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FirebaseAuth.getInstance().signOut();
+//                Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
@@ -109,7 +109,7 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
                 break;
 
             case R.id.nav_logout:
-                FirebaseAuth.getInstance().signOut();
+                database.logout();
 
                 // Start LoginActivity and clear the back stack
                 Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
@@ -133,50 +133,3 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
         }
     }
 }
-
-
-
-
-
-
-
-
-
-//public class CustomerActivity extends AppCompatActivity {
-//
-//    Button googleAuth;
-//
-//    Database database;
-//
-//    GoogleSignInClient mGoogleSignInClient;
-//
-//
-//    int RC_SIGN_IN = 20;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_customer);
-//
-//        googleAuth = findViewById(R.id.btnGoogleAuth);
-//
-//        database = new Database();
-//
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
-//                .requestEmail()
-//                .build();
-//
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//
-//        googleAuth.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//    }
-//
-//}

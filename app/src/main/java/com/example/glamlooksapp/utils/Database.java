@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.UserFetchCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -25,9 +26,11 @@ public class Database {
 
     private FirebaseAuth mAuth;
     private AuthCallBack authCallBack;
+
+    private UserFetchCallback userFetchCallback;
+
     private CustomerCallBack customerCallBack;
-//    private IdeaCallBack ideaCallBack;
-//    private CategoryCallBack categoryCallBack;
+
     private FirebaseFirestore db;
 
 
@@ -42,6 +45,10 @@ public class Database {
 
     public void setUserCallBack(CustomerCallBack userCallBack){
         this.customerCallBack = userCallBack;
+    }
+
+    public void setUserFetchCallback(UserFetchCallback userFetchCallback){
+        this.userFetchCallback = userFetchCallback;
     }
 
     public void loginUser(String email, String password){
@@ -102,6 +109,8 @@ public class Database {
             }
         });
     }
+
+
 
     public FirebaseUser getCurrentUser(){
 

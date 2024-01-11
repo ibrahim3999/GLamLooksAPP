@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.home.CustomerActivity;
+import com.example.glamlooksapp.home.ManagerActivity;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -30,6 +34,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.auth.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        findCustomers();
+        findV();
         initVars();
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -57,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void findCustomers() {
+    private void findV() {
         emailEditText = findViewById(R.id.loginEmail);
         passwordEditText = findViewById(R.id.login_password);
         loginButton = findViewById(R.id.login_button);
@@ -68,14 +73,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initVars() {
         database = new Database();
+
+
         database.setAuthCallBack(new AuthCallBack() {
             @Override
             public void onLoginComplete(Task<AuthResult> task) {
                 loginButton.setVisibility((View.VISIBLE));
                 if (task.isSuccessful()) {
-                    Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
-                    startActivity(intent);
-                    finish();
+                    Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
                 } else {
                     String error = task.getException().getMessage().toString();
                     Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
@@ -84,6 +89,31 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCreateAccountComplete(boolean status, String err) {
+
+            }
+        });
+
+        database.setUserCallBack(new CustomerCallBack() {
+            @Override
+            public void onUserFetchDataComplete(Customer customer) {
+                if (customer!=null) {
+                    int type = customer.getAccount_type();
+                    if(type==1) {
+                        Toast.makeText(LoginActivity.this,"here1",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(LoginActivity.this,"here2",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onUpdateComplete(Task<Void> task) {
 
             }
         });
@@ -97,14 +127,44 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+//        loginButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String email = emailEditText.getText().toString().trim();
+//                String password = passwordEditText.getText().toString().trim();
+//                String uid = database.getCurrentUser().getUid();
+//                database.loginUser(email, password);
+//
+//                database.fetchUserData(uid);
+//            }
+//        });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
+
+                // Perform login
                 database.loginUser(email, password);
+
+                // Introduce a delay before fetching user data
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Check if the login was successful
+                        if (database.getCurrentUser() != null) {
+                            // Fetch user data
+                            String uid = database.getCurrentUser().getUid();
+                            database.fetchUserData(uid);
+                        } else {
+                            // Handle the case where login failed
+                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, 2000); // 2000 milliseconds (adjust as needed)
             }
         });
+
 
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    private void signInByGmail() {
-//        gsc.signOut(); // Sign out previous user
-//        Intent intent = gsc.getSignInIntent();
-//        startActivityForResult(intent, 100);
-//    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
