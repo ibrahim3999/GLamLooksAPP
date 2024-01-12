@@ -78,8 +78,17 @@ public class LoginActivity extends AppCompatActivity {
         database.setAuthCallBack(new AuthCallBack() {
             @Override
             public void onLoginComplete(Task<AuthResult> task) {
-                loginButton.setVisibility((View.VISIBLE));
                 if (task.isSuccessful()) {
+
+                    if (database.getCurrentUser() != null) {
+                             // Fetch user data
+                            String uid = database.getCurrentUser().getUid();
+                            database.fetchUserData(uid);
+                        } else {
+                            // Handle the case where login failed
+                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                        }
+
                     Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
                 } else {
                     String error = task.getException().getMessage().toString();
@@ -137,20 +146,20 @@ public class LoginActivity extends AppCompatActivity {
                 database.loginUser(email, password);
 
                 // Introduce a delay before fetching user data
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Check if the login was successful
-                        if (database.getCurrentUser() != null) {
-                            // Fetch user data
-                            String uid = database.getCurrentUser().getUid();
-                            database.fetchUserData(uid);
-                        } else {
-                            // Handle the case where login failed
-                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }, 1); // 1 milliseconds (adjust as needed)
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        // Check if the login was successful
+//                        if (database.getCurrentUser() != null) {
+//                            // Fetch user data
+//                            String uid = database.getCurrentUser().getUid();
+//                            database.fetchUserData(uid);
+//                        } else {
+//                            // Handle the case where login failed
+//                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }, 2000); // 2000 milliseconds (adjust as needed)
             }
         });
 

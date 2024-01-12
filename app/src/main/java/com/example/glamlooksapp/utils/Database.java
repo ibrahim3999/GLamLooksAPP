@@ -57,6 +57,7 @@ public class Database {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         authCallBack.onLoginComplete(task);
+
                     }
                 });
     }

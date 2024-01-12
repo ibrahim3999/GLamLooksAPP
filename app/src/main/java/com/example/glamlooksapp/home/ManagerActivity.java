@@ -26,10 +26,10 @@ public class ManagerActivity extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                database.logout(); /// ????? NOTE!!!! Should change ....
+//                database.logout(); /// ????? NOTE!!!! Should change ....
                 Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
             }
         });
 
