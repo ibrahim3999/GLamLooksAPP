@@ -42,7 +42,6 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
 
     GoogleSignInClient mGoogleSignInClient;
 
-
     int RC_SIGN_IN = 20;
 
     @Override
@@ -53,7 +52,7 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
 //        googleAuth = findViewById(R.id.btnGoogleAuth);
 
         database = new Database();
-//
+
 //        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestIdToken("974118326374-uittcf3tmoacmqpokt4b3qnqarq7619p.apps.googleusercontent.com")
 //                .requestEmail()

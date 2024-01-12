@@ -30,11 +30,11 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        findCustomers();
+        findV();
         initVars_SP();
     }
 
-    private void findCustomers(){
+    private void findV(){
         firstname = findViewById(R.id.firstName);
         signupEmail = findViewById(R.id.signup_email);
         lastname = findViewById(R.id.lastName);
@@ -70,20 +70,21 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!checkInput()){
-                    Toast.makeText(SignUpActivity.this, "Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignUpActivity.this, "Error CheckInput", Toast.LENGTH_LONG).show();
 
                     return;
                 }
 
-                Toast.makeText(SignUpActivity.this, "success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignUpActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
                 Customer customer = new Customer();
                 customer.setEmail(signupEmail.getText().toString());
                 customer.setFirstname(firstname.getText().toString());
                 customer.setLastname(lastname.getText().toString());
                 customer.setPhoneNumber(phoneNumber.getText().toString());
-
                 String password = signupPassword.getText().toString().trim();
+
+
                 database.createAccount(customer.getEmail(), password, customer);
             }
         });
@@ -94,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -102,6 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -124,8 +127,8 @@ public class SignUpActivity extends AppCompatActivity {
             return false;
         }
 
-        if(password.length() < 6){
-            Toast.makeText(SignUpActivity.this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+        if(password.length() < 8){
+            Toast.makeText(SignUpActivity.this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -133,6 +136,7 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(SignUpActivity.this, "mismatch between password and confirm password", Toast.LENGTH_SHORT).show();
             return false;
         }
+
 
         return true;
     }

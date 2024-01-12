@@ -99,12 +99,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (customer!=null) {
                     int type = customer.getAccount_type();
                     if(type==1) {
-                        Toast.makeText(LoginActivity.this,"here1",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello Customer",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                         startActivity(intent);
                         finish();
                     }else{
-                        Toast.makeText(LoginActivity.this,"here2",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello Manager",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         startActivity(intent);
                         finish();
@@ -127,17 +127,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-//        loginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String email = emailEditText.getText().toString().trim();
-//                String password = passwordEditText.getText().toString().trim();
-//                String uid = database.getCurrentUser().getUid();
-//                database.loginUser(email, password);
-//
-//                database.fetchUserData(uid);
-//            }
-//        });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -161,7 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, 2000); // 2000 milliseconds (adjust as needed)
+                }, 1); // 1 milliseconds (adjust as needed)
             }
         });
 

@@ -1,9 +1,6 @@
 package com.example.glamlooksapp.utils;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.UserFetchCallback;
@@ -16,22 +13,25 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-
 import java.util.Objects;
+
+
 
 public class Database {
 
 
     public static final String USERS_TABLE = "Customers";
+    public static final String Manager_TABLE = "Mangers";
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
+
     private AuthCallBack authCallBack;
 
     private UserFetchCallback userFetchCallback;
 
     private CustomerCallBack customerCallBack;
 
-    private FirebaseFirestore db;
 
 
     public Database(){
