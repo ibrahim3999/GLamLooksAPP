@@ -24,4 +24,9 @@
     <string name="close_nav">Close Navigation Drawer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_home"> Home </string>
+    <string name="navigation_dashboard"> profile </string>
+    <string name="navigation_notifications"> logout </string>
+    <string name="aboutus">AboutUs</string>
+    <string name="about_us_fragment">About Us Fragment</string>
 </resources>

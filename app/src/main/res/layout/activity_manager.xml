@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home.ManagerActivity">
+    tools:context=".home.ManagerActivity"
+    >
 
-        <Button
-            android:id="@+id/btnBackManger_Login"
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomNavigation" />
+
+
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Back_MangerProfile"
-            android:textAlignment="center"
-            android:textAllCaps="true"
+            android:layout_alignParentBottom="true"
             android:textColor="@color/black"
-            android:textSize="34sp"
-            android:textStyle="bold" />
+            app:menu="@menu/bottom_menu" />
 
-
-</LinearLayout>
+</RelativeLayout>

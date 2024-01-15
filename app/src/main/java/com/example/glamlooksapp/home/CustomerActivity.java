@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-public class CustomerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CustomerActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     Button googleAuth;
@@ -49,7 +49,7 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-//        googleAuth = findViewById(R.id.btnGoogleAuth);
+        googleAuth = findViewById(R.id.btnGoogleAuth);
 
         database = new Database();
 
@@ -60,75 +60,20 @@ public class CustomerActivity extends AppCompatActivity implements NavigationVie
 //
 //        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 //
-//                googleAuth.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                FirebaseAuth.getInstance().signOut();
-//                Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-
-        Toolbar toolbar = findViewById(R.id.toolbar); //Ignore red line errors
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
-                R.string.close_nav);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_home:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
-                break;
-
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsUFragment()).commit();
-                break;
-
-            case R.id.nav_share:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ShareUFragment()).commit();
-                break;
-
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutUFragment()).commit();
-                break;
-
-            case R.id.nav_logout:
-                database.logout();
-
-                // Start LoginActivity and clear the back stack
+                googleAuth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
                 Intent intent = new Intent(CustomerActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                finish();  // Finish the current activity to prevent going back to it from LoginActivity
-                break;
-        }
+                finish();
+            }
+        });
 
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
+
+
     }
 
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+
 }

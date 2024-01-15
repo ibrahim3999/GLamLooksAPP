@@ -38,6 +38,8 @@ import com.google.firebase.firestore.auth.User;
 
 public class LoginActivity extends AppCompatActivity {
 
+
+
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private Button gmail_button;
@@ -61,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         client = GoogleSignIn.getClient(this,options);
 
     }
+
 
     private void findV() {
         emailEditText = findViewById(R.id.loginEmail);
@@ -145,21 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Perform login
                 database.loginUser(email, password);
 
-                // Introduce a delay before fetching user data
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        // Check if the login was successful
-//                        if (database.getCurrentUser() != null) {
-//                            // Fetch user data
-//                            String uid = database.getCurrentUser().getUid();
-//                            database.fetchUserData(uid);
-//                        } else {
-//                            // Handle the case where login failed
-//                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                }, 2000); // 2000 milliseconds (adjust as needed)
+
             }
         });
 
@@ -201,6 +190,7 @@ public class LoginActivity extends AppCompatActivity {
                                         if(task.isSuccessful()){
                                             Intent intent = new Intent(getApplicationContext(),CustomerActivity.class);
                                             startActivity(intent);
+                                            finish();
 
                                         }else{
                                             Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();

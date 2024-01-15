@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.user.AboutUFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: About Us Fragment -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About Us Fragment"
+        android:text="@string/about_us_fragment"
         android:textSize="30sp"
         android:layout_centerInParent="true"
         android:textColor="@color/Lavender"/>

@@ -1,42 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn = "navigation_view">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group
-        android:checkableBehavior="single">
-
-        <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/nav_home"
-            android:title="Home"/>
-
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/nav_settings"
-            android:title="Settings"/>
-
-        <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/nav_share"
-            android:title="Share"/>
-
-        <item
-            android:id="@+id/nav_about"
-            android:icon="@drawable/nav_about"
-            android:title="About Us"/>
-    </group>
     <item
+        app:showAsAction="always"
+        android:icon="@drawable/menulines_24"
         android:title="">
 
         <menu>
             <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/nav_logout"
-                android:title="Logout"/>
-        </menu>
+                android:id="@+id/android"
+                android:icon="@drawable/baseline_android_24"
+                android:title="Android"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/baseline_person_pin_24"
+                android:title="Profile"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/nav_settings"
+                android:title="Settings"
+                app:showAsAction="never"/>
+            <item
+                android:id="@+id/exit"
+                android:icon="@drawable/baseline_exit_to_app_24"
+                android:title="Exit"
+                app:showAsAction="never"/>
 
+        </menu>
     </item>
+
+
 
 </menu>
