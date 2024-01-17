@@ -15,10 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.CustomerActivity;
 import com.example.glamlooksapp.home.ManagerActivity;
-import com.example.glamlooksapp.utils.Customer;
+import com.example.glamlooksapp.utils.User;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -34,7 +34,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.auth.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -105,9 +104,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        database.setUserCallBack(new CustomerCallBack() {
+        database.setUserCallBack(new UserCallBack() {
             @Override
-            public void onUserFetchDataComplete(Customer customer) {
+            public void onUserFetchDataComplete(User customer) {
                 if (customer!=null) {
                     int type = customer.getAccount_type();
                     if(type==1) {

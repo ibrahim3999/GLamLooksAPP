@@ -2,7 +2,7 @@ package com.example.glamlooksapp.utils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
-import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.callback.UserFetchCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +30,7 @@ public class Database {
 
     private UserFetchCallback userFetchCallback;
 
-    private CustomerCallBack customerCallBack;
+    private UserCallBack userCallBack;
 
 
 
@@ -43,8 +43,8 @@ public class Database {
         this.authCallBack = authCallBack;
     }
 
-    public void setUserCallBack(CustomerCallBack userCallBack){
-        this.customerCallBack = userCallBack;
+    public void setUserCallBack(UserCallBack userCallBack){
+        this.userCallBack = userCallBack;
     }
 
     public void setUserFetchCallback(UserFetchCallback userFetchCallback){
@@ -62,7 +62,7 @@ public class Database {
                 });
     }
 
-    public void createAccount(String email, String password, Customer customerData) {
+    public void createAccount(String email, String password, User customerData) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -77,7 +77,7 @@ public class Database {
                 });
     }
 
-    public void saveUserData(Customer customer){
+    public void saveUserData(User customer){
         this.db.collection(USERS_TABLE).document(customer.getKey()).set(customer)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -90,12 +90,12 @@ public class Database {
                 });
     }
 
-    public void updateUser(Customer customer){
-        this.db.collection(USERS_TABLE).document(customer.getKey()).set(customer)
+    public void updateUser(User user){
+        this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        customerCallBack.onUpdateComplete(task);
+                        userCallBack.onUpdateComplete(task);
                     }
                 });
     }
@@ -105,8 +105,8 @@ public class Database {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 assert value != null;
-                Customer customer = value.toObject(Customer.class);
-                customerCallBack.onUserFetchDataComplete(customer);
+                User user = value.toObject(User.class);
+                userCallBack.onUserFetchDataComplete(user);
             }
         });
     }

@@ -32,8 +32,6 @@ public class ManagerActivity extends AppCompatActivity {
     ActivityManagerBinding binding;
 
 
-
-
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +55,10 @@ public class ManagerActivity extends AppCompatActivity {
 
                 case R.id.logoutMenu:
                 Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                database.logout();
                 startActivity(intent);
                 finish();
-                    break;
+                break;
 
             }
             return true;
@@ -83,7 +81,7 @@ public class ManagerActivity extends AppCompatActivity {
                 return true;
             case R.id.profile:
                 Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
-                // Handle Profile menu item click
+                replaceFragment(new ProfileFragment(new AppCompatActivity()));
                 return true;
             case R.id.settings:
                 // Handle Settings menu item click
@@ -102,7 +100,6 @@ public class ManagerActivity extends AppCompatActivity {
 
 
     private void replaceFragment(Fragment fragment){
-
 
         FragmentManager fragmentManger = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManger.beginTransaction();

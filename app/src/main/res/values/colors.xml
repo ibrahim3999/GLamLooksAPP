@@ -9,4 +9,8 @@
     <color name="teal_700">#FF03DAC5</color>
     <color name="Lavender">#8692f7</color>
     <color name="grey">#ff424242</color>
+    <color name="darkGreen">#388E3C</color>
+    <color name="lightGreen">#8BC34A</color>
+    <color name="gray">#757575</color>
+    <color name="lightGray">#BDBDBD</color>
 </resources>

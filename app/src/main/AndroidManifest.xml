@@ -13,35 +13,34 @@
         android:theme="@style/Theme.GLamLooksApp"
         tools:targetApi="31">
         <activity
+            android:name=".home.UpdateProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.ManagerActivity"
-            android:launchMode="singleTop"
-            android:exported="true" />
-
+            android:exported="true"
+            android:launchMode="singleTop" />
         <activity
             android:name=".home.CustomerActivity"
-            android:launchMode="singleTop"
             android:exported="true"
-            />
-
-        <!-- LoginActivity is the launcher activity -->
+            android:launchMode="singleTop" /> <!-- LoginActivity is the launcher activity -->
         <activity
             android:name=".auth.LoginActivity"
-            android:launchMode="singleTop"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".auth.SignUpActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".auth.ForgotPassword"
-            android:exported="true"/>
+            android:exported="true" />
 
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"
+        tools:ignore="ManifestOrder" />
 </manifest>

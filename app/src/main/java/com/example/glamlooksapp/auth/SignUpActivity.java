@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.glamlooksapp.utils.Customer;
+import com.example.glamlooksapp.utils.User;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -77,7 +77,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Toast.makeText(SignUpActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                Customer customer = new Customer();
+                User customer = new User();
                 customer.setEmail(signupEmail.getText().toString());
                 customer.setFirstname(firstname.getText().toString());
                 customer.setLastname(lastname.getText().toString());
@@ -111,7 +111,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private boolean checkInput() {
-        Customer customer = new Customer();
+        User customer = new User();
                 customer.setEmail(signupEmail.getText().toString());
                 customer.setFirstname(firstname.getText().toString());
                 customer.setLastname(lastname.getText().toString());

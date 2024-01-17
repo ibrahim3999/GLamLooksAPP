@@ -5,7 +5,7 @@ import com.google.firebase.firestore.Exclude;
 
 import java.io.Serializable;
 
-public class Customer extends FirebaseKey implements Serializable {
+public class User extends FirebaseKey implements Serializable {
 
     private String firstname;
     private String email;
@@ -57,7 +57,7 @@ public class Customer extends FirebaseKey implements Serializable {
     }
 
     public  void setAccount_type(int account_type){this.account_type = account_type;}
-    public Customer(String firstname, String email, String lastname, String password,String phoneNumber) {
+    public User(String firstname, String email, String lastname, String password,String phoneNumber) {
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
@@ -66,7 +66,7 @@ public class Customer extends FirebaseKey implements Serializable {
         this.account_type = 0;
     }
 
-    public Customer(){}
+    public User(){}
 
     @Exclude
     public boolean isValid(){

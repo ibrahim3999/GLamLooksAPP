@@ -29,4 +29,5 @@
     <string name="navigation_notifications"> logout </string>
     <string name="aboutus">AboutUs</string>
     <string name="about_us_fragment">About Us Fragment</string>
+    <string name="edit_account_details">Edit account details</string>
 </resources>
