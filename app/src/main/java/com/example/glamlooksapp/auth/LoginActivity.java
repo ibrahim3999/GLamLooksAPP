@@ -83,13 +83,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     if (database.getCurrentUser() != null) {
-                             // Fetch user data
-                            String uid = database.getCurrentUser().getUid();
-                            database.fetchUserData(uid);
-                        } else {
-                            // Handle the case where login failed
-                            Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
-                        }
+                        // Fetch user data
+                        String uid = database.getCurrentUser().getUid();
+                        database.fetchUserData(uid);
+                    } else {
+                        // Handle the case where login failed
+                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
+                    }
 
                     Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
                 } else {
@@ -164,8 +164,8 @@ public class LoginActivity extends AppCompatActivity {
         gmail_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = client.getSignInIntent();
-               startActivityForResult(intent ,1234);
+                Intent intent = client.getSignInIntent();
+                startActivityForResult(intent ,1234);
             }
         });
     }
@@ -183,19 +183,19 @@ public class LoginActivity extends AppCompatActivity {
 
                 AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
                 FirebaseAuth.getInstance().signInWithCredential(credential)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if(task.isSuccessful()){
-                                            Intent intent = new Intent(getApplicationContext(),CustomerActivity.class);
-                                            startActivity(intent);
-                                            finish();
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    Intent intent = new Intent(getApplicationContext(),CustomerActivity.class);
+                                    startActivity(intent);
+                                    finish();
 
-                                        }else{
-                                            Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                                }else{
+                                    Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             } catch (ApiException e) {
                 int statusCode = e.getStatusCode();
                 Log.e("GoogleSignIn", "Error signing in with Google. Status code: " + statusCode);
