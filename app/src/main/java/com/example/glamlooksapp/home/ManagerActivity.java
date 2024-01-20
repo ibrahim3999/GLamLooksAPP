@@ -53,12 +53,12 @@ public class ManagerActivity extends AppCompatActivity {
                     replaceFragment(new AboutUFragment());
                     break;
 
-                case R.id.logoutMenu:
-                Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
-                database.logout();
-                startActivity(intent);
-                finish();
-                break;
+//                case R.id.logoutMenu:
+//                Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
+//                database.logout();
+//                startActivity(intent);
+//                finish();
+//                break;
 
             }
             return true;

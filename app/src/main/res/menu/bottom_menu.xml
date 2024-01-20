@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/logoutMenu"
-        android:title="@string/logout"
-        android:icon="@drawable/baseline_exit_to_app_24"/>
+
     <item
         android:id="@+id/navigation_home"
         android:title="@string/navigation_home"
         android:icon="@drawable/nav_home"/>
     <item
+        android:id="@+id/add"
+        android:enabled="true"
+        android:icon="@drawable/addbox"
+        android:title="Add Idea"/>
+    <item
         android:id="@+id/navigation_about"
         android:title="@string/aboutus"
         android:icon="@drawable/nav_about"/>
+
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/baseline_person_pin_24"
+        android:title="Profile"/>
 </menu>

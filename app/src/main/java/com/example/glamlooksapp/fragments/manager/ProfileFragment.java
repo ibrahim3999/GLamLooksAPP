@@ -1,16 +1,17 @@
 package com.example.glamlooksapp.fragments.manager;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-import com.bumptech.glide.Glide;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.home.UpdateProfileActivity;
@@ -30,6 +31,8 @@ public class ProfileFragment extends Fragment {
     private Database database;
     private AppCompatActivity activity;
 
+
+
     public ProfileFragment() {
 
     }
@@ -37,7 +40,7 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment(AppCompatActivity activity) {
         // Required empty public constructor
         database = new Database();
-        this.activity = new AppCompatActivity();
+        this.activity = activity;
     }
 
     public void setCurrentUser(User user){
@@ -72,22 +75,28 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(activity, UpdateProfileActivity.class);
-                intent.putExtra(USER_INTENT_KEY, currentUser);
-                startActivity(intent);
-
+                if(activity != null) {
+                    Intent intent = new Intent(activity, UpdateProfileActivity.class);
+                    intent.putExtra(USER_INTENT_KEY, currentUser);
+                    startActivity(intent);
+//                    activity.finish();
+                }
             }
         });
 
         fProfile_CV_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, LoginActivity.class);
-                startActivity(intent);
-                database.logout();
-                activity.finish();
+                if (activity != null) {
+                    Intent intent = new Intent(activity, LoginActivity.class);
+                    startActivity(intent);
+                    database.logout();
+//                    activity.finish();
+                }
             }
         });
+
+
     }
 
     private void findViews(View view) {

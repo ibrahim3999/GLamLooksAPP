@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.manager.ProfileFragment">
 
+
     <LinearLayout
         android:layout_marginTop="20dp"
         android:id="@+id/fProfile_IV_profileImageWrapper"
@@ -72,6 +73,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/baseline_arrow_forward_ios_24" />
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 
