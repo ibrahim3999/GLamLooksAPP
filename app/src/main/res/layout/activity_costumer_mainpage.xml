@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".auth.LoginActivity">
+
+    <!-- "GlamLooks" logo and settings button centered on the page -->
+    <LinearLayout
+        android:id="@+id/topLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true">
+
+        <!-- Settings button on the leftmost part -->
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nav_settings"
+            android:layout_gravity="start" />
+
+        <!-- "GlamLooks" logo centered in the row with a slightly adjusted left margin -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/login"
+            android:textAlignment="center"
+            android:textColor="@color/Lavender"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+
+    <!-- Purple box (half size) centered in the middle height of the screen -->
+    <View
+        android:id="@+id/boxView"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true"
+        android:background="@color/Lavender" />
+
+    <!-- Circular buttons for services inside the box -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/topLayout"
+        android:layout_marginTop="288dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/servicesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Add circular buttons for services here -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="25dp">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/haircut" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="25dp">
+
+                <ImageButton
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/nails" />
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Add more buttons as needed -->
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Other views positioned relative to the logo -->
+    <!-- Add your other views here -->
+
+</RelativeLayout>
