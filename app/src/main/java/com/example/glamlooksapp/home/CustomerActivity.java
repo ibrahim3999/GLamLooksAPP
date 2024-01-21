@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.glamlooksapp.R;
 
+import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.user.HomeFragment;
 import com.example.glamlooksapp.utils.Database;
@@ -45,7 +48,6 @@ public class CustomerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer);
 
         init();
-        // fragments
 
 
 
@@ -62,12 +64,7 @@ public class CustomerActivity extends AppCompatActivity {
         managerBinding.bottomNavigation.setOnItemSelectedListener(item -> {
 
             switch (item.getItemId()){
-                case R.id.logoutMenu:
-                    //Toast.makeText(CustomerActivity.this,"yes", Toast.LENGTH_SHORT).show();
-                    // back to login activity
-                    View back_loginView = LayoutInflater.from(CustomerActivity.this).inflate(R.layout.activity_login,null);
-                    setContentView(back_loginView);
-                    break;
+
                 case R.id.navigation_home:
                     homeFragment = new HomeFragment();
 
@@ -93,6 +90,33 @@ public class CustomerActivity extends AppCompatActivity {
 
         // fragments created
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.nav_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+
+            case R.id.settings:
+                Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.exit:
+                Toast.makeText(this,"Exit",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                database.logout();
+                finish();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void init_home_frgment(int id , androidx.fragment.app.Fragment fragment,String tag){

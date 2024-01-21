@@ -168,6 +168,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(intent ,1234);
             }
         });
+
+        if(database.getCurrentUser() != null){
+            String uid = database.getCurrentUser().getUid();
+            database.fetchUserData(uid);
+        }
     }
 
 
@@ -204,13 +209,5 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if(user!= null){
-            Intent intent = new Intent(this,CustomerActivity.class);
-            startActivity(intent);
-        }
-    }
+
 }

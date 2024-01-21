@@ -12,11 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
+import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.UpdateProfileActivity;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
+import com.google.android.gms.tasks.Task;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,14 +53,14 @@ public class ProfileFragment extends Fragment {
 
     private void displayUser(User user) {
         fProfile_TV_name.setText(user.getFirstname());
-//        if(user.getImageUrl() != null){
-//            // set image profile
-//            Glide
-//                    .with(activity)
-//                    .load(user.getImageUrl())
-//                    .centerCrop()
-//                    .into(fProfile_IV_profileImage);
-//        }
+        if(user.getImageUrl() != null){
+            // set image profile
+            Glide
+                    .with(activity)
+                    .load(user.getImageUrl())
+                    .centerCrop()
+                    .into(fProfile_IV_profileImage);
+        }
     }
 
     @Override
@@ -71,6 +74,19 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initVars() {
+        database.setUserCallBack(new UserCallBack() {
+            @Override
+            public void onUserFetchDataComplete(User user) {
+                setCurrentUser(user);
+            }
+
+            @Override
+            public void onUpdateComplete(Task<Void> task) {
+
+            }
+        });
+
+        database.fetchUserData(database.getCurrentUser().getUid());
         fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +95,7 @@ public class ProfileFragment extends Fragment {
                     Intent intent = new Intent(activity, UpdateProfileActivity.class);
                     intent.putExtra(USER_INTENT_KEY, currentUser);
                     startActivity(intent);
-//                    activity.finish();
+
                 }
             }
         });

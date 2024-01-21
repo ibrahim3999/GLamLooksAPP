@@ -53,18 +53,17 @@ public class ManagerActivity extends AppCompatActivity {
                     replaceFragment(new AboutUFragment());
                     break;
 
-//                case R.id.logoutMenu:
-//                Intent intent = new Intent(ManagerActivity.this, LoginActivity.class);
-//                database.logout();
-//                startActivity(intent);
-//                finish();
-//                break;
+                case R.id.profile:
+                    Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
+                    replaceFragment(new ProfileFragment(ManagerActivity.this));
+                    break;
 
+                case R.id.addPhotos:
+                    Toast.makeText(this,"AddPhotos",Toast.LENGTH_SHORT).show();
+                    break;
             }
             return true;
         });
-
-
     }
 
     @Override
@@ -76,21 +75,20 @@ public class ManagerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.android:
-                Toast.makeText(this,"Android",Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.profile:
-                Toast.makeText(this,"Profile",Toast.LENGTH_SHORT).show();
-                replaceFragment(new ProfileFragment(new AppCompatActivity()));
-                return true;
+
+
             case R.id.settings:
-                // Handle Settings menu item click
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
                 return true;
+
             case R.id.exit:
-                // Handle Exit menu item click
                 Toast.makeText(this,"Exit",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                database.logout();
+                finish();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

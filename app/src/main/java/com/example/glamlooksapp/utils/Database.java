@@ -1,4 +1,6 @@
 package com.example.glamlooksapp.utils;
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -13,6 +15,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Objects;
 
 
@@ -25,7 +30,7 @@ public class Database {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-
+    private FirebaseStorage mStorage;
     private AuthCallBack authCallBack;
 
     private UserFetchCallback userFetchCallback;
@@ -37,6 +42,7 @@ public class Database {
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        mStorage = FirebaseStorage.getInstance();
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -106,6 +112,10 @@ public class Database {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 assert value != null;
                 User user = value.toObject(User.class);
+                if(user.getImagePath() != null){
+                    user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                }
+                user.setKey(value.getId());
                 userCallBack.onUserFetchDataComplete(user);
             }
         });
@@ -123,5 +133,15 @@ public class Database {
         this.mAuth.signOut();
     }
 
+    public String downloadImageUrl(String imagePath){
+      Task<Uri> task =  mStorage.getReference(imagePath).getDownloadUrl();
+      while(!task.isComplete());
+      return task.getResult().toString();
+    }
 
+    public boolean uploadImage(Uri selectedImageUri, String path) {
+        UploadTask task =  this.mStorage.getReference(path).putFile(selectedImageUri);
+        while(!task.isComplete());
+        return task.isSuccessful();
+    }
 }

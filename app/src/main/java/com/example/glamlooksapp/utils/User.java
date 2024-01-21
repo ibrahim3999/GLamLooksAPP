@@ -13,6 +13,24 @@ public class User extends FirebaseKey implements Serializable {
     private String password;
     private String phoneNumber;
     private int account_type;
+    private String imagePath;
+    private String imageUrl;
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+    @Exclude
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -45,7 +63,7 @@ public class User extends FirebaseKey implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
+    @Exclude
     public String getPassword() {
         return password;
     }

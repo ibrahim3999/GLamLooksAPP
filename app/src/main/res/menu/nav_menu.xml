@@ -7,18 +7,7 @@
         app:showAsAction="always"
         android:icon="@drawable/menulines_24"
         android:title="">
-
         <menu>
-            <item
-                android:id="@+id/android"
-                android:icon="@drawable/baseline_android_24"
-                android:title="Android"
-                app:showAsAction="never"/>
-            <item
-                android:id="@+id/profile"
-                android:icon="@drawable/baseline_person_pin_24"
-                android:title="Profile"
-                app:showAsAction="never"/>
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/nav_settings"

@@ -73,14 +73,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
         editAccount_TF_firstName.getEditText().setText(user.getFirstname());
         editAccount_TF_lastName.getEditText().setText(user.getLastname());
         editAccount_TF_phone.getEditText().setText(user.getPhoneNumber());
-//        if(user.getImageUrl() != null){
-//            // set image profile
-//            Glide
-//                    .with(this)
-//                    .load(user.getImageUrl())
-//                    .centerCrop()
-//                    .into(editAccount_IV_image);
-//        }
+
+        if(user.getImageUrl() != null){
+            // set image profile
+            Glide
+                    .with(this)
+                    .load(user.getImageUrl())
+                    .centerCrop()
+                    .into(editAccount_IV_image);
+        }
     }
     private void findViews() {
         editAccount_IV_image = findViewById(R.id.editAccount_IV_image);
@@ -112,6 +113,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             }
         });
+
         editAccount_BTN_updateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,9 +128,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 if(selectedImageUri != null){
                     // save image
                     String ext = Generic.getFileExtension(UpdateProfileActivity.this, selectedImageUri);
-//                    String path = Database.USERS_PROFILE_IMAGES + "/" + uid + "." + ext;
-//                    db.uploadImage(selectedImageUri, path);
-//                    user.setImagePath(path);
+                    String path = "Users/" + uid + "." + ext;
+                    if(!db.uploadImage(selectedImageUri, path)){
+                        return;
+                    }
+                    user.setImagePath(path);
                 }
 
                 db.updateUser(user);
