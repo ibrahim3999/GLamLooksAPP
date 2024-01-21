@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/activity_customer"
+    tools:context=".home.CustomerActivity">
+
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".home.CustomerActivity">
+        android:layout_above="@+id/bottomNavigation" >
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/customer_profile"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@color/black"
-            android:textSize="34sp"
-            android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnGoogleAuth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView4"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:backgroundTint="@color/Lavender"
-            android:onClick="onClick"
-            android:text="@string/logout"
-            android:textSize="18sp"
-            app:cornerRadius="20dp" />
+    </FrameLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/black"
+        app:menu="@menu/bottom_menu" />
 
-    </RelativeLayout>
+</RelativeLayout>
