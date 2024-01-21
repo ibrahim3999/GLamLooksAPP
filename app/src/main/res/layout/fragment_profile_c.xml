@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Mohanad"
+        android:text="User"
         android:textColor="@color/darkGreen"
         android:textSize="32sp"
         android:textStyle="bold"

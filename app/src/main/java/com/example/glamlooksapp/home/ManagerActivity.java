@@ -10,18 +10,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.manager.HomeMFragment;
-import com.example.glamlooksapp.fragments.manager.LogoutMFragment;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
-import com.example.glamlooksapp.fragments.user.HomeFragment;
 import com.example.glamlooksapp.utils.Database;
 
 public class ManagerActivity extends AppCompatActivity {
@@ -40,7 +36,7 @@ public class ManagerActivity extends AppCompatActivity {
         database = new Database();
         binding = ActivityManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-//        replaceFragment(new HomeMFragment());
+        replaceFragment(new HomeMFragment());
 
         binding.bottomNavigation.setOnItemSelectedListener(item->
         {

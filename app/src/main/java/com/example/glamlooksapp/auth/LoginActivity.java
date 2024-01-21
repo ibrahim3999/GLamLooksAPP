@@ -109,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onUserFetchDataComplete(User customer) {
                 if (customer!=null) {
                     int type = customer.getAccount_type();
-                    if(type==1) {
+                    if(type==0) {
                         Toast.makeText(LoginActivity.this,"Hello Customer",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                         startActivity(intent);

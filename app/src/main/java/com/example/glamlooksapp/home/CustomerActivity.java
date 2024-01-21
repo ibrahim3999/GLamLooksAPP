@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityCustomerBinding;
-import com.example.glamlooksapp.fragments.manager.HomeMFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.fragments.user.HomeFragment;
 import com.example.glamlooksapp.fragments.user.ProfileFragmentC;

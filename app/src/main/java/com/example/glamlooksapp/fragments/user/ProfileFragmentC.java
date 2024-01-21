@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
-import com.example.glamlooksapp.home.CustomerPersonalDetailsActivity;
+import com.example.glamlooksapp.home.UpdateProfileActivity;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
@@ -92,7 +91,7 @@ public class ProfileFragmentC extends Fragment {
             public void onClick(View view) {
 
                 if(activity != null) {
-                    Intent intent = new Intent(activity, CustomerPersonalDetailsActivity.class);
+                    Intent intent = new Intent(activity, UpdateProfileActivity.class);
                     intent.putExtra(USER_INTENT_KEY, currentUser);
                     startActivity(intent);
 

@@ -115,14 +115,18 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
 
         editAccount_BTN_updateAccount.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+
                 String uid = db.getCurrentUser().getUid();
+
                 User user = new User();
                 user.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
                 user.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
                 user.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
                 user.setEmail(currentUser.getEmail());
+                user.setAccount_type(currentUser.getAccount_type());
                 user.setKey(uid);
 
                 if(selectedImageUri != null){
