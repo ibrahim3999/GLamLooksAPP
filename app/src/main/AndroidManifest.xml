@@ -24,6 +24,9 @@
             android:name=".home.UpdateProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".home.CustomerPersonalDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".home.ManagerActivity"
             android:exported="true"
             android:launchMode="singleTop" />

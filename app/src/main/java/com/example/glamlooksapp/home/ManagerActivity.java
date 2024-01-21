@@ -40,7 +40,7 @@ public class ManagerActivity extends AppCompatActivity {
         database = new Database();
         binding = ActivityManagerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeMFragment());
+//        replaceFragment(new HomeMFragment());
 
         binding.bottomNavigation.setOnItemSelectedListener(item->
         {

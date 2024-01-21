@@ -1,77 +1,222 @@
 package com.example.glamlooksapp.home;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Spinner;
-
-
+import android.widget.ProgressBar;
+import android.widget.Toast;
+import com.bumptech.glide.Glide;
+import com.example.glamlooksapp.callback.UserCallBack;
+import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.utils.User;
+import com.example.glamlooksapp.utils.Generic;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Objects;
 import com.example.glamlooksapp.R;
-
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CustomerPersonalDetailsActivity extends AppCompatActivity {
-
-    private Spinner spinner;
-    private CheckBox checkBox1, checkBox2, checkBox3;
-    private Button loginButton;
+    private Uri selectedImageUri;
+    private Database db;
+    private CircleImageView editAccount_IV_image;
+    private TextInputLayout editAccount_TF_firstName;
+    private TextInputLayout editAccount_TF_lastName;
+    private TextInputLayout editAccount_TF_phone;
+    private ProgressBar editAccount_PB_loading;
+    private Button editAccount_BTN_updateAccount;
+    private User currentUser;
+    private FloatingActionButton editAccount_FBTN_uploadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_update_profile);
 
-        setContentView(R.layout.activity_customer_personaldetails_page);
-
-        spinner = findViewById(R.id.spinner);
-        checkBox1 = findViewById(R.id.checkBox1);
-        checkBox2 = findViewById(R.id.checkBox2);
-        checkBox3 = findViewById(R.id.checkBox3);
-        loginButton = findViewById(R.id.login_button);
-
-        setupSpinner();
-        setupButtonClick();
+        Intent intent = getIntent();
+        currentUser = (User) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        if(!Generic.checkPermissions(this)) {
+            Generic.requestPermissions(this);
+        }
+        findViews();
+        initVars();
+        displayUser(currentUser);
     }
 
-    private void setupSpinner() {
-        String[] items = {"Item 1", "Item 2", "Item 3"};
+    private void displayUser(User user) {
+        editAccount_TF_firstName.getEditText().setText(user.getFirstname());
+        editAccount_TF_lastName.getEditText().setText(user.getLastname());
+        editAccount_TF_phone.getEditText().setText(user.getPhoneNumber());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if(user.getImageUrl() != null){
+            // set image profile
+            Glide
+                    .with(this)
+                    .load(user.getImageUrl())
+                    .centerCrop()
+                    .into(editAccount_IV_image);
+        }
+    }
+    private void findViews() {
+        editAccount_IV_image = findViewById(R.id.editAccount_IV_image);
+        editAccount_TF_firstName = findViewById(R.id.editAccount_TF_firstName);
+        editAccount_TF_lastName = findViewById(R.id.editAccount_TF_lastName);
+        editAccount_PB_loading = findViewById(R.id.editAccount_PB_loading);
+        editAccount_BTN_updateAccount = findViewById(R.id.editAccount_BTN_updateAccount);
+        editAccount_FBTN_uploadImage = findViewById(R.id.editAccount_FBTN_uploadImage);
+        editAccount_TF_phone = findViewById(R.id.editAccount_TF_phone);
 
-        spinner.setAdapter(adapter);
+    }
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void initVars() {
+        db = new Database();
+        db.setUserCallBack(new UserCallBack() {
             @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Handle spinner item selection if needed
+            public void onUserFetchDataComplete(User user) {
+
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // Do nothing here
+            public void onUpdateComplete(Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(CustomerPersonalDetailsActivity.this, "Profile update success",Toast.LENGTH_SHORT).show();
+                    finish();
+                }else {
+                    Toast.makeText(CustomerPersonalDetailsActivity.this, task.getException().getMessage().toString() ,Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        editAccount_BTN_updateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uid = db.getCurrentUser().getUid();
+                User user = new User();
+                user.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
+                user.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
+                user.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
+                user.setEmail(currentUser.getEmail());
+                user.setKey(uid);
+
+                if(selectedImageUri != null){
+                    // save image
+                    String ext = Generic.getFileExtension(CustomerPersonalDetailsActivity.this, selectedImageUri);
+                    String path = "Users/" + uid + "." + ext;
+                    if(!db.uploadImage(selectedImageUri, path)){
+                        return;
+                    }
+                    user.setImagePath(path);
+                }
+
+                db.updateUser(user);
+            }
+        });
+
+        editAccount_FBTN_uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Generic.checkPermissions(CustomerPersonalDetailsActivity.this)){
+                    showImageSourceDialog();
+                }else{
+                    Toast.makeText(CustomerPersonalDetailsActivity.this, "no permissions to access camera", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
-    private void setupButtonClick() {
-        loginButton.setOnClickListener(new View.OnClickListener() {
+    private void showImageSourceDialog() {
+        CharSequence[] items = {"Camera", "Gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(CustomerPersonalDetailsActivity.this);
+        builder.setTitle("Choose Image Source");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Get the selected item from the spinner
-                String selectedSpinnerItem = spinner.getSelectedItem().toString();
-
-                // Check the state of checkboxes
-                boolean isChecked1 = checkBox1.isChecked();
-                boolean isChecked2 = checkBox2.isChecked();
-                boolean isChecked3 = checkBox3.isChecked();
-
-
+            public void onClick(DialogInterface dialogInterface, int which) {
+                switch (which) {
+                    case 0:
+                        openCamera();
+                        break;
+                    case 1:
+                        openGallery();
+                        break;
+                }
             }
         });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraResults.launch(intent);
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        gallery_results.launch(intent);
+    }
+
+    private final ActivityResultLauncher<Intent> gallery_results = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                    switch (result.getResultCode()) {
+                        case Activity.RESULT_OK:
+                            try {
+                                Intent intent = result.getData();
+                                assert intent != null;
+                                selectedImageUri = intent.getData();
+                                final InputStream imageStream = CustomerPersonalDetailsActivity.this.getContentResolver().openInputStream(selectedImageUri);
+                                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                                editAccount_IV_image.setImageBitmap(selectedImage);
+                            }
+                            catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                Toast.makeText(CustomerPersonalDetailsActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                            }
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(CustomerPersonalDetailsActivity.this, "Gallery canceled", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> cameraResults = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+
+                    switch (result.getResultCode()) {
+                        case Activity.RESULT_OK:
+                            Intent intent = result.getData();
+                            Bitmap bitmap = (Bitmap)  intent.getExtras().get("data");
+                            editAccount_IV_image.setImageBitmap(bitmap);
+                            selectedImageUri = Generic.getImageUri(CustomerPersonalDetailsActivity.this, bitmap);
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(CustomerPersonalDetailsActivity.this, "Camera canceled", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
 }
-

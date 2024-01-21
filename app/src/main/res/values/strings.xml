@@ -5,7 +5,7 @@
     <string name="loginEmail">loginEmail</string>
     <string name="login1">Login</string>
     <string name="not_yet_registered_">No Account? Sign Up</string>
-    <string name="login">GalmLooks</string>
+    <string name="login">GlamLooks</string>
     <string name="sign_up1">Sign Up</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -30,4 +30,17 @@
     <string name="aboutus">AboutUs</string>
     <string name="about_us_fragment">About Us Fragment</string>
     <string name="edit_account_details">Edit account details</string>
+    <string name="personal_info">personal_info</string>
+    <string name="full_name">First Name</string>
+    <string name="lastname">Last Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="save">Save</string>
+    <string name="products">Products</string>
+    <string name="AboutUS">AboutUS</string>
+    <string name="profile">Profile</string>
+    <string name="laser">laser</string>
+    <string name="shaving">shaving</string>
+    <string name="hair_color">hair_color</string>
+    <string name="nails">nails</string>
+    <string name="haircut">haircut</string>
 </resources>

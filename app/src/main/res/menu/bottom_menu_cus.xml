@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   >
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_homeC"
         android:title="@string/navigation_home"
         android:icon="@drawable/nav_home"/>
+
     <item
-        android:id="@+id/addPhotos"
+        android:id="@+id/products"
         android:title="@string/products"
         android:tooltipText="Products"
         android:enabled="true"
         android:icon="@drawable/addbox"
-        />
 
+    />
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/navigation_about"
+        android:title="@string/AboutUS"
+        android:icon="@drawable/nav_about"/>
+
+    <item
+        android:id="@+id/profileC"
         android:title="@string/profile"
         android:enabled="true"
         android:icon="@drawable/baseline_person_pin_24"
-        />
+
+    />
 
 </menu>

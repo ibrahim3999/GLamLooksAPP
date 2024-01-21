@@ -7,18 +7,185 @@
     android:id="@+id/activity_customer"
     tools:context=".home.CustomerActivity">
 
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/editAccount_ConstraintLayout_profileImg"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="20dp">-->
+
+<!--        <de.hdodenhof.circleimageview.CircleImageView-->
+<!--            android:id="@+id/editAccount_IV_image"-->
+<!--            android:layout_width="150dp"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:src="@drawable/logo3"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.536"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.049"/>-->
+
+
+<!--    &lt;!&ndash; "GlamLooks" logo and settings button centered on the page &ndash;&gt;-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/topLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_vertical"-->
+<!--        android:layout_alignParentTop="true">-->
+
+<!--        &lt;!&ndash; Settings button on the leftmost part &ndash;&gt;-->
+<!--        <ImageButton-->
+<!--            android:id="@+id/imageButton2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/nav_settings"-->
+<!--            android:layout_gravity="start"-->
+<!--            android:contentDescription="settings"/>-->
+
+<!--        &lt;!&ndash; "GlamLooks" logo centered in the row with a slightly adjusted left margin &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="@string/login"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/Lavender"-->
+<!--            android:textSize="36sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginStart="4dp" />-->
+<!--    </LinearLayout>-->
+
+<!--    &lt;!&ndash; Purple box (half size) centered in the middle height of the screen &ndash;&gt;-->
+<!--    <View-->
+<!--        android:id="@+id/boxView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@color/Lavender" />-->
+
+<!--    &lt;!&ndash; Circular buttons for services inside the box &ndash;&gt;-->
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_below="@id/topLayout"-->
+<!--        android:layout_marginTop="288dp"-->
+<!--        android:fillViewport="true">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/servicesLayout"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            &lt;!&ndash; Add circular buttons for services here &ndash;&gt;-->
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="25dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="@android:color/white"-->
+<!--                    android:src="@drawable/haircut"-->
+<!--                    android:contentDescription="@string/haircut"/>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="25dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="@android:color/white"-->
+<!--                    android:src="@drawable/nails"-->
+<!--                    android:contentDescription="@string/nails"/>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="25dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="@android:color/white"-->
+<!--                    android:src="@drawable/hair_color"-->
+<!--                    android:contentDescription="@string/hair_color"/>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="25dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="@android:color/white"-->
+<!--                    android:src="@drawable/laser"-->
+<!--                    android:contentDescription="@string/laser"/>-->
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="8dp"-->
+<!--                app:cardCornerRadius="25dp">-->
+
+<!--                <ImageButton-->
+<!--                    android:layout_width="50dp"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:background="@android:color/white"-->
+<!--                    android:src="@drawable/shaving"-->
+<!--                    android:contentDescription="@string/shaving"/>-->
+
+
+<!--            </androidx.cardview.widget.CardView>-->
+
+
+
+<!--        </LinearLayout>-->
+<!--    </ScrollView>-->
+
+
     <FrameLayout
-        android:id="@+id/fragmentContainer"
+        android:id="@+id/fragmentContainerC"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNavigation" >
-    </FrameLayout>
+        android:layout_above="@+id/bottomNavigationC" />
+
+
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+        android:id="@+id/bottomNavigationC"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:textColor="@color/black"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu_cus" />
+
+
 
 </RelativeLayout>
