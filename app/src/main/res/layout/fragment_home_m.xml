@@ -167,6 +167,30 @@
 
 
         </LinearLayout>
+
+
     </ScrollView>
+
+
+    <TableLayout
+        android:id="@+id/dateTable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topLayout"
+        android:layout_marginTop="400dp">
+
+        <!-- Add headers or customize as needed -->
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textStyle="bold"
+                android:padding="8dp" />
+            <!-- Add more headers as needed -->
+        </TableRow>
+
+        <!-- This is where the dynamic rows will be added -->
+    </TableLayout>
 
 </RelativeLayout>
