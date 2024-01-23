@@ -4,6 +4,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
+import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.callback.UserFetchCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,9 +16,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -32,17 +36,22 @@ public class Database {
     private FirebaseFirestore db;
     private FirebaseStorage mStorage;
     private AuthCallBack authCallBack;
+    private ProductCallBack productCallBack;
 
     private UserFetchCallback userFetchCallback;
 
     private UserCallBack userCallBack;
 
-
+    public static final String CATEGORIES_TABLE = "Categories";
+    public static final String PRODUCTS_TABLE = "Products";
+    private ArrayList<Product> productList;  // Add this list to store products
 
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
+        productList = new ArrayList<Product>();
+
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -57,6 +66,11 @@ public class Database {
         this.userFetchCallback = userFetchCallback;
     }
 
+
+    public void setProductCallBack(ProductCallBack productCallBack){
+        this.productCallBack = productCallBack;
+    }
+
     public void loginUser(String email, String password){
         this.mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -67,6 +81,29 @@ public class Database {
                     }
                 });
     }
+
+
+    public void fetchProducts() {
+        db.collection(PRODUCTS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    // Handle the error
+                    return;
+                }
+
+                ArrayList<Product> productList = new ArrayList<>();
+
+                for (QueryDocumentSnapshot document : value) {
+                    Product product = document.toObject(Product.class);
+                    productList.add(product);
+                }
+
+                productCallBack.onFetchProductsComplete(productList);
+            }
+        });
+    }
+
 
     public void createAccount(String email, String password, User customerData) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
@@ -119,6 +156,18 @@ public class Database {
                 userCallBack.onUserFetchDataComplete(user);
             }
         });
+    }
+
+
+
+    public void uploadProduct(Product product){
+        this.db.collection(PRODUCTS_TABLE).document().set(product)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        productCallBack.onAddIProductsComplete(task);
+                    }
+                });
     }
 
 

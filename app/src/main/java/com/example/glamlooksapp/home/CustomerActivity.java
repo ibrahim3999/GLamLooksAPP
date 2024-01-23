@@ -12,6 +12,7 @@ import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityCustomerBinding;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.fragments.user.HomeFragment;
+import com.example.glamlooksapp.fragments.user.ProductsFragment;
 import com.example.glamlooksapp.fragments.user.ProfileFragmentC;
 import com.example.glamlooksapp.utils.Database;
 import androidx.fragment.app.FragmentTransaction;
@@ -53,6 +54,7 @@ public class CustomerActivity extends AppCompatActivity {
                     break;
 
                 case R.id.products:
+                    replaceFragment(new ProductsFragment());
                     Toast.makeText(this,"Products",Toast.LENGTH_SHORT).show();
                     break;
             }

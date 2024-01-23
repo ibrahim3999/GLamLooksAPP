@@ -83,6 +83,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     .into(editAccount_IV_image);
         }
     }
+
+
     private void findViews() {
         editAccount_IV_image = findViewById(R.id.editAccount_IV_image);
         editAccount_TF_firstName = findViewById(R.id.editAccount_TF_firstName);
@@ -91,8 +93,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
         editAccount_BTN_updateAccount = findViewById(R.id.editAccount_BTN_updateAccount);
         editAccount_FBTN_uploadImage = findViewById(R.id.editAccount_FBTN_uploadImage);
         editAccount_TF_phone = findViewById(R.id.editAccount_TF_phone);
-
     }
+
 
     private void initVars() {
         db = new Database();

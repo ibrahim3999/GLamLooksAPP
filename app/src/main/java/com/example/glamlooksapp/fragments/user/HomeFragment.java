@@ -208,12 +208,12 @@ public class HomeFragment extends Fragment {
         queuesCollection.add(queueData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                showToast("Added to firestore: ");
+                showToast("Added to FireStore: ");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                showToast("Error adding to Friebase" + e.getMessage());
+                showToast("Error adding to Firebase" + e.getMessage());
             }
         });
 

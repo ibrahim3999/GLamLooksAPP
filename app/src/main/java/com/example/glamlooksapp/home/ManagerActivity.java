@@ -17,6 +17,7 @@ import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.manager.HomeMFragment;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.fragments.manager.addProducts_PostsFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.utils.Database;
 
@@ -55,6 +56,8 @@ public class ManagerActivity extends AppCompatActivity {
                     break;
 
                 case R.id.addPhotos:
+                    replaceFragment(new addProducts_PostsFragment(ManagerActivity.this));
+
                     Toast.makeText(this,"AddPhotos",Toast.LENGTH_SHORT).show();
                     break;
             }
