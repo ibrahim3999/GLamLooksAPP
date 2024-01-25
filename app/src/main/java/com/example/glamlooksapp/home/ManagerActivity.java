@@ -17,6 +17,7 @@ import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.manager.HomeMFragment;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.fragments.manager.TimesFragment;
 import com.example.glamlooksapp.fragments.manager.addProducts_PostsFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.utils.Database;
@@ -74,6 +75,11 @@ public class ManagerActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
+            case R.id.times:
+                replaceFragment(new TimesFragment());
+                Toast.makeText(this,"Times",Toast.LENGTH_SHORT).show();
+                return true;
 
 
             case R.id.settings:

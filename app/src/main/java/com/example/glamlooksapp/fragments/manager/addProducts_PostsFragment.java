@@ -129,8 +129,6 @@ public class addProducts_PostsFragment extends Fragment {
     }
 
 
-
-
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -155,9 +153,6 @@ public class addProducts_PostsFragment extends Fragment {
 
         return true;
     }
-
-
-
 
 
 

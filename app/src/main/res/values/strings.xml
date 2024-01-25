@@ -43,4 +43,5 @@
     <string name="hair_color">hair_color</string>
     <string name="nails">nails</string>
     <string name="haircut">haircut</string>
+    <string name="create_account">Create Account</string>
 </resources>

@@ -144,9 +144,16 @@ public class LoginActivity extends AppCompatActivity {
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
 
-                // Perform login
-                database.loginUser(email, password);
-
+                if(email.isEmpty() ){
+                    Toast.makeText(LoginActivity.this,"request email",Toast.LENGTH_SHORT).show();
+                }
+                else if(password.isEmpty()){
+                    Toast.makeText(LoginActivity.this,"request password",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // Perform login
+                    database.loginUser(email, password);
+                }
 
             }
         });

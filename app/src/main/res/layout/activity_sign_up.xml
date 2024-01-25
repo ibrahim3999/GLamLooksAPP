@@ -113,7 +113,7 @@
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/Lavender"
                 android:onClick="onClick"
-                android:text="@string/sign_up"
+                android:text="@string/create_account"
                 android:textSize="18sp"
                 app:cornerRadius="20dp"
                 app:toggleCheckedStateOnClick="false" />

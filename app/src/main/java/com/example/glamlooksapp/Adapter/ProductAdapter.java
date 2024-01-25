@@ -21,10 +21,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Context context;
     private List<Product> productList;
 
-    public ProductAdapter(Context context, List<Product> productList) {
+    public ProductAdapter(Context context, List<Product> productList) { // product
         this.context = context;
         this.productList = productList;
     }
+
 
     @NonNull
     @Override
