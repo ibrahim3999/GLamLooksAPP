@@ -74,29 +74,30 @@ public class ManagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
 
-            case R.id.times:
+        if(item.getItemId()== R.id.times) {
                 replaceFragment(new TimesFragment());
-                Toast.makeText(this,"Times",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "TimesManager", Toast.LENGTH_SHORT).show();
                 return true;
+            }
 
 
-            case R.id.settings:
-                Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.exit:
-                Toast.makeText(this,"Exit",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                database.logout();
-                finish();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if(item.getItemId()==  R.id.settings) {
+            Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+            return true;
         }
+
+        if(item.getItemId()==  R.id.exit) {
+            Toast.makeText(this, "Exit", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            database.logout();
+            finish();
+            return true;
+        }
+
+                return super.onOptionsItemSelected(item);
+
     }
 
 

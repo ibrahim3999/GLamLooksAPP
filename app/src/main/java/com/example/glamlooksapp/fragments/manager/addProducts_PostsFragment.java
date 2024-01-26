@@ -68,8 +68,6 @@ public class addProducts_PostsFragment extends Fragment {
         initVars();
 
 
-
-
         return view;
     }
 
@@ -271,6 +269,5 @@ public class addProducts_PostsFragment extends Fragment {
         btnUploadPhoto = view.findViewById(R.id.btnUploadPhoto);
         btnAddProduct = view.findViewById(R.id.btnAddProduct);
         imageViewSelectedPhoto = view.findViewById(R.id.imageViewSelectedPhoto);
-//        activity = new AppCompatActivity();
     }
 }

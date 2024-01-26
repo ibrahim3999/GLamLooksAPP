@@ -1,5 +1,6 @@
 package com.example.glamlooksapp.fragments.user;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,10 @@ public class ProductsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_products, container, false);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
         database = new Database();
-
+        initViews();
         initRecyclerView();
         intiVars();
+
         return view;
     }
 
@@ -53,6 +55,7 @@ public class ProductsFragment extends Fragment {
 
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onFetchProductsComplete(ArrayList<Product> products) {
                 productList.clear();
@@ -63,7 +66,7 @@ public class ProductsFragment extends Fragment {
 
     }
 
-    private void initVars() {
+    private void initViews() {
         ProductManager productManager = ProductManager.getInstance();
         productAdapter = new ProductAdapter(getContext(), productManager.getProductList());
         recyclerViewProducts.setAdapter(productAdapter);
@@ -78,8 +81,6 @@ public class ProductsFragment extends Fragment {
 
         // Fetch products from the database and update the list
         database.fetchProducts();
-
-
     }
 
 

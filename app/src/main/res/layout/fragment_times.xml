@@ -1,43 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    tools:context=".fragments.manager.TimesFragment">
 
-    <!-- Phone Number Button -->
-    <Button
-        android:id="@+id/buttonPhoneNumber"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCustomers"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Call Customer"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:padding="16dp" />
 
-    <!-- First Name -->
     <TextView
-        android:id="@+id/textViewFirstName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="First Name:"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:text="@string/about_us_fragment"
+        android:textSize="30sp"
+        android:layout_centerInParent="true"
+        android:textColor="@color/Lavender"/>
 
-    <!-- Last Name -->
-    <TextView
-        android:id="@+id/textViewLastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Last Name:"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+</RelativeLayout>
 
-    <!-- Date Chosen -->
-    <TextView
-        android:id="@+id/textViewDateChosen"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Date Chosen:"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-</LinearLayout>
+
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:padding="16dp"-->
+<!--    tools:context=".fragments.manager.TimesFragment">-->
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextCustomerFName"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="First Name"-->
+<!--        android:inputType="textCapSentences"-->
+<!--        android:layout_marginBottom="16dp"/>-->
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextLName"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Last Name"-->
+<!--        android:inputType="numberDecimal"-->
+<!--        android:layout_below="@+id/editTextCustomerFName"-->
+<!--        android:layout_marginTop="24dp"/>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/editTextPhoneNumberC"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="@string/phone_numberC"-->
+<!--        android:inputType="phone"-->
+<!--        android:layout_below="@+id/editTextLName"-->
+<!--        android:layout_marginTop="24dp"/>-->
+
+
+<!--    <Button-->
+<!--        android:id="@+id/btnCall"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:onClick="onClick"-->
+<!--        android:layout_below="@+id/editTextPhoneNumber"-->
+<!--        android:text="Call" />-->
+<!--</RelativeLayout>-->
 

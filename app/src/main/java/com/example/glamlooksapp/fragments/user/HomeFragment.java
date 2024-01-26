@@ -13,9 +13,12 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
+import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +27,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firestore.v1.StructuredQuery;
+import com.google.type.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,12 +36,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
+import com.example.glamlooksapp.utils.Datetime;
 public class HomeFragment extends Fragment {
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
     private Database database;
-    private FirebaseUser firebaseUser;
+//    private FirebaseUser firebaseUser;
     private boolean isTimeSelected = false; // Variable to track whether time is selected
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
     List<String> AvailableTimerSlots = new ArrayList<>();
@@ -52,7 +56,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         findViews(view);
         initVars();
         return view;
@@ -67,6 +71,22 @@ public class HomeFragment extends Fragment {
     }
 
     private void initVars() {
+
+
+        database.setCustomerCallBack(new CustomerCallBack() {
+            @Override
+            public void onAddICustomerComplete(Task<Void> task) {
+                showToast("TimesUpdated!");
+            }
+
+            @Override
+            public void onFetchCustomerComplete(ArrayList<User> customers) {
+
+            }
+//
+        });
+
+
         // Add click listeners to the ImageViews
         hair_cut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +150,8 @@ public class HomeFragment extends Fragment {
                         // Check if the selected day is Friday or Saturday
                         int dayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK);
                         if (dayOfWeek == Calendar.FRIDAY || dayOfWeek == Calendar.SATURDAY) {
-                            showToast("Please select a day other than Friday or Saturday.");
+                            showToast("Please select another day " +
+                                    " than Friday or Saturday.");
                             return;
                         } else {
 
@@ -195,27 +216,17 @@ public class HomeFragment extends Fragment {
     }
 
     private void addQueueToDB(String serviceName, long timestamp) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
         Timestamp timestampDB = new Timestamp(timestamp / 1000, 0);
 
-        Map<String, Object> queueData = new HashMap<>();
-        queueData.put("uid", firebaseUser.getUid());
-        queueData.put("serviceName", serviceName);
-        queueData.put("timestamp", timestampDB);
+        Datetime datetime = new Datetime();
+        datetime.setServiceName(serviceName);
+        datetime.setTimestamp(timestampDB);
+        datetime.setKey(database.getCurrentUser().getUid());
 
-        CollectionReference queuesCollection = db.collection("FuctureQueues");
-
-        queuesCollection.add(queueData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                showToast("Added to FireStore: ");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                showToast("Error adding to Firebase" + e.getMessage());
-            }
-        });
+        User currentUser = new User();
+        currentUser.setKey(database.getCurrentUser().getUid());
+        database.saveUserTimes(datetime,currentUser);
 
     }
 }

@@ -44,4 +44,5 @@
     <string name="nails">nails</string>
     <string name="haircut">haircut</string>
     <string name="create_account">Create Account</string>
+    <string name="phone_numberC">Phone Number</string>
 </resources>
