@@ -5,15 +5,10 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -120,15 +115,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-
-                String uid = db.getCurrentUser().getUid();
-
                 User user = new User();
+
+
                 user.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
                 user.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
                 user.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
                 user.setEmail(currentUser.getEmail());
                 user.setAccount_type(currentUser.getAccount_type());
+                String uid = db.getCurrentUser().getUid();
                 user.setKey(uid);
 
                 if(selectedImageUri != null){

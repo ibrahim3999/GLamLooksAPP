@@ -7,10 +7,8 @@ import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
-import com.example.glamlooksapp.callback.UserFetchCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +32,7 @@ public class Database {
     public static final String Manager_TABLE = "Managers";
     public static final String TIMES_TABLE = "TSchedule";
 
+    public static final String MANAGER_UID = "Zpa8hiasUAShwkSfwr0GxHXBb5q2";
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
@@ -42,22 +41,22 @@ public class Database {
     private ProductCallBack productCallBack;
     private CustomerCallBack customerCallBack;
 
-    private UserFetchCallback userFetchCallback;
+//    private UserFetchCallback userFetchCallback;
 
     private UserCallBack userCallBack;
 
     public static final String CATEGORIES_TABLE = "Categories";
     public static final String PRODUCTS_TABLE = "Products";
     private ArrayList<Product> productList;  // Add this list to store products
-    private ArrayList<User> userArrayList;  // Add this list to store products
+    ArrayList<User> customersWantedList ;
 
+    private ArrayList<String> listKeysDates;
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         productList = new ArrayList<Product>();
-        userArrayList = new ArrayList<User>();
-
+        customersWantedList = new ArrayList<User>();
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -68,9 +67,9 @@ public class Database {
         this.userCallBack = userCallBack;
     }
 
-    public void setUserFetchCallback(UserFetchCallback userFetchCallback){
-        this.userFetchCallback = userFetchCallback;
-    }
+//    public void setUserFetchCallback(UserFetchCallback userFetchCallback){
+//        this.userFetchCallback = userFetchCallback;
+//    }
 
 
     public void setProductCallBack(ProductCallBack productCallBack){
@@ -102,7 +101,7 @@ public class Database {
                     return;
                 }
 
-                ArrayList<Product> productList = new ArrayList<>();
+                 productList = new ArrayList<>();
 
                 for (QueryDocumentSnapshot document : value) {
                     Product product = document.toObject(Product.class);
@@ -115,14 +114,59 @@ public class Database {
     }
 
 
-    public void createAccount(String email, String password, User customerData) {
+
+
+    public void fetchUserDates() {
+
+        db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                listKeysDates = new ArrayList<>();
+                for (QueryDocumentSnapshot document : value) {
+                    Datetime datetime = document.toObject(Datetime.class);
+                    String uid = datetime.getKey();
+                    listKeysDates.add(uid);
+                }
+                fetchUsersByKeys(listKeysDates);
+            }
+        });
+
+
+    }
+
+    private void fetchUsersByKeys(ArrayList<String> userKeys) {
+        db.collection(USERS_TABLE)
+                .whereIn("key", userKeys) //  "key" is the field name in the "users" collection
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            // Handle error
+                            return;
+                        }
+
+                        for (QueryDocumentSnapshot document : value) {
+                            User customer = document.toObject(User.class);
+                            customersWantedList.add(customer);
+                        }
+
+                        customerCallBack.onFetchCustomerComplete(customersWantedList);
+                    }
+                });
+    }
+
+
+
+    public void createAccount(String email, String password, User userData) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(getCurrentUser() != null){
-                            customerData.setKey(getCurrentUser().getUid());
-                            saveUserData(customerData);
+
+                            userData.setKey(getCurrentUser().getUid());
+                            saveUserData(userData);
                         }else {
                             authCallBack.onCreateAccountComplete(false, Objects.requireNonNull(task.getException()).getMessage());
                         }
@@ -130,7 +174,7 @@ public class Database {
                 });
     }
 
-    public void saveUserTimes(Datetime dateTime,User customer){
+    public void saveUserTimes(Datetime dateTime, User customer){
         this.db.collection(TIMES_TABLE).document(customer.getKey()).set(dateTime)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -143,8 +187,8 @@ public class Database {
                 });
     }
 
-    public void saveUserData(User customer){
-        this.db.collection(USERS_TABLE).document(customer.getKey()).set(customer)
+    public void saveUserData(User user){
+        this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -220,57 +264,6 @@ public class Database {
         return task.isSuccessful();
     }
 
-    public void fetchUserDates() {
-        db.collection(TIMES_TABLE)
-                .whereNotEqualTo("timestamp", "")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> timesTask) {
-                        if (timesTask.isSuccessful()) {
-                            ArrayList<String> userKeys = new ArrayList<>();
 
-                            for (QueryDocumentSnapshot timesDocument : timesTask.getResult()) {
-                                String userKey = timesDocument.getId(); // Assuming the user key is the document ID
-                                userKeys.add(userKey);
-                            }
-
-                            // Fetch user data for each user key
-                            fetchUsersByKeys(userKeys);
-                        } else {
-                            // Handle error fetching times documents
-                        }
-                    }
-                });
-
-    }
-
-    private void fetchUsersByKeys(ArrayList<String> userKeys) {
-
-        ArrayList<User> usersWantedList = new ArrayList<>();
-
-        for (String key : userKeys) {
-            db.collection(USERS_TABLE)
-                    .document(key)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> userTask) {
-                            if (userTask.isSuccessful()) {
-                                DocumentSnapshot userDocument = userTask.getResult();
-                                if (userDocument.exists()) {
-                                    User user = userDocument.toObject(User.class);
-                                    usersWantedList.add(user);
-                                } else {
-                                    // Handle case where user document doesn't exist
-                                }
-                            } else {
-                                // Handle error fetching user document
-                            }
-                        }
-                    });
-        }
-        customerCallBack.onFetchCustomerComplete(usersWantedList);
-    }
 
 }

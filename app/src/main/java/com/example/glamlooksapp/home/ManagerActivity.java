@@ -76,7 +76,7 @@ public class ManagerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId()== R.id.times) {
-                replaceFragment(new TimesFragment());
+                replaceFragment(new TimesFragment(ManagerActivity.this));
                 Toast.makeText(this, "TimesManager", Toast.LENGTH_SHORT).show();
                 return true;
             }

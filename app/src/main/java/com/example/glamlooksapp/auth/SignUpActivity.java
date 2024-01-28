@@ -9,10 +9,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.glamlooksapp.utils.User;
+
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
+import com.example.glamlooksapp.utils.User;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.Task;
 

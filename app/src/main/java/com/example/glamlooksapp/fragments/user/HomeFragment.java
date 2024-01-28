@@ -16,28 +16,22 @@ import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firestore.v1.StructuredQuery;
-import com.google.type.DateTime;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
+
 import com.example.glamlooksapp.utils.Datetime;
-public class HomeFragment extends Fragment {
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
+public class HomeFragment extends Fragment{
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
     private Database database;
@@ -46,23 +40,22 @@ public class HomeFragment extends Fragment {
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
     List<String> AvailableTimerSlots = new ArrayList<>();
 
-    public HomeFragment() {
-        // Required empty public constructor
+    public HomeFragment() {// Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
-//        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         findViews(view);
         initVars();
         return view;
     }
 
     private void findViews(View view) {
+
         hair_cut = view.findViewById(R.id.haircut);
         hair_color = view.findViewById(R.id.haircolor);
         laser = view.findViewById(R.id.laser);
@@ -72,31 +65,33 @@ public class HomeFragment extends Fragment {
 
     private void initVars() {
 
-
         database.setCustomerCallBack(new CustomerCallBack() {
             @Override
             public void onAddICustomerComplete(Task<Void> task) {
                 showToast("TimesUpdated!");
+
+
             }
 
             @Override
             public void onFetchCustomerComplete(ArrayList<User> customers) {
-
             }
-//
         });
 
 
         // Add click listeners to the ImageViews
         hair_cut.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showDateTimePicker("Haircut");
                 // Add any additional action you want
             }
+
         });
 
         hair_color.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showDateTimePicker("Hair color");
@@ -105,6 +100,7 @@ public class HomeFragment extends Fragment {
         });
 
         nails.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showDateTimePicker("Nails");
@@ -113,6 +109,7 @@ public class HomeFragment extends Fragment {
         });
 
         laser.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showDateTimePicker("Laser");
@@ -121,6 +118,7 @@ public class HomeFragment extends Fragment {
         });
 
         shaving.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 showDateTimePicker("Shaving");
@@ -130,6 +128,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showDateTimePicker(final String serviceName) {
+
         // Get the current date and time
         final Calendar currentDate = Calendar.getInstance();
 
@@ -160,6 +159,7 @@ public class HomeFragment extends Fragment {
                                     requireContext(),
                                     R.style.CustomTimePicker,
                                     new TimePickerDialog.OnTimeSetListener() {
+
                                         @Override
                                         public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
                                             currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -228,5 +228,19 @@ public class HomeFragment extends Fragment {
         currentUser.setKey(database.getCurrentUser().getUid());
         database.saveUserTimes(datetime,currentUser);
 
+        sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
+    }
+
+    private void sendMessageToManager(String managerUserId, String message) {
+        // Code to send a message/notification to the manager
+        // This could involve using a messaging/notification service like Firebase Cloud Messaging
+        // Example:
+        Map<String, String> mapMessage = new HashMap<>();
+        mapMessage.put("message", message);
+
+        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
+                 .setMessageId(UUID.randomUUID().toString())
+                 .setData(mapMessage)
+                 .build());
     }
 }

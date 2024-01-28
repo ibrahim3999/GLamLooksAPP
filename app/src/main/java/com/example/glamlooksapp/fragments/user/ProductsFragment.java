@@ -12,12 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.ProductCallBack;
-import com.example.glamlooksapp.callback.UserFetchCallback;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Product;
 import com.example.glamlooksapp.Adapter.ProductAdapter;
 import com.example.glamlooksapp.utils.ProductManager;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;

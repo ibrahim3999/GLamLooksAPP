@@ -5,11 +5,15 @@ import java.util.ArrayList;
 
 public class CustomerManager {
     private static CustomerManager instance;
-    private ArrayList<User> userList;
+    private ArrayList<User> customersList;
+
+    private ArrayList<String> dateList;
 
     private CustomerManager() {
         // Initialize productList or perform any setup
-        userList = new ArrayList<>();
+        customersList = new ArrayList<>();
+        dateList = new ArrayList<>();
+
     }
 
     public static synchronized CustomerManager getInstance() {
@@ -20,11 +24,19 @@ public class CustomerManager {
     }
 
     public ArrayList<User> getCustomerList() {
-        return userList;
+        return customersList;
     }
 
-    public void setCustomerList(ArrayList<User> userList) {
-        this.userList = userList;
+    public ArrayList<String> getDateList() {
+        return dateList;
+    }
+
+    public void setCustomerList(ArrayList<User> customersList) {
+        this.customersList = customersList;
+    }
+
+    public void setDateList(ArrayList<String> dateList) {
+        this.dateList = dateList;
     }
 
 }
