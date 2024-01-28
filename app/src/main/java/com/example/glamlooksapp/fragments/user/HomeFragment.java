@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 
@@ -35,7 +33,6 @@ public class HomeFragment extends Fragment{
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
     private Database database;
-//    private FirebaseUser firebaseUser;
     private boolean isTimeSelected = false; // Variable to track whether time is selected
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
     List<String> AvailableTimerSlots = new ArrayList<>();
@@ -225,7 +222,10 @@ public class HomeFragment extends Fragment{
         datetime.setKey(database.getCurrentUser().getUid());
 
         User currentUser = new User();
+
         currentUser.setKey(database.getCurrentUser().getUid());
+        currentUser.setDateTime(datetime);///??New added ,should check!!
+
         database.saveUserTimes(datetime,currentUser);
 
         sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");

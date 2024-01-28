@@ -2,6 +2,7 @@ package com.example.glamlooksapp.utils;
 
 
 import com.google.firebase.firestore.Exclude;
+import com.google.type.DateTime;
 
 import java.io.Serializable;
 
@@ -15,6 +16,10 @@ public class User extends FirebaseKey implements Serializable {
     private int account_type;
     private String imagePath;
     private String imageUrl;
+
+    private Datetime datetime;
+
+
 
     public String getImagePath() {
         return imagePath;
@@ -75,13 +80,23 @@ public class User extends FirebaseKey implements Serializable {
     }
 
     public  void setAccount_type(int account_type){this.account_type = account_type;}
+    public User(String firstname, String email, String lastname, String password,String phoneNumber,Datetime datetime) {
+        this.firstname = firstname;
+        this.email = email;
+        this.lastname = lastname;
+        this.password = password;
+        this.phoneNumber =phoneNumber;
+        this.account_type = 1;
+        this.datetime =datetime;
+    }
+
     public User(String firstname, String email, String lastname, String password,String phoneNumber) {
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
         this.password = password;
         this.phoneNumber =phoneNumber;
-        this.account_type = 0;
+        this.account_type = 1;
     }
 
     public User(){}
@@ -96,4 +111,11 @@ public class User extends FirebaseKey implements Serializable {
     }
 
 
+    public Datetime getDateTime() {
+        return this.datetime;
+    }
+
+    public void setDateTime(Datetime datetime) {
+        this.datetime = datetime;
+    }
 }

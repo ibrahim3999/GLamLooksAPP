@@ -3,7 +3,6 @@ package com.example.glamlooksapp.fragments.manager;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.Adapter.CustomerAdapter;
@@ -21,9 +19,7 @@ import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.utils.CustomerManager;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 

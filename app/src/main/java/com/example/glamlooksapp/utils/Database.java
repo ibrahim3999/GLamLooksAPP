@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -41,8 +42,6 @@ public class Database {
     private ProductCallBack productCallBack;
     private CustomerCallBack customerCallBack;
 
-//    private UserFetchCallback userFetchCallback;
-
     private UserCallBack userCallBack;
 
     public static final String CATEGORIES_TABLE = "Categories";
@@ -51,12 +50,16 @@ public class Database {
     ArrayList<User> customersWantedList ;
 
     private ArrayList<String> listKeysDates;
+
+    private ArrayList<Datetime> list_dates;
+
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         productList = new ArrayList<Product>();
         customersWantedList = new ArrayList<User>();
+        list_dates = new ArrayList<Datetime>();
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -67,9 +70,6 @@ public class Database {
         this.userCallBack = userCallBack;
     }
 
-//    public void setUserFetchCallback(UserFetchCallback userFetchCallback){
-//        this.userFetchCallback = userFetchCallback;
-//    }
 
 
     public void setProductCallBack(ProductCallBack productCallBack){
@@ -115,7 +115,6 @@ public class Database {
 
 
 
-
     public void fetchUserDates() {
 
         db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -125,17 +124,18 @@ public class Database {
                 listKeysDates = new ArrayList<>();
                 for (QueryDocumentSnapshot document : value) {
                     Datetime datetime = document.toObject(Datetime.class);
+                    list_dates.add(datetime);
                     String uid = datetime.getKey();
                     listKeysDates.add(uid);
                 }
-                fetchUsersByKeys(listKeysDates);
+                fetchUsersByKeys(listKeysDates,list_dates);
             }
         });
 
 
     }
 
-    private void fetchUsersByKeys(ArrayList<String> userKeys) {
+    private void fetchUsersByKeys(ArrayList<String> userKeys,ArrayList<Datetime> list_dates) {
         db.collection(USERS_TABLE)
                 .whereIn("key", userKeys) //  "key" is the field name in the "users" collection
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -145,9 +145,10 @@ public class Database {
                             // Handle error
                             return;
                         }
-
+                        int i =0;
                         for (QueryDocumentSnapshot document : value) {
-                            User customer = document.toObject(User.class);
+                            User customer = document.toObject(User.class); // Changed !! => User to Customer
+                            customer.setDateTime(list_dates.get(i++));
                             customersWantedList.add(customer);
                         }
 

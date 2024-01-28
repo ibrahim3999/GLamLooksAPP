@@ -7,8 +7,7 @@ public class CustomerManager {
     private static CustomerManager instance;
     private ArrayList<User> customersList;
 
-    private ArrayList<String> dateList;
-
+    private ArrayList<Datetime> dateList;
     private CustomerManager() {
         // Initialize productList or perform any setup
         customersList = new ArrayList<>();
@@ -27,7 +26,7 @@ public class CustomerManager {
         return customersList;
     }
 
-    public ArrayList<String> getDateList() {
+    public ArrayList<Datetime> getDateList() {
         return dateList;
     }
 
@@ -35,7 +34,7 @@ public class CustomerManager {
         this.customersList = customersList;
     }
 
-    public void setDateList(ArrayList<String> dateList) {
+    public void setDateList(ArrayList<Datetime> dateList) {
         this.dateList = dateList;
     }
 
