@@ -28,7 +28,7 @@
     </style>
 
     <style name="CustomTimePicker">
-        <item name="android:headerBackground">@color/colorPrimary</item>
+        <item name="android:headerBackground">@color/white</item>
         <item name="android:timePickerStyle">@style/CustomTimePickerStyle</item>
     </style>
 

@@ -22,7 +22,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.Objects;
-
+import java.util.UUID;
 
 
 public class Database {
@@ -59,6 +59,10 @@ public class Database {
         customersWantedList = new ArrayList<User>();
     }
 
+    public static String generateRandomPathHash() {
+        return UUID.randomUUID().toString();
+    }
+
     public void setAuthCallBack(AuthCallBack authCallBack){
         this.authCallBack = authCallBack;
     }
@@ -83,6 +87,7 @@ public class Database {
     public void loginUser(String email, String password){
         this.mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         authCallBack.onLoginComplete(task);
@@ -175,7 +180,7 @@ public class Database {
     }
 
     public void saveUserTimes(Datetime dateTime, User customer){
-        this.db.collection(TIMES_TABLE).document(customer.getKey()).set(dateTime)
+        this.db.collection(TIMES_TABLE).document(generateRandomPathHash()).set(dateTime)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -46,6 +46,18 @@
     <string name="about_us">About Us</string>
     <string name="back_button">Back Button</string>
     <string name="about_us_n">About Us\n</string>
-    <string name="our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n">Our hair salon is open 5 days a week\n We offer a wide range of services\n for you\n\n\n</string>
+    <string name="our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n">Our hair salon is open 5 days a week\n We offer a wide range of services\n for you\n\n</string>
     <string name="sunday_9_00_to_12_00_n_13_00_to_18_00">Sunday: 9:00 to 12:00\n 13:00 to 18:00</string>
+    <string name="create_account">create account</string>
+    <string name="call">call</string>
+    <string name="monday_9_00_to_11_00_n_13_00_to_18_00">Monday: 9:00 to 11:00\n 13:00 to 18:00</string>
+    <string name="tuesday_closed">Tuesday: closed</string>
+    <string name="wednesday_9_00_to_12_00_n_13_00_to_18_00">Wednesday: 9:00 to 12:00\n 13:00 to 18:00</string>
+    <string name="friday_9_00_to_12_00">Friday: 9:00 to 12:00</string>
+    <string name="saturday_closed_n_n_n">Saturday: Closed\n\n</string>
+    <string name="phone_0123456789">phone: 0123456789</string>
+    <string name="our_address_1234_main_street_n_anytown_ca_12345_usa">Our Address: 1234 Main Street, \n Anytown, CA 12345 USA</string>
+    <string name="talk_to_us_via_whatsapp">Talk to us via WhatsApp!</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="thursday_9_00_to_12_00_n_13_00_to_18_00">Thursday: 9:00 to 12:00\n 13:00 to 18:00</string>
 </resources>

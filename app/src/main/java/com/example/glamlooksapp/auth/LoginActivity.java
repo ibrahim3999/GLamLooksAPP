@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         database.setUserCallBack(new UserCallBack() {
             @Override
             public void onUserFetchDataComplete(User customer) {

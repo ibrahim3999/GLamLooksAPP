@@ -29,8 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.example.glamlooksapp.utils.Datetime;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+
 public class HomeFragment extends Fragment{
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
@@ -134,7 +133,7 @@ public class HomeFragment extends Fragment{
 
         // Calculate the maximum date (7 days from now)
         Calendar maxDate = Calendar.getInstance();
-        maxDate.add(Calendar.DAY_OF_MONTH, 7);
+        maxDate.add(Calendar.DAY_OF_MONTH, 14);
 
         // Date picker dialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -148,9 +147,9 @@ public class HomeFragment extends Fragment{
 
                         // Check if the selected day is Friday or Saturday
                         int dayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK);
-                        if (dayOfWeek == Calendar.FRIDAY || dayOfWeek == Calendar.SATURDAY) {
+                        if (dayOfWeek == Calendar.TUESDAY || dayOfWeek == Calendar.SATURDAY) {
                             showToast("Please select another day " +
-                                    " than Friday or Saturday.");
+                                    " than Tuesday or Saturday.");
                             return;
                         } else {
 
@@ -169,25 +168,13 @@ public class HomeFragment extends Fragment{
                                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                                     currentDate.get(Calendar.MINUTE));
 
-
-                                                /*
-                                                showToast("Service: " + serviceName + "\nDate: " +
-                                                        currentDate.get(Calendar.DAY_OF_MONTH) + "/" +
-                                                        (currentDate.get(Calendar.MONTH) + 1) + "/" +
-                                                        currentDate.get(Calendar.YEAR) + "\nTime: " +
-                                                        currentDate.get(Calendar.HOUR_OF_DAY) + ":" +
-                                                        currentDate.get(Calendar.MINUTE));
-                                            */
-
-
-                                                // Add queue -> database
-                                                addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                                    // Add queue -> database
+                                                    addQueueToDB(serviceName, currentDate.getTimeInMillis());
                                             }
-                                        
                                     },
                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                     currentDate.get(Calendar.MINUTE),
-                                    false
+                                    true
                             );
 
                             // Set the custom time picker intervals (30 minutes)
@@ -228,19 +215,19 @@ public class HomeFragment extends Fragment{
         currentUser.setKey(database.getCurrentUser().getUid());
         database.saveUserTimes(datetime,currentUser);
 
-        sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
+//        sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
     }
 
-    private void sendMessageToManager(String managerUserId, String message) {
-        // Code to send a message/notification to the manager
-        // This could involve using a messaging/notification service like Firebase Cloud Messaging
-        // Example:
-        Map<String, String> mapMessage = new HashMap<>();
-        mapMessage.put("message", message);
-
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
-                 .setMessageId(UUID.randomUUID().toString())
-                 .setData(mapMessage)
-                 .build());
-    }
+//    private void sendMessageToManager(String managerUserId, String message) {
+//        // Code to send a message/notification to the manager
+//        // This could involve using a messaging/notification service like Firebase Cloud Messaging
+//        // Example:
+//        Map<String, String> mapMessage = new HashMap<>();
+//        mapMessage.put("message", message);
+//
+//        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
+//                 .setMessageId(UUID.randomUUID().toString())
+//                 .setData(mapMessage)
+//                 .build());
+//    }
 }
