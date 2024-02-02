@@ -52,9 +52,7 @@ public class CustomTimePickerDialog extends TimePickerDialog {
         mIgnoreEvent = false;
     }
     private void enforceInitialTimeRange(int hourOfDay, int minute) {
-        // Enforce the initial time range from 11:00 to 18:00
         if (!isTimeBetween(hourOfDay, minute, START_HOUR, START_MINUTE, END_HOUR, END_MINUTE)) {
-            // If the selected time is outside the initial range, set it to the start time
             mIgnoreEvent = true;
             updateTime(START_HOUR, START_MINUTE);
             mIgnoreEvent = false;
