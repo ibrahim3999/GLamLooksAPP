@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
@@ -153,13 +154,12 @@ public class HomeFragment extends Fragment{
                         } else {
 
                             // Time picker dialog
-                            TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(
                                     requireContext(),
                                     R.style.CustomTimePicker,
                                     new TimePickerDialog.OnTimeSetListener() {
-
                                         @Override
-                                        public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
+                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                                             currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                             currentDate.set(Calendar.MINUTE, minute);
 
@@ -167,30 +167,18 @@ public class HomeFragment extends Fragment{
                                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                                     currentDate.get(Calendar.MINUTE));
 
+                                            showToast("True");
+                                            // Add queue -> database
+                                         //   addQueueToDB(serviceName, currentDate.getTimeInMillis());
 
-                                                /*
-                                                showToast("Service: " + serviceName + "\nDate: " +
-                                                        currentDate.get(Calendar.DAY_OF_MONTH) + "/" +
-                                                        (currentDate.get(Calendar.MONTH) + 1) + "/" +
-                                                        currentDate.get(Calendar.YEAR) + "\nTime: " +
-                                                        currentDate.get(Calendar.HOUR_OF_DAY) + ":" +
-                                                        currentDate.get(Calendar.MINUTE));
-                                            */
-
-
-                                                // Add queue -> database
-                                                addQueueToDB(serviceName, currentDate.getTimeInMillis());
-                                            }
-                                        
+                                        }
                                     },
                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                     currentDate.get(Calendar.MINUTE),
-                                    false
+                                    true
+
                             );
 
-                            // Set the custom time picker intervals (30 minutes)
-                            timePickerDialog.updateTime(11, 0);
-                            timePickerDialog.updateTime(17, 30);
 
                             // Show the time picker dialog
                             timePickerDialog.show();
@@ -212,7 +200,7 @@ public class HomeFragment extends Fragment{
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-
+    
     private void addQueueToDB(String serviceName, long timestamp) {
 
         Timestamp timestampDB = new Timestamp(timestamp / 1000, 0);
@@ -232,6 +220,8 @@ public class HomeFragment extends Fragment{
         sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
     }
 
+
+
     private void sendMessageToManager(String managerUserId, String message) {
         // Code to send a message/notification to the manager
         // This could involve using a messaging/notification service like Firebase Cloud Messaging
@@ -240,8 +230,8 @@ public class HomeFragment extends Fragment{
         mapMessage.put("message", message);
 
         FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
-                 .setMessageId(UUID.randomUUID().toString())
-                 .setData(mapMessage)
-                 .build());
+                .setMessageId(UUID.randomUUID().toString())
+                .setData(mapMessage)
+                .build());
     }
 }
