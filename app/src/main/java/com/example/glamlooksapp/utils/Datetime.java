@@ -2,6 +2,10 @@ package com.example.glamlooksapp.utils;
 
 import com.google.firebase.Timestamp;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Datetime {
 
     private String serviceName;
@@ -52,4 +56,10 @@ public class Datetime {
 
                 ;
     }
+    public String getFormattedTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        Date dateTime = timestamp.toDate();
+        return sdf.format(dateTime);
+    }
+
 }

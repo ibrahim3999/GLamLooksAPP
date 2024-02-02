@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,6 +55,10 @@ public class Database {
 
     private ArrayList<String> listKeysDates;
 
+    public ArrayList<Datetime> getList_dates() {
+        return list_dates;
+    }
+
     private ArrayList<Datetime> list_dates;
 
     public Database(){
@@ -93,11 +98,22 @@ public class Database {
                     }
                 });
     }
+    public void fetchUserDates(DatetimeCallback datetimeCallback) {
+        db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                list_dates.clear(); // Clear the list before updating
 
-
-
-
-
+                for (QueryDocumentSnapshot document : value) {
+                    Datetime datetime = document.toObject(Datetime.class);
+                    list_dates.add(datetime);
+                    String uid = datetime.getKey();
+                    listKeysDates.add(uid);
+                }
+                datetimeCallback.onDatetimeFetchComplete(list_dates);
+            }
+        });
+    }
 
     public void fetchUserDates() {
 

@@ -18,6 +18,7 @@ import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.example.glamlooksapp.callback.DatetimeCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,7 +38,7 @@ public class HomeFragment extends Fragment{
     private Database database;
     private boolean isTimeSelected = false; // Variable to track whether time is selected
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
-    List<String> AvailableTimerSlots = new ArrayList<>();
+    private  ArrayList<Datetime> datetimes ;
 
     public HomeFragment() {// Required empty public constructor
     }
@@ -48,8 +49,11 @@ public class HomeFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
+        datetimes = new ArrayList<Datetime>();
         findViews(view);
         initVars();
+        getDatetimesFromDB();
+        //ShowDates();
         return view;
     }
 
@@ -124,6 +128,7 @@ public class HomeFragment extends Fragment{
                 // Add any additional action you want
             }
         });
+
     }
 
     private void showDateTimePicker(final String serviceName) {
@@ -167,15 +172,16 @@ public class HomeFragment extends Fragment{
                                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                                     currentDate.get(Calendar.MINUTE));
 
-                                            showToast("True");
+                                           // showToast("True");
                                             // Add queue -> database
-                                         //   addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                            addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                          //  ShowDates();
 
                                         }
                                     },
                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                     currentDate.get(Calendar.MINUTE),
-                                    true
+                                    true,datetimes
 
                             );
 
@@ -196,11 +202,10 @@ public class HomeFragment extends Fragment{
         datePickerDialog.show();
     }
 
-
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-    
+
     private void addQueueToDB(String serviceName, long timestamp) {
 
         Timestamp timestampDB = new Timestamp(timestamp / 1000, 0);
@@ -221,6 +226,16 @@ public class HomeFragment extends Fragment{
     }
 
 
+    private void getDatetimesFromDB() {
+        // Assuming 'TSchedule' is the collection name
+        database.fetchUserDates(new DatetimeCallback() {
+            @Override
+            public void onDatetimeFetchComplete(ArrayList<Datetime> Update) {
+                datetimes = Update;
+
+            }
+        });
+    }
 
     private void sendMessageToManager(String managerUserId, String message) {
         // Code to send a message/notification to the manager
