@@ -35,6 +35,7 @@ public class ProductsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_products, container, false);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
         database = new Database();
@@ -61,7 +62,6 @@ public class ProductsFragment extends Fragment {
                 productAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     private void initViews() {

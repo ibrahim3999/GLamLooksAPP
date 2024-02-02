@@ -44,4 +44,12 @@ public class Datetime {
         return this.key;
     }
 
+    @Override
+    public String toString() {
+        return
+
+                 serviceName + " " + timestamp.toDate().toString()
+
+                ;
+    }
 }

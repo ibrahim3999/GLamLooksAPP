@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView forgotPassword;
     private Database database;
     private GoogleSignInClient client;
+    private ProgressBar login_PB_loading;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -69,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         login_BTN_signup = findViewById(R.id.signupRedirectText);
         forgotPassword = findViewById(R.id.forgotPassword);
         gmail_button = findViewById(R.id.login_gmail_btn);
+        login_PB_loading = findViewById(R.id.login_PB_loading);
     }
 
     private void initVars() {
@@ -78,7 +81,9 @@ public class LoginActivity extends AppCompatActivity {
         database.setAuthCallBack(new AuthCallBack() {
             @Override
             public void onLoginComplete(Task<AuthResult> task) {
+                login_PB_loading.setVisibility(View.INVISIBLE);
                 if (task.isSuccessful()) {
+
 
                     if (database.getCurrentUser() != null) {
                         // Fetch user data
@@ -104,9 +109,17 @@ public class LoginActivity extends AppCompatActivity {
 
         database.setUserCallBack(new UserCallBack() {
             @Override
-            public void onUserFetchDataComplete(User customer) {
-                if (customer!=null) {
-                    int type = customer.getAccount_type();
+            public void onUserFetchDataComplete(User user) {
+
+//                String uid = database.getCurrentUser().getUid();
+//                User newUser = new User(user);
+//                newUser.setKey(uid);
+//                newUser.setLastname("roban");
+//                database.updateUser(uid,newUser);
+
+
+                if (user!=null) {
+                    int type = user.getAccount_type();
                     if(type==0) {
                         Toast.makeText(LoginActivity.this,"Hello Customer",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
@@ -141,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String email = emailEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
+                login_PB_loading.setVisibility(View.VISIBLE);
 
                 if(email.isEmpty() ){
                     Toast.makeText(LoginActivity.this,"request email",Toast.LENGTH_SHORT).show();

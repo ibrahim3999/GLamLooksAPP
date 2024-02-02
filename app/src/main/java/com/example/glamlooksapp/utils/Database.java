@@ -1,6 +1,6 @@
 package com.example.glamlooksapp.utils;
 import android.net.Uri;
-
+import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -12,6 +12,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,7 +25,7 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
-
+import java.util.UUID;
 
 
 public class Database {
@@ -32,6 +34,7 @@ public class Database {
     public static final String USERS_TABLE = "Customers";
     public static final String Manager_TABLE = "Managers";
     public static final String TIMES_TABLE = "TSchedule";
+    public static final String USERS_PROFILE_IMAGES = "Users/";
 
     public static final String MANAGER_UID = "Zpa8hiasUAShwkSfwr0GxHXBb5q2";
 
@@ -57,9 +60,10 @@ public class Database {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
-        productList = new ArrayList<Product>();
-        customersWantedList = new ArrayList<User>();
+        productList = new ArrayList<Product>(1000);
+        customersWantedList = new ArrayList<User>(1000);
         list_dates = new ArrayList<Datetime>();
+        listKeysDates = new ArrayList<>();
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -69,7 +73,6 @@ public class Database {
     public void setUserCallBack(UserCallBack userCallBack){
         this.userCallBack = userCallBack;
     }
-
 
 
     public void setProductCallBack(ProductCallBack productCallBack){
@@ -92,26 +95,7 @@ public class Database {
     }
 
 
-    public void fetchProducts() {
-        db.collection(PRODUCTS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    // Handle the error
-                    return;
-                }
 
-                 productList = new ArrayList<>();
-
-                for (QueryDocumentSnapshot document : value) {
-                    Product product = document.toObject(Product.class);
-                    productList.add(product);
-                }
-
-                productCallBack.onFetchProductsComplete(productList);
-            }
-        });
-    }
 
 
 
@@ -121,7 +105,8 @@ public class Database {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                listKeysDates = new ArrayList<>();
+//                listKeysDates = new ArrayList<>();
+                assert value != null;
                 for (QueryDocumentSnapshot document : value) {
                     Datetime datetime = document.toObject(Datetime.class);
                     list_dates.add(datetime);
@@ -151,11 +136,11 @@ public class Database {
                             customer.setDateTime(list_dates.get(i++));
                             customersWantedList.add(customer);
                         }
-
                         customerCallBack.onFetchCustomerComplete(customersWantedList);
                     }
                 });
     }
+
 
 
 
@@ -165,17 +150,18 @@ public class Database {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(getCurrentUser() != null){
-
-                            userData.setKey(getCurrentUser().getUid());
+                            userData.setKeyI(getCurrentUser().getUid());
                             saveUserData(userData);
                         }else {
-                            authCallBack.onCreateAccountComplete(false, Objects.requireNonNull(task.getException()).getMessage());
+                            authCallBack.onCreateAccountComplete(false, task.getException().getMessage().toString());
                         }
                     }
                 });
     }
 
     public void saveUserTimes(Datetime dateTime, User customer){
+
+
         this.db.collection(TIMES_TABLE).document(customer.getKey()).set(dateTime)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -187,6 +173,9 @@ public class Database {
                     }
                 });
     }
+
+
+
 
     public void saveUserData(User user){
         this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
@@ -211,6 +200,15 @@ public class Database {
                 });
     }
 
+    public void updateUser(String uid,User user){
+        this.db.collection(USERS_TABLE).document(uid).set(user)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        userCallBack.onUpdateComplete(task);
+                    }
+                });
+    }
 
 
 
@@ -218,18 +216,50 @@ public class Database {
         db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                assert value != null;
-                User user = value.toObject(User.class);
-                if(user.getImagePath() != null){
-                    user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                if (value != null && value.exists()) {
+                    User user = value.toObject(User.class);
+                    if (user != null) {
+                        if(user.getImagePath() != null){
+                            user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                        }
+                        user.setKey(value.getId());
+                        userCallBack.onUserFetchDataComplete(user);
+                    } else {
+                        // User object is null, handle appropriately
+                        userCallBack.onUserFetchDataComplete(null);
+                    }
+                } else {
+                    // Document does not exist or there was an error, handle appropriately
+                    userCallBack.onUserFetchDataComplete(null);
                 }
-                user.setKey(value.getId());
-                userCallBack.onUserFetchDataComplete(user);
             }
         });
     }
 
 
+    public void fetchProducts() {
+        db.collection(PRODUCTS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    // Handle the error
+                    return;
+                }
+
+                productList = new ArrayList<>();
+
+                for (QueryDocumentSnapshot document : value) {
+                    Product product = document.toObject(Product.class);
+                    if(product.getImagePath() != null){
+                        product.setImageUrl(downloadImageUrl(product.getImagePath()));
+                    }
+                    productList.add(product);
+                }
+
+                productCallBack.onFetchProductsComplete(productList);
+            }
+        });
+    }
 
     public void uploadProduct(Product product){
         this.db.collection(PRODUCTS_TABLE).document().set(product)

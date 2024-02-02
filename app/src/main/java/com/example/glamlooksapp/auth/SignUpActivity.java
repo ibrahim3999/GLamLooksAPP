@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextView txtV_button_back;
     Button signupButton;
     ImageButton backButton;
+    private ProgressBar signup_PB_loading;
 
 
     private Database database;
@@ -44,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         signupButton = findViewById(R.id.signupButton);
         backButton = findViewById(R.id.customBackButton);
         phoneNumber = findViewById(R.id.editTextPhoneNumber);
+        signup_PB_loading = findViewById(R.id.signup_PB_loading);
     }
 
     private void initVars_SP(){
@@ -56,11 +59,10 @@ public class SignUpActivity extends AppCompatActivity {
 
             @Override
             public void onCreateAccountComplete(boolean status, String err) {
-//                signup_PB_loading.setVisibility(View.INVISIBLE);
+                signup_PB_loading.setVisibility(View.INVISIBLE);
                 if(status){
                     Toast.makeText(SignUpActivity.this, "Account created successfully", Toast.LENGTH_SHORT).show();
-                    database.logout();
-                    finish();
+
                 }else{
                     Toast.makeText(SignUpActivity.this, err, Toast.LENGTH_SHORT).show();
                 }
@@ -72,21 +74,20 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (!checkInput()){
                     Toast.makeText(SignUpActivity.this, "Error CheckInput", Toast.LENGTH_LONG).show();
-
                     return;
                 }
+                signup_PB_loading.setVisibility(View.VISIBLE);
 
                 Toast.makeText(SignUpActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                User customer = new User();
-                customer.setEmail(signupEmail.getText().toString());
-                customer.setFirstname(firstname.getText().toString());
-                customer.setLastname(lastname.getText().toString());
-                customer.setPhoneNumber(phoneNumber.getText().toString());
+                User user = new User();
+                user.setEmail(signupEmail.getText().toString());
+                user.setFirstname(firstname.getText().toString());
+                user.setLastname(lastname.getText().toString());
+                user.setPhoneNumber(phoneNumber.getText().toString());
                 String password = signupPassword.getText().toString().trim();
 
-
-                database.createAccount(customer.getEmail(), password, customer);
+                database.createAccount(user.getEmail(), password, user);
             }
         });
 

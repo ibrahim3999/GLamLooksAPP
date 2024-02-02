@@ -9,16 +9,9 @@ public class Product extends FirebaseKey{
     private String uid;
     private String imagePath;
     private String imageUrl;
-
     private double price;
 
-    public double getPrice() {
-        return price;
-    }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     public Product() {}
 
@@ -29,6 +22,14 @@ public class Product extends FirebaseKey{
         this.uid = uid;
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 

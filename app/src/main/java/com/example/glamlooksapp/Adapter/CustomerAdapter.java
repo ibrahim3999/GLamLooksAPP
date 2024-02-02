@@ -46,6 +46,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         String fullName = customer.getFirstname()+ " " + customer.getLastname();
         holder.textViewCustomerName.setText(fullName);
         holder.textViewPN.setText(String.valueOf(customer.getPhoneNumber()));
+        Datetime datetime = customer.getDateTime();
+        holder.textViewTime.setText(datetime.toString());
+
+
         holder.callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,9 +82,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     static class CustomerViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewCustomer;
         TextView textViewCustomerName;
-        TextView textViewPN;
-
-
+        TextView textViewPN,textViewTime;
         Button callBtn;
 
 
@@ -90,6 +92,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             textViewCustomerName = itemView.findViewById(R.id.textViewCustomerName);
             textViewPN = itemView.findViewById(R.id.textViewPN);
             callBtn = itemView.findViewById(R.id.callButton);
+            textViewTime = itemView.findViewById(R.id.textViewTime);
         }
     }
 }

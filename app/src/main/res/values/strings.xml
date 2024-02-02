@@ -46,4 +46,8 @@
     <string name="create_account">Create Account</string>
     <string name="phone_numberC">Phone Number</string>
     <string name="call">Call</string>
+    <string name="our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n">our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n</string>
+    <string name="about_us_n">about_us_n</string>
+    <string name="back_button">back_button</string>
+    <string name="sunday_9_00_to_12_00_n_13_00_to_18_00">sunday_9_00_to_12_00_n_13_00_to_18_00</string>
 </resources>

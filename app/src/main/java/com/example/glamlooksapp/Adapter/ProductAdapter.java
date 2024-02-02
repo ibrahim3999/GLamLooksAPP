@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         holder.textViewProductName.setText(product.getName());
         holder.textViewProductPrice.setText(String.valueOf(product.getPrice()));
+
 
         // You need to load the actual image using a library like Glide
         Glide.with(context)

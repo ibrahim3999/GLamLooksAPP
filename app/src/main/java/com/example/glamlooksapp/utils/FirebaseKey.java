@@ -9,6 +9,9 @@ public class FirebaseKey implements Serializable {
     protected String key;
 
     public FirebaseKey() {}
+    public  FirebaseKey(String key) {
+        this.key = key;
+    }
     public FirebaseKey setKey(String key) {
         this.key = key;
         return this;

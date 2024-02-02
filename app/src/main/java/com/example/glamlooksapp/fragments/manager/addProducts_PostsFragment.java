@@ -158,16 +158,20 @@ public class addProducts_PostsFragment extends Fragment {
         // Implement add product logic here
         String productName = editTextProductName.getText().toString();
         String productPrice = editTextProductPrice.getText().toString();
+        String uid = database.getCurrentUser().getUid();
         Random random = new Random();
         int randomNumber = 1_000_000 + random.nextInt(9_999_999);
         String ext = Generic.getFileExtension(activity, selectedImageUri);
-        String imagePath = "Products/"  + "_" + randomNumber + "." + ext;
+        String imagePath = "Products/"+uid+"_"+randomNumber+"."+ext;
+
         if (database.uploadImage(selectedImageUri, imagePath)) {
 
 
             Product product = new Product();
             product.setPrice(Double.parseDouble(productPrice));
             product.setName(productName);
+            product.setImagePath(imagePath);
+            product.setUid(String.valueOf(randomNumber));
 
             database.uploadProduct(product);
         }

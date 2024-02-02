@@ -19,6 +19,20 @@ public class User extends FirebaseKey implements Serializable {
 
     private Datetime datetime;
 
+//    private String key;
+
+    public User(User user) {
+        this.setKey(user.getKey());
+        this.setImagePath(user.getImagePath());
+        this.setEmail(user.getEmail());
+        this.setFirstname(user.getFirstname());
+        this.setLastname(user.getLastname());
+        this.setAccount_type(user.getAccount_type());
+        this.setDateTime(user.getDateTime());
+        this.setPassword(user.getPassword());
+        this.setPhoneNumber(user.getPhoneNumber());
+        this.setImageUrl(user.getImageUrl());
+    }
 
 
     public String getImagePath() {
@@ -80,7 +94,7 @@ public class User extends FirebaseKey implements Serializable {
     }
 
     public  void setAccount_type(int account_type){this.account_type = account_type;}
-    public User(String firstname, String email, String lastname, String password,String phoneNumber,Datetime datetime) {
+    public User(String firstname, String email, String lastname, String password,String phoneNumber,Datetime datetime,String key) {
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
@@ -88,9 +102,11 @@ public class User extends FirebaseKey implements Serializable {
         this.phoneNumber =phoneNumber;
         this.account_type = 1;
         this.datetime =datetime;
+        this.key = key;
     }
 
-    public User(String firstname, String email, String lastname, String password,String phoneNumber) {
+    public User(String firstname, String email, String lastname, String password,String phoneNumber,String key) {
+        this.key = key;
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
@@ -118,4 +134,11 @@ public class User extends FirebaseKey implements Serializable {
     public void setDateTime(Datetime datetime) {
         this.datetime = datetime;
     }
+
+    public String getKey(){return key;}
+
+    public void setKeyI(String key){this.key= key;}
+
+
+
 }

@@ -20,6 +20,7 @@ import com.example.glamlooksapp.utils.CustomerManager;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.ArrayList;
 
@@ -75,7 +76,7 @@ public class TimesFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onFetchCustomerComplete(ArrayList<User> customers) {
-                if (customers != null) {
+                if (!customers.isEmpty()) {
                     Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
 
                     customersList.clear();
@@ -105,9 +106,7 @@ public class TimesFragment extends Fragment {
         customerAdapter = new CustomerAdapter(getContext(), customersList);
         recyclerViewCustomers.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewCustomers.setAdapter(customerAdapter);
-
         // Fetch DateTimes from the database and update the list
-
         database.fetchUserDates();
     }
 }

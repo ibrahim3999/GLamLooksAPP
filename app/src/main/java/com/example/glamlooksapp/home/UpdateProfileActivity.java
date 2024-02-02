@@ -129,10 +129,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 if(selectedImageUri != null){
                     // save image
                     String ext = Generic.getFileExtension(UpdateProfileActivity.this, selectedImageUri);
-                    String path = "Users/" + uid + "." + ext;
-                    if(!db.uploadImage(selectedImageUri, path)){
-                        return;
-                    }
+                    String path = Database.USERS_PROFILE_IMAGES + uid + "." + ext;
+                    db.uploadImage(selectedImageUri, path);
+//                    if(!db.uploadImage(selectedImageUri, path)){
+//                        return;
+//                    }
                     user.setImagePath(path);
                 }
 
