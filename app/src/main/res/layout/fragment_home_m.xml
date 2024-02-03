@@ -60,20 +60,22 @@
     </LinearLayout>
 
     <!-- Purple box (half size) centered in the middle height of the screen -->
-    <View
-        android:id="@+id/boxView"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:background="@color/Lavender" />
+<!--    <View-->
+<!--        android:id="@+id/boxView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@color/Lavender" />-->
 
     <!-- Circular buttons for services inside the box -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/topLayout"
-        android:layout_marginTop="288dp"
-        android:fillViewport="true">
+        android:layout_marginTop="340dp"
+        android:fillViewport="true"
+        android:background="@color/Lavender"
+        >
 
         <LinearLayout
             android:id="@+id/servicesLayout"
@@ -172,25 +174,25 @@
     </ScrollView>
 
 
-    <TableLayout
-        android:id="@+id/dateTable"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/topLayout"
-        android:layout_marginTop="400dp">
+<!--    <TableLayout-->
+<!--        android:id="@+id/dateTable"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/topLayout"-->
+<!--        android:layout_marginTop="400dp">-->
 
-        <!-- Add headers or customize as needed -->
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textStyle="bold"
-                android:padding="8dp" />
-            <!-- Add more headers as needed -->
-        </TableRow>
+<!--        &lt;!&ndash; Add headers or customize as needed &ndash;&gt;-->
+<!--        <TableRow>-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Date"-->
+<!--                android:textStyle="bold"-->
+<!--                android:padding="8dp" />-->
+<!--            &lt;!&ndash; Add more headers as needed &ndash;&gt;-->
+<!--        </TableRow>-->
 
         <!-- This is where the dynamic rows will be added -->
-    </TableLayout>
+<!--    </TableLayout>-->
 
 </RelativeLayout>

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
@@ -18,7 +17,6 @@ import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.example.glamlooksapp.callback.DatetimeCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,15 +28,15 @@ import java.util.UUID;
 
 import com.example.glamlooksapp.utils.Datetime;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
+//import com.google.firebase.messaging.FirebaseMessaging;
+//import com.google.firebase.messaging.RemoteMessage;
 public class HomeFragment extends Fragment{
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
     private Database database;
     private boolean isTimeSelected = false; // Variable to track whether time is selected
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
-    private  ArrayList<Datetime> datetimes ;
+    List<String> AvailableTimerSlots = new ArrayList<>();
 
     public HomeFragment() {// Required empty public constructor
     }
@@ -49,11 +47,8 @@ public class HomeFragment extends Fragment{
 
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
-        datetimes = new ArrayList<Datetime>();
         findViews(view);
         initVars();
-        getDatetimesFromDB();
-        //ShowDates();
         return view;
     }
 
@@ -128,7 +123,6 @@ public class HomeFragment extends Fragment{
                 // Add any additional action you want
             }
         });
-
     }
 
     private void showDateTimePicker(final String serviceName) {
@@ -159,12 +153,13 @@ public class HomeFragment extends Fragment{
                         } else {
 
                             // Time picker dialog
-                            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(
+                            TimePickerDialog timePickerDialog = new TimePickerDialog(
                                     requireContext(),
                                     R.style.CustomTimePicker,
                                     new TimePickerDialog.OnTimeSetListener() {
+
                                         @Override
-                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
                                             currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                             currentDate.set(Calendar.MINUTE, minute);
 
@@ -172,19 +167,30 @@ public class HomeFragment extends Fragment{
                                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                                     currentDate.get(Calendar.MINUTE));
 
-                                           // showToast("True");
-                                            // Add queue -> database
-                                            addQueueToDB(serviceName, currentDate.getTimeInMillis());
-                                          //  ShowDates();
 
-                                        }
+                                                /*
+                                                showToast("Service: " + serviceName + "\nDate: " +
+                                                        currentDate.get(Calendar.DAY_OF_MONTH) + "/" +
+                                                        (currentDate.get(Calendar.MONTH) + 1) + "/" +
+                                                        currentDate.get(Calendar.YEAR) + "\nTime: " +
+                                                        currentDate.get(Calendar.HOUR_OF_DAY) + ":" +
+                                                        currentDate.get(Calendar.MINUTE));
+                                            */
+
+
+                                                // Add queue -> database
+                                                addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                            }
+                                        
                                     },
                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                     currentDate.get(Calendar.MINUTE),
-                                    true,datetimes
-
+                                    false
                             );
 
+                            // Set the custom time picker intervals (30 minutes)
+                            timePickerDialog.updateTime(11, 0);
+                            timePickerDialog.updateTime(17, 30);
 
                             // Show the time picker dialog
                             timePickerDialog.show();
@@ -201,6 +207,7 @@ public class HomeFragment extends Fragment{
         datePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
         datePickerDialog.show();
     }
+
 
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -222,31 +229,20 @@ public class HomeFragment extends Fragment{
 
         database.saveUserTimes(datetime,currentUser);
 
-        sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
+        //sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
     }
 
 
-    private void getDatetimesFromDB() {
-        // Assuming 'TSchedule' is the collection name
-        database.fetchUserDates(new DatetimeCallback() {
-            @Override
-            public void onDatetimeFetchComplete(ArrayList<Datetime> Update) {
-                datetimes = Update;
-
-            }
-        });
-    }
-
-    private void sendMessageToManager(String managerUserId, String message) {
-        // Code to send a message/notification to the manager
-        // This could involve using a messaging/notification service like Firebase Cloud Messaging
-        // Example:
-        Map<String, String> mapMessage = new HashMap<>();
-        mapMessage.put("message", message);
-
-        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
-                .setMessageId(UUID.randomUUID().toString())
-                .setData(mapMessage)
-                .build());
-    }
+//    private void sendMessageToManager(String managerUserId, String message) {
+//        // Code to send a message/notification to the manager
+//        // This could involve using a messaging/notification service like Firebase Cloud Messaging
+//        // Example:
+//        Map<String, String> mapMessage = new HashMap<>();
+//        mapMessage.put("message", message);
+//
+//        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
+//                 .setMessageId(UUID.randomUUID().toString())
+//                 .setData(mapMessage)
+//                 .build());
+//    }
 }
