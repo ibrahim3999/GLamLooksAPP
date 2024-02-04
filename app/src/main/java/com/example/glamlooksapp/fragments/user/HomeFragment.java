@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
@@ -68,7 +69,31 @@ public class HomeFragment extends Fragment{
             @Override
             public void onAddICustomerComplete(Task<Void> task) {
                 showToast("TimesUpdated!");
+                User currentUser = new User();
 
+                currentUser.setKey(database.getCurrentUser().getUid());
+                Log.d("AppointmentInfo", "Appointments:");
+                ArrayList<Datetime> haircut_appointments = database.fetchHaircutsAppointments(currentUser.getKey());
+//                for (Datetime appointment : haircut_appointments) {
+//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+//                            ", Key: " + appointment.getKey() +
+//                            ", ServiceName: " + appointment.getServiceName() +
+//                            ", Timestamp: " + appointment.getFormattedTime());
+//                }
+                ArrayList<Datetime> nails_appointments = database.fetchNailsAppointments(currentUser.getKey());
+//                for (Datetime appointment : nails_appointments) {
+//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+//                            ", Key: " + appointment.getKey() +
+//                            ", ServiceName: " + appointment.getServiceName() +
+//                            ", Timestamp: " + appointment.getFormattedTime());
+//                }
+                ArrayList<Datetime> laser_appointments = database.fetchLaserAppointments(currentUser.getKey());
+//                for (Datetime appointment : laser_appointments) {
+//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+//                            ", Key: " + appointment.getKey() +
+//                            ", ServiceName: " + appointment.getServiceName() +
+//                            ", Timestamp: " + appointment.getFormattedTime());
+//                }
 
             }
 
@@ -168,17 +193,6 @@ public class HomeFragment extends Fragment{
                                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                                     currentDate.get(Calendar.MINUTE));
 
-
-                                                /*
-                                                showToast("Service: " + serviceName + "\nDate: " +
-                                                        currentDate.get(Calendar.DAY_OF_MONTH) + "/" +
-                                                        (currentDate.get(Calendar.MONTH) + 1) + "/" +
-                                                        currentDate.get(Calendar.YEAR) + "\nTime: " +
-                                                        currentDate.get(Calendar.HOUR_OF_DAY) + ":" +
-                                                        currentDate.get(Calendar.MINUTE));
-                                            */
-
-
                                                 // Add queue -> database
                                                 addQueueToDB(serviceName, currentDate.getTimeInMillis());
                                             }
@@ -235,16 +249,4 @@ public class HomeFragment extends Fragment{
     }
 
 
-//    private void sendMessageToManager(String managerUserId, String message) {
-//        // Code to send a message/notification to the manager
-//        // This could involve using a messaging/notification service like Firebase Cloud Messaging
-//        // Example:
-//        Map<String, String> mapMessage = new HashMap<>();
-//        mapMessage.put("message", message);
-//
-//        FirebaseMessaging.getInstance().send(new RemoteMessage.Builder(managerUserId)
-//                 .setMessageId(UUID.randomUUID().toString())
-//                 .setData(mapMessage)
-//                 .build());
-//    }
 }

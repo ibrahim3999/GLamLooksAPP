@@ -1,6 +1,7 @@
 package com.example.glamlooksapp.utils;
 import android.net.Uri;
-import java.util.UUID;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -10,11 +11,11 @@ import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,10 +24,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 
 
 public class Database {
@@ -339,6 +342,116 @@ public class Database {
         return task.isSuccessful();
     }
 
+    public ArrayList<Datetime> fetchHaircutsAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference hairCutCollection = db.collection("TSchedule_haircut");
+        hairCutCollection.whereEqualTo("key", userId).get()
+                .addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // Retrieve data from document
+                                String formattedTime = document.getString("formattedTime");
+                                String key = document.getString("key");
+                                String serviceName = document.getString("serviceName");
+                                Timestamp timestamp = document.getTimestamp("timestamp");
 
+                                // Create an Appointment object
+                                Datetime appointment = new Datetime(serviceName, timestamp, key);
+                                appointmentsList.add(appointment);
+                            }
 
+                            // Now, appointmentsList contains all the appointments for the user
+                            // Do whatever you want with this list (e.g., display, process, etc.)
+                            for (Datetime appointment : appointmentsList) {
+                                Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                        ", Key: " + appointment.getKey() +
+                                        ", ServiceName: " + appointment.getServiceName() +
+                                        ", Timestamp: " + appointment.getFormattedTime());
+                            }
+
+                        } else {
+                            Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return appointmentsList;
+    }
+
+    public ArrayList<Datetime> fetchNailsAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference hairCutCollection = db.collection("TSchedule_nails");
+        hairCutCollection.whereEqualTo("key", userId).get()
+                .addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // Retrieve data from document
+                                String formattedTime = document.getString("formattedTime");
+                                String key = document.getString("key");
+                                String serviceName = document.getString("serviceName");
+                                Timestamp timestamp = document.getTimestamp("timestamp");
+
+                                // Create an Appointment object
+                                Datetime appointment = new Datetime(serviceName, timestamp, key);
+                                appointmentsList.add(appointment);
+                            }
+
+                            // Now, appointmentsList contains all the appointments for the user
+                            // Do whatever you want with this list (e.g., display, process, etc.)
+                            for (Datetime appointment : appointmentsList) {
+                                Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                        ", Key: " + appointment.getKey() +
+                                        ", ServiceName: " + appointment.getServiceName() +
+                                        ", Timestamp: " + appointment.getFormattedTime());
+                            }
+
+                        } else {
+                            Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return appointmentsList;
+    }
+
+    public ArrayList<Datetime> fetchLaserAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference hairCutCollection = db.collection("TSchedule_laser");
+        hairCutCollection.whereEqualTo("key", userId).get()
+                .addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // Retrieve data from document
+                                String formattedTime = document.getString("formattedTime");
+                                String key = document.getString("key");
+                                String serviceName = document.getString("serviceName");
+                                Timestamp timestamp = document.getTimestamp("timestamp");
+
+                                // Create an Appointment object
+                                Datetime appointment = new Datetime(serviceName, timestamp, key);
+                                appointmentsList.add(appointment);
+                            }
+
+                            // Now, appointmentsList contains all the appointments for the user
+                            // Do whatever you want with this list (e.g., display, process, etc.)
+                            for (Datetime appointment : appointmentsList) {
+                                Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                        ", Key: " + appointment.getKey() +
+                                        ", ServiceName: " + appointment.getServiceName() +
+                                        ", Timestamp: " + appointment.getFormattedTime());
+                            }
+
+                        } else {
+                            Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        return appointmentsList;
+    }
 }
+
+
