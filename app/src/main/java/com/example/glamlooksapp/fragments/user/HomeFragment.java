@@ -56,7 +56,6 @@ public class HomeFragment extends Fragment{
         findViews(view);
         initVars();
         getDatetimesFromDB();
-        //ShowDates();
         return view;
     }
 
@@ -79,9 +78,7 @@ public class HomeFragment extends Fragment{
 
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes){
-                if(datetimes.size()==0){
-                    showToast("Null list dates2");
-                }
+
                 appointmentsText.setText("");
 
                 for (Datetime appointment : datetimes) {
