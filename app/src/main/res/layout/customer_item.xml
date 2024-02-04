@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/products_item.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@drawable/customer_border"
+    >
+    <!-- Remove Button -->
+    <ImageButton
+        android:id="@+id/removeButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="removeOrder"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/baseline_delete_forever_24"
+        android:background="?android:selectableItemBackground"
+        android:padding="8dp" />
+
+    <ImageView
+        android:id="@+id/imageViewCustomer"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/upload" />
+
+    <TextView
+        android:id="@+id/textViewCustomerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/imageViewCustomer"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewPN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewCustomerName"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/imageViewCustomer"
+        android:layout_marginTop="4dp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPN"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/imageViewCustomer"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="36dp"
+        android:textSize="16sp" />
+
+
+    <Button
+        android:id="@+id/callButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="@color/Lavender"
+        android:layout_below="@id/textViewCustomerName"
+        android:onClick="onClick"
+        android:text="@string/call"
+        android:textSize="18sp"
+        app:cornerRadius="20dp"
+        app:toggleCheckedStateOnClick="false" />
+
+</RelativeLayout>

@@ -1,0 +1,42 @@
+<resources>
+
+    <style name="CalendarDateText">
+        <item name="android:textSize">16sp</item>
+        <!-- Add more styling attributes as needed -->
+    </style>
+
+    <style name="CalendarHeaderText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/holo_blue_dark</item>
+        <!-- Add more styling attributes as needed -->
+    </style>
+
+    <style name="CalendarWeekDayText">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <!-- Add more styling attributes as needed -->
+    </style>
+
+    <style name="CustomDateTextAppearance">
+        <!-- Customize the appearance of the date text -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Add more customizations if needed -->
+    </style>
+    <style name="CustomTimePickerDialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:timePickerDialogTheme">@style/CustomTimePicker</item>
+    </style>
+
+    <style name="CustomTimePicker">
+        <item name="android:headerBackground">@color/white</item>
+        <item name="android:timePickerStyle">@style/CustomTimePickerStyle</item>
+    </style>
+
+    <style name="CustomTimePickerStyle">
+        <item name="android:headerTimeTextAppearance">@style/CustomTimePickerHeaderTextAppearance</item>
+    </style>
+
+    <style name="CustomTimePickerHeaderTextAppearance" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>

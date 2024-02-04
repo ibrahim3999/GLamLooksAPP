@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.user.AboutUFragment"
+    tools:ignore="ExtraText">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="@string/back_button"
+        android:src="@drawable/ic_custom_back_arrow" />
+
+    <TextView
+        android:id="@+id/aboutUsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_us_n"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n"
+        android:textSize="20sp"
+        android:layout_below="@id/aboutUsText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+
+    <TextView
+        android:id="@+id/openingHoursSunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sunday_9_00_to_12_00_n_13_00_to_18_00"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursMonday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/monday_9_00_to_11_00_n_13_00_to_18_00"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursSunday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursTuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tuesday_closed"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursMonday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursWednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wednesday_9_00_to_12_00_n_13_00_to_18_00"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursTuesday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursThursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/thursday_9_00_to_12_00_n_13_00_to_18_00"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursWednesday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursFriday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/friday_9_00_to_12_00"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursThursday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/openingHoursSaturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/saturday_closed_n_n_n"
+        android:textSize="15sp"
+        android:layout_below="@id/openingHoursFriday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/phoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_0123456789"
+        android:textSize="17sp"
+        android:layout_below="@id/openingHoursSaturday"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/AddressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/our_address_1234_main_street_n_anytown_ca_12345_usa"
+        android:textSize="17sp"
+        android:layout_below="@id/phoneText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <TextView
+        android:id="@+id/TalkToUs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/talk_to_us_via_whatsapp"
+        android:textSize="17sp"
+        android:layout_below="@id/AddressText"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/Lavender"/>
+
+    <Button
+        android:id="@+id/WhatsappButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="@string/whatsapp"
+        android:textSize="11sp"
+        android:layout_below="@id/TalkToUs"
+        android:layout_centerHorizontal="true"
+        android:onClick="openWhatsApp"/>
+
+    />
+
+</RelativeLayout>
+

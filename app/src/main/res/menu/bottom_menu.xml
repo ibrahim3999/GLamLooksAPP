@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:title="@string/navigation_home"
+        android:icon="@drawable/nav_home"/>
+    <item
+        android:id="@+id/addPhotos"
+        android:title="@string/products"
+        android:tooltipText="Products"
+        android:enabled="true"
+        android:icon="@drawable/addbox"
+        />
+
+
+    <item
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        android:enabled="true"
+        android:icon="@drawable/baseline_person_pin_24"
+        />
+
+</menu>
