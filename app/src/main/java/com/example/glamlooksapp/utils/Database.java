@@ -35,6 +35,9 @@ public class Database {
     public static final String USERS_TABLE = "Customers";
     public static final String Manager_TABLE = "Managers";
     public static final String TIMES_TABLE = "TSchedule";
+    public static final String TIMES_TABLE_HAIRCUT = "TSchedule_haircut";
+    public static final String TIMES_TABLE_NAILS = "TSchedule_nails";
+    public static final String TIMES_TABLE_LASER = "TSchedule_laser";
     public static final String USERS_PROFILE_IMAGES = "Users/";
 
     public static final String MANAGER_UID = "Zpa8hiasUAShwkSfwr0GxHXBb5q2";
@@ -175,22 +178,47 @@ public class Database {
                 });
     }
 
-    public void saveUserTimes(Datetime dateTime, User customer){
+//    public void saveUserTimes(Datetime dateTime, User customer) {
+//        // Generate a new unique document ID
+//        String newDocumentId = db.collection(TIMES_TABLE).document().getId();
+//
+//        // Save the new queue with the unique document ID
+//        db.collection(TIMES_TABLE).document(newDocumentId).set(dateTime)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            customerCallBack.onAddICustomerComplete(task);
+//                        } else {
+//                            customerCallBack.onAddICustomerComplete(task);
+//                        }
+//                    }
+//                });
+//    }
 
+    public void saveUserTimes(Datetime dateTime, User customer, String serviceName) {
+        String timesTable;
+        if (serviceName.equals("Haircut") || serviceName.equals("Hair color") || serviceName.equals("Shaving")) {
+            timesTable = TIMES_TABLE_HAIRCUT;
+        } else if (serviceName.equals("Nails")) {
+            timesTable = TIMES_TABLE_NAILS;
+        } else if (serviceName.equals("Laser")) {
+            timesTable = TIMES_TABLE_LASER;
+        } else {
+            // Handle unexpected service name
+            return;
+        }
 
-        this.db.collection(TIMES_TABLE).document(customer.getKey()).set(dateTime)
+        String newDocumentId = db.collection(timesTable).document().getId();
+        db.collection(timesTable).document(newDocumentId).set(dateTime)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                            customerCallBack.onAddICustomerComplete(task);
-                        else
-                            customerCallBack.onAddICustomerComplete(task);
+                        // Consider handling success and failure differently
+                        customerCallBack.onAddICustomerComplete(task);
                     }
                 });
     }
-
-
 
 
     public void saveUserData(User user){

@@ -69,6 +69,7 @@
 
     <!-- Circular buttons for services inside the box -->
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/topLayout"
@@ -174,12 +175,14 @@
     </ScrollView>
 
 
+
+
 <!--    <TableLayout-->
 <!--        android:id="@+id/dateTable"-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="wrap_content"-->
 <!--        android:layout_below="@id/topLayout"-->
-<!--        android:layout_marginTop="400dp">-->
+<!--        android:layout_marginTop="410dp">-->
 
 <!--        &lt;!&ndash; Add headers or customize as needed &ndash;&gt;-->
 <!--        <TableRow>-->
@@ -188,11 +191,26 @@
 <!--                android:layout_height="wrap_content"-->
 <!--                android:text="Date"-->
 <!--                android:textStyle="bold"-->
+<!--                android:textSize="20sp"-->
 <!--                android:padding="8dp" />-->
 <!--            &lt;!&ndash; Add more headers as needed &ndash;&gt;-->
 <!--        </TableRow>-->
 
-        <!-- This is where the dynamic rows will be added -->
+<!--        <TableRow>-->
+<!--            <TextView-->
+<!--                android:id="@+id/upcomingAppointmentsTextView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="hii"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="20sp"-->
+<!--                android:padding="8dp" />-->
+<!--            &lt;!&ndash; Add more headers as needed &ndash;&gt;-->
+<!--        </TableRow>-->
+
+
+
+
 <!--    </TableLayout>-->
 
 </RelativeLayout>
