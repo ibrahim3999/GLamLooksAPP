@@ -60,4 +60,5 @@
     <string name="our_address_1234_main_street_n_anytown_ca_12345_usa">Our Address: 1234 main street \n anytown ca 12345 usa</string>
     <string name="talk_to_us_via_whatsapp">Talk to us via Whatsapp!</string>
     <string name="whatsapp">Whatsapp</string>
+    <string name="your_upcoming_appointments_n">Your Upcoming Appointments: \n</string>
 </resources>

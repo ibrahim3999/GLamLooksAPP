@@ -5,11 +5,13 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
@@ -17,6 +19,7 @@ import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 
@@ -35,6 +38,7 @@ import com.google.firebase.firestore.DocumentReference;
 public class HomeFragment extends Fragment{
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
+    TextView appointmentsText;
     private Database database;
     private boolean isTimeSelected = false; // Variable to track whether time is selected
     private List<String> selectedTimeSlots = new ArrayList<>(); // List to store selected time slots
@@ -55,7 +59,7 @@ public class HomeFragment extends Fragment{
     }
 
     private void findViews(View view) {
-
+        appointmentsText = view.findViewById(R.id.upcomingAppointments);
         hair_cut = view.findViewById(R.id.haircut);
         hair_color = view.findViewById(R.id.haircolor);
         laser = view.findViewById(R.id.laser);
@@ -73,27 +77,60 @@ public class HomeFragment extends Fragment{
 
                 currentUser.setKey(database.getCurrentUser().getUid());
                 Log.d("AppointmentInfo", "Appointments:");
-                ArrayList<Datetime> haircut_appointments = database.fetchHaircutsAppointments(currentUser.getKey());
-//                for (Datetime appointment : haircut_appointments) {
-//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
-//                            ", Key: " + appointment.getKey() +
-//                            ", ServiceName: " + appointment.getServiceName() +
-//                            ", Timestamp: " + appointment.getFormattedTime());
-//                }
-                ArrayList<Datetime> nails_appointments = database.fetchNailsAppointments(currentUser.getKey());
-//                for (Datetime appointment : nails_appointments) {
-//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
-//                            ", Key: " + appointment.getKey() +
-//                            ", ServiceName: " + appointment.getServiceName() +
-//                            ", Timestamp: " + appointment.getFormattedTime());
-//                }
-                ArrayList<Datetime> laser_appointments = database.fetchLaserAppointments(currentUser.getKey());
-//                for (Datetime appointment : laser_appointments) {
-//                    Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
-//                            ", Key: " + appointment.getKey() +
-//                            ", ServiceName: " + appointment.getServiceName() +
-//                            ", Timestamp: " + appointment.getFormattedTime());
-//                }
+                //ArrayList<Datetime> haircut_appointments = database.fetchHaircutsAppointments(currentUser.getKey());
+
+                database.fetchHaircutsAppointments(currentUser.getKey())
+                        .addOnCompleteListener(new OnCompleteListener<ArrayList<Datetime>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ArrayList<Datetime>> task) {
+                                if (task.isSuccessful()) {
+                                    ArrayList<Datetime> haircut_appointments = task.getResult();
+                                    for (Datetime appointment : haircut_appointments) {
+                                        appointmentsText.append(" " + appointment.getServiceName() + ": " + appointment.getFormattedDate() + " " + appointment.getFormattedTime() + "\n");
+                                    }
+                                    // Handle the appointmentsList here
+                                } else {
+                                    // Handle the error
+                                    Exception exception = task.getException();
+                                    Log.e("FetchAppointments", "Error: " + exception.getMessage());
+                                }
+                            }
+                        });
+
+                database.fetchNailsAppointments(currentUser.getKey())
+                        .addOnCompleteListener(new OnCompleteListener<ArrayList<Datetime>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ArrayList<Datetime>> task) {
+                                if (task.isSuccessful()) {
+                                    ArrayList<Datetime> nails_appointments = task.getResult();
+                                    for (Datetime appointment : nails_appointments) {
+                                        appointmentsText.append(" " + appointment.getServiceName() + ": " + appointment.getFormattedDate() + " " + appointment.getFormattedTime() + "\n");
+                                    }
+                                    // Handle the appointmentsList here
+                                } else {
+                                    // Handle the error
+                                    Exception exception = task.getException();
+                                    Log.e("FetchAppointments", "Error: " + exception.getMessage());
+                                }
+                            }
+                        });
+
+                database.fetchLaserAppointments(currentUser.getKey())
+                        .addOnCompleteListener(new OnCompleteListener<ArrayList<Datetime>>() {
+                            @Override
+                            public void onComplete(@NonNull Task<ArrayList<Datetime>> task) {
+                                if (task.isSuccessful()) {
+                                    ArrayList<Datetime> laser_appointments = task.getResult();
+                                    for (Datetime appointment : laser_appointments) {
+                                        appointmentsText.append(" " + appointment.getServiceName() + ": " + appointment.getFormattedDate() + " " + appointment.getFormattedTime() + "\n");
+                                    }
+                                } else {
+                                    // Handle the error
+                                    Exception exception = task.getException();
+                                    Log.e("FetchAppointments", "Error: " + exception.getMessage());
+                                }
+                            }
+                        });
 
             }
 

@@ -62,4 +62,10 @@ public class Datetime {
         return sdf.format(dateTime);
     }
 
+    public String getFormattedDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date dateTime = timestamp.toDate();
+        return sdf.format(dateTime);
+    }
+
 }
