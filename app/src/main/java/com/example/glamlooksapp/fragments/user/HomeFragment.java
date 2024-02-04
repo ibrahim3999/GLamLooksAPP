@@ -168,21 +168,25 @@ public class HomeFragment extends Fragment{
                                             currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                             currentDate.set(Calendar.MINUTE, minute);
 
-                                            String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
-                                                    currentDate.get(Calendar.HOUR_OF_DAY),
-                                                    currentDate.get(Calendar.MINUTE));
+                                            if (isUnavailableTime(hourOfDay, minute)) {
+                                                // Handle the case when the chosen time is unavailable
+                                                showToast("Selected time is unavailable. Please choose another time.");
+                                            } else {
+                                                // The chosen time is available, proceed with your logic
+                                                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
+                                                        currentDate.get(Calendar.HOUR_OF_DAY),
+                                                        currentDate.get(Calendar.MINUTE));
 
-                                           // showToast("True");
-                                            // Add queue -> database
-                                            addQueueToDB(serviceName, currentDate.getTimeInMillis());
-                                          //  ShowDates();
-
+                                                // Add queue -> database
+                                                addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                                // ShowDates();
+                                            }
                                         }
                                     },
                                     currentDate.get(Calendar.HOUR_OF_DAY),
                                     currentDate.get(Calendar.MINUTE),
-                                    true,datetimes
-
+                                    true,
+                                    datetimes
                             );
 
 
@@ -235,6 +239,14 @@ public class HomeFragment extends Fragment{
 
             }
         });
+    }
+    private boolean isUnavailableTime(int hour, int minute) {
+        for (Datetime notAvailableTime : datetimes) {
+            if (notAvailableTime.getTimestamp().toDate().getHours() == hour && notAvailableTime.getTimestamp().toDate().getMinutes()== minute) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void sendMessageToManager(String managerUserId, String message) {

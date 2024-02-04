@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import androidx.collection.CircularArray;
@@ -37,11 +38,18 @@ public class CustomTimePickerDialog extends TimePickerDialog {
     private static final int START_MINUTE = 0;
     private static final int END_HOUR = 18;
     private static final int END_MINUTE = 0;
+    private   int CUR_HOUR;
+    private    int CUR_Minute;
 
     public CustomTimePickerDialog(Context context, int themeResId, OnTimeSetListener listener, int hourOfDay, int minute, boolean is24HourView ,List<Datetime> notAvailableTimes) {
         super(context, themeResId, listener, hourOfDay, minute, is24HourView);
         this.notAvailableTimes=notAvailableTimes;
+        this.CUR_HOUR =hourOfDay;
+        this.CUR_Minute = minute;
+
         updateTimeInterval(hourOfDay, minute);
+        enforceInitialTimeRange(hourOfDay, minute);
+
     }
 
     private void updateTimeInterval(int hourOfDay, int minute) {
@@ -58,17 +66,20 @@ public class CustomTimePickerDialog extends TimePickerDialog {
             mIgnoreEvent = false;
         }
     }
-
+ 
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
         if (!mIgnoreEvent) {
             updateTimeInterval(hourOfDay, minute);
             enforceInitialTimeRange(hourOfDay, minute);
+            // remove not aviable time
+            // removeUnavailableTimes();
         }
+
     }
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
-
         super.onClick(dialog, which);
     }
 
@@ -83,5 +94,16 @@ public class CustomTimePickerDialog extends TimePickerDialog {
         return true;
     }
 
+    private boolean isUnavailableTime(int hour, int minute) {
+        for (Datetime notAvailableTime : notAvailableTimes) {
+            if (notAvailableTime.getTimestamp().toDate().getHours() == hour && notAvailableTime.getTimestamp().toDate().getMinutes()== minute) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private Date calendarToDate(Calendar calendar) {
+        return calendar.getTime();
+    }
 
 }
