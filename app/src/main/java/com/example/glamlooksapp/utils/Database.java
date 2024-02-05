@@ -1,6 +1,7 @@
 package com.example.glamlooksapp.utils;
 import android.net.Uri;
-import java.util.UUID;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -8,13 +9,14 @@ import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,10 +25,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
-import java.util.UUID;
 
 
 public class Database {
@@ -35,6 +39,9 @@ public class Database {
     public static final String USERS_TABLE = "Customers";
     public static final String Manager_TABLE = "Managers";
     public static final String TIMES_TABLE = "TSchedule";
+    public static final String TIMES_TABLE_HAIRCUT = "TSchedule_haircut";
+    public static final String TIMES_TABLE_NAILS = "TSchedule_nails";
+    public static final String TIMES_TABLE_LASER = "TSchedule_laser";
     public static final String USERS_PROFILE_IMAGES = "Users/";
 
     public static final String MANAGER_UID = "Zpa8hiasUAShwkSfwr0GxHXBb5q2";
@@ -175,22 +182,47 @@ public class Database {
                 });
     }
 
-    public void saveUserTimes(Datetime dateTime, User customer){
+//    public void saveUserTimes(Datetime dateTime, User customer) {
+//        // Generate a new unique document ID
+//        String newDocumentId = db.collection(TIMES_TABLE).document().getId();
+//
+//        // Save the new queue with the unique document ID
+//        db.collection(TIMES_TABLE).document(newDocumentId).set(dateTime)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if (task.isSuccessful()) {
+//                            customerCallBack.onAddICustomerComplete(task);
+//                        } else {
+//                            customerCallBack.onAddICustomerComplete(task);
+//                        }
+//                    }
+//                });
+//    }
 
+    public void saveUserTimes(Datetime dateTime, User customer, String serviceName) {
+        String timesTable;
+        if (serviceName.equals("Haircut") || serviceName.equals("Hair color") || serviceName.equals("Shaving")) {
+            timesTable = TIMES_TABLE_HAIRCUT;
+        } else if (serviceName.equals("Nails")) {
+            timesTable = TIMES_TABLE_NAILS;
+        } else if (serviceName.equals("Laser")) {
+            timesTable = TIMES_TABLE_LASER;
+        } else {
+            // Handle unexpected service name
+            return;
+        }
 
-        this.db.collection(TIMES_TABLE).document(customer.getKey()).set(dateTime)
+        String newDocumentId = db.collection(timesTable).document().getId();
+        db.collection(timesTable).document(newDocumentId).set(dateTime)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                            customerCallBack.onAddICustomerComplete(task);
-                        else
-                            customerCallBack.onAddICustomerComplete(task);
+                        // Consider handling success and failure differently
+                        customerCallBack.onAddICustomerComplete(task);
                     }
                 });
     }
-
-
 
 
     public void saveUserData(User user){
@@ -312,5 +344,205 @@ public class Database {
     }
 
 
+    public Task<ArrayList<Datetime>> fetchHaircutsAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference hairCutCollection = db.collection("TSchedule_haircut");
 
+        // Use Task to handle the asynchronous operation
+        Task<QuerySnapshot> querySnapshotTask = hairCutCollection.whereEqualTo("key", userId).get();
+
+        return querySnapshotTask.continueWith(new Continuation<QuerySnapshot, ArrayList<Datetime>>() {
+            @Override
+            public ArrayList<Datetime> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        // Retrieve data from document
+                        String formattedTime = document.getString("formattedTime");
+                        String key = document.getString("key");
+                        String serviceName = document.getString("serviceName");
+                        Timestamp timestamp = document.getTimestamp("timestamp");
+
+                        // Create an Appointment object
+                        Datetime appointment = new Datetime(serviceName, timestamp, key);
+                        appointmentsList.add(appointment);
+                    }
+
+                    // Log appointments for debugging
+                    for (Datetime appointment : appointmentsList) {
+                        Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                ", Key: " + appointment.getKey() +
+                                ", ServiceName: " + appointment.getServiceName() +
+                                ", Timestamp: " + appointment.getFormattedTime());
+                    }
+
+                    // Return the populated list
+                    return appointmentsList;
+                } else {
+                    Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                }
+                return null;
+            }
+        });
+    }
+
+
+//    public ArrayList<Datetime> fetchNailsAppointments(String userId) {
+//        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+//        CollectionReference hairCutCollection = db.collection("TSchedule_nails");
+//        hairCutCollection.whereEqualTo("key", userId).get()
+//                .addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (DocumentSnapshot document : task.getResult()) {
+//                                // Retrieve data from document
+//                                String formattedTime = document.getString("formattedTime");
+//                                String key = document.getString("key");
+//                                String serviceName = document.getString("serviceName");
+//                                Timestamp timestamp = document.getTimestamp("timestamp");
+//
+//                                // Create an Appointment object
+//                                Datetime appointment = new Datetime(serviceName, timestamp, key);
+//                                appointmentsList.add(appointment);
+//                            }
+//
+//                            // Now, appointmentsList contains all the appointments for the user
+//                            // Do whatever you want with this list (e.g., display, process, etc.)
+//                            for (Datetime appointment : appointmentsList) {
+//                                Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+//                                        ", Key: " + appointment.getKey() +
+//                                        ", ServiceName: " + appointment.getServiceName() +
+//                                        ", Timestamp: " + appointment.getFormattedTime());
+//                            }
+//
+//                        } else {
+//                            Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//        return appointmentsList;
+//    }
+
+    public Task<ArrayList<Datetime>> fetchNailsAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference nailsCollection = db.collection("TSchedule_nails");
+
+        // Use Task to handle the asynchronous operation
+        Task<QuerySnapshot> querySnapshotTask = nailsCollection.whereEqualTo("key", userId).get();
+
+        return querySnapshotTask.continueWith(new Continuation<QuerySnapshot, ArrayList<Datetime>>() {
+            @Override
+            public ArrayList<Datetime> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        // Retrieve data from document
+                        String formattedTime = document.getString("formattedTime");
+                        String key = document.getString("key");
+                        String serviceName = document.getString("serviceName");
+                        Timestamp timestamp = document.getTimestamp("timestamp");
+
+                        // Create an Appointment object
+                        Datetime appointment = new Datetime(serviceName, timestamp, key);
+                        appointmentsList.add(appointment);
+                    }
+
+                    // Log appointments for debugging
+                    for (Datetime appointment : appointmentsList) {
+                        Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                ", Key: " + appointment.getKey() +
+                                ", ServiceName: " + appointment.getServiceName() +
+                                ", Timestamp: " + appointment.getFormattedTime());
+                    }
+
+                    // Return the populated list
+                    return appointmentsList;
+                } else {
+                    Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                }
+                return null;
+            }
+        });
+    }
+
+
+    public Task<ArrayList<Datetime>> fetchLaserAppointments(String userId) {
+        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+        CollectionReference laserCollection = db.collection("TSchedule_laser");
+
+        // Use Task to handle the asynchronous operation
+        Task<QuerySnapshot> querySnapshotTask = laserCollection.whereEqualTo("key", userId).get();
+
+        return querySnapshotTask.continueWith(new Continuation<QuerySnapshot, ArrayList<Datetime>>() {
+            @Override
+            public ArrayList<Datetime> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        // Retrieve data from document
+                        String formattedTime = document.getString("formattedTime");
+                        String key = document.getString("key");
+                        String serviceName = document.getString("serviceName");
+                        Timestamp timestamp = document.getTimestamp("timestamp");
+
+                        // Create an Appointment object
+                        Datetime appointment = new Datetime(serviceName, timestamp, key);
+                        appointmentsList.add(appointment);
+                    }
+
+                    // Log appointments for debugging
+                    for (Datetime appointment : appointmentsList) {
+                        Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+                                ", Key: " + appointment.getKey() +
+                                ", ServiceName: " + appointment.getServiceName() +
+                                ", Timestamp: " + appointment.getFormattedTime());
+                    }
+
+                    // Return the populated list
+                    return appointmentsList;
+                } else {
+                    Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+                }
+                return null;
+            }
+        });
+    }
+
+
+//    public ArrayList<Datetime> fetchLaserAppointments(String userId) {
+//        ArrayList<Datetime> appointmentsList = new ArrayList<>();
+//        CollectionReference hairCutCollection = db.collection("TSchedule_laser");
+//        hairCutCollection.whereEqualTo("key", userId).get()
+//                .addOnCompleteListener(new OnCompleteListener<com.google.firebase.firestore.QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<com.google.firebase.firestore.QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (DocumentSnapshot document : task.getResult()) {
+//                                // Retrieve data from document
+//                                String formattedTime = document.getString("formattedTime");
+//                                String key = document.getString("key");
+//                                String serviceName = document.getString("serviceName");
+//                                Timestamp timestamp = document.getTimestamp("timestamp");
+//
+//                                // Create an Appointment object
+//                                Datetime appointment = new Datetime(serviceName, timestamp, key);
+//                                appointmentsList.add(appointment);
+//                            }
+//
+//                            // Now, appointmentsList contains all the appointments for the user
+//                            // Do whatever you want with this list (e.g., display, process, etc.)
+//                            for (Datetime appointment : appointmentsList) {
+//                                Log.d("AppointmentInfo", "FormattedTime: " + appointment.getFormattedTime() +
+//                                        ", Key: " + appointment.getKey() +
+//                                        ", ServiceName: " + appointment.getServiceName() +
+//                                        ", Timestamp: " + appointment.getFormattedDate() + " " + appointment.getFormattedTime());
+//                            }
+//
+//                        } else {
+//                            Log.e("FetchAppointments", "Error getting documents: ", task.getException());
+//                        }
+//                    }
+//                });
+//        return appointmentsList;
+//    }
 }
+
+

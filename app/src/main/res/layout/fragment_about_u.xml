@@ -40,6 +40,7 @@
         android:textSize="20sp"
         android:layout_below="@id/aboutUsText"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
 
@@ -51,6 +52,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursText"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -61,6 +63,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursSunday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -71,6 +74,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursMonday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -81,6 +85,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursTuesday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -91,6 +96,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursWednesday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -101,6 +107,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursThursday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -111,6 +118,7 @@
         android:textSize="15sp"
         android:layout_below="@id/openingHoursFriday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -121,6 +129,7 @@
         android:textSize="17sp"
         android:layout_below="@id/openingHoursSaturday"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -131,6 +140,7 @@
         android:textSize="17sp"
         android:layout_below="@id/phoneText"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <TextView
@@ -141,16 +151,18 @@
         android:textSize="17sp"
         android:layout_below="@id/AddressText"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:textColor="@color/Lavender"/>
 
     <Button
         android:id="@+id/WhatsappButton"
-        android:layout_width="100dp"
+        android:layout_width="110dp"
         android:layout_height="50dp"
         android:text="@string/whatsapp"
         android:textSize="11sp"
         android:layout_below="@id/TalkToUs"
         android:layout_centerHorizontal="true"
+        android:textAlignment="center"
         android:onClick="openWhatsApp"/>
 
     />

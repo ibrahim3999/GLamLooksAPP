@@ -60,20 +60,23 @@
     </LinearLayout>
 
     <!-- Purple box (half size) centered in the middle height of the screen -->
-    <View
-        android:id="@+id/boxView"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_centerInParent="true"
-        android:background="@color/Lavender" />
+<!--    <View-->
+<!--        android:id="@+id/boxView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@color/Lavender" />-->
 
     <!-- Circular buttons for services inside the box -->
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@id/topLayout"
-        android:layout_marginTop="288dp"
-        android:fillViewport="true">
+        android:layout_marginTop="340dp"
+        android:fillViewport="true"
+        android:background="@color/Lavender"
+        >
 
         <LinearLayout
             android:id="@+id/servicesLayout"
@@ -172,25 +175,55 @@
     </ScrollView>
 
 
+
+
     <TableLayout
         android:id="@+id/dateTable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/topLayout"
-        android:layout_marginTop="400dp">
+        android:layout_marginTop="410dp">
 
-        <!-- Add headers or customize as needed -->
         <TableRow>
             <TextView
+                android:id="@+id/dateHeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Date"
                 android:textStyle="bold"
+                android:textSize="20sp"
                 android:padding="8dp" />
             <!-- Add more headers as needed -->
+
         </TableRow>
 
-        <!-- This is where the dynamic rows will be added -->
+        <TableRow>
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/dateHeadline"
+                android:fillViewport="true"
+                >
+
+                <TextView
+                    android:id="@+id/upcomingAppointments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_upcoming_appointments_n"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:padding="8dp" />
+
+            </ScrollView>
+
+
+        </TableRow>
+
+
     </TableLayout>
+
+
+
 
 </RelativeLayout>
