@@ -125,12 +125,12 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                 }else{
-                    user = new User();
+                     user = new User();
                     user.setEmail(signupEmail.getText().toString());
                     user.setFirstname(firstname.getText().toString());
                     user.setLastname(lastname.getText().toString());
                     user.setPhoneNumber(phoneNumber.getText().toString());
-                    password = signupPassword.getText().toString().trim();
+                     password = signupPassword.getText().toString().trim();
                     user.setAccount_type(ACCOUNT_TYPE_CUSTOMER);
 
                 }

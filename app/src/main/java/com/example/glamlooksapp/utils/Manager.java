@@ -32,22 +32,11 @@ public class Manager extends User {
         this.setPassword(PasswordUtils.hashPassword(password,salt));
         this.service = service;
     }
+
+    // Empty constructor
     public Manager() {}
 
-    public Manager(Manager manager) throws NoSuchAlgorithmException {
-        this.setAccount_type(manager.getAccount_type());
-        this.setKeyI(key);
-        this.setEmail(manager.getKey());
-        this.setFirstname(manager.getFirstname());
-        this.setLastname(manager.getLastname());
-        this.setPhoneNumber(manager.getPhoneNumber());
-        this.setImagePath(manager.getImagePath());
-        this.setImageUrl(manager.getImageUrl());
-        // Generate a random salt
-//        byte[] salt = PasswordUtils.generateSalt();
-//        this.setPassword(PasswordUtils.hashPassword(manager.getPassword(),salt));
-        this.setService(manager.getService());
-    }
+    // Getters and setters for the new fields
 
 
     public Service getService() {
