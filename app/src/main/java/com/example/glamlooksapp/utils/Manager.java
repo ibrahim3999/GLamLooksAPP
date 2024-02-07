@@ -33,6 +33,21 @@ public class Manager extends User {
         this.service = service;
     }
 
+
+    public Manager(Manager manager){
+        this.setAccount_type(manager.getAccount_type());
+        this.setKeyI(key);
+        this.setEmail(manager.getEmail());
+        this.setFirstname(manager.getFirstname());
+        this.setLastname(manager.getLastname());
+        this.setPhoneNumber(manager.getPhoneNumber());
+        this.setImagePath(manager.getImagePath());
+        this.setImageUrl(manager.getImageUrl());
+        // Generate a random salt
+//        byte[] salt = PasswordUtils.generateSalt();
+//        this.setPassword(PasswordUtils.hashPassword(password,salt));
+        this.setService(manager.getService());
+    }
     // Empty constructor
     public Manager() {}
 

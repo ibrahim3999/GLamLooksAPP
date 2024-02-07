@@ -326,6 +326,7 @@ public class HomeFragment extends Fragment implements ManagerAddedCallback {
             }
         });
     }
+
     private boolean isUnavailableTime(int hour, int minute) {
         for (Datetime notAvailableTime : datetimes) {
             if (notAvailableTime.getTimestamp().toDate().getHours() == hour && notAvailableTime.getTimestamp().toDate().getMinutes()== minute) {

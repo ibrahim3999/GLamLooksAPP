@@ -1,5 +1,8 @@
 package com.example.glamlooksapp.utils;
 import android.net.Uri;
+import android.util.Log;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -109,6 +112,8 @@ public class Database {
                     }
                 });
     }
+
+
     public void fetchUserDates(DatetimeCallback datetimeCallback) {
         db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -126,26 +131,75 @@ public class Database {
         });
     }
 
-    public void fetchUserDatesByKey(String uid) {
+    public void fetchUserDatesByService(String serviceName) {
 
-        db.collection(TIMES_TABLE).whereEqualTo("key",uid)
+        db.collection(TIMES_TABLE).whereEqualTo("serviceName",serviceName)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        assert value != null;
+                        Log.d("FirestoreData", "ValueKeys2: " + value.size());
 
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        listKeysDates = new ArrayList<>();
+                        assert value != null;
+                        int i =0;
+                        for (QueryDocumentSnapshot document : value) {
+                            i++;
+                            Datetime datetime = document.toObject(Datetime.class);
+                            list_dates.add(datetime);
+                            String uid = datetime.getKey();
+                            Log.d("FirestoreData", "ValueKeys: "+ Integer.toString(i) + uid);
+                            listKeysDates.add(uid);
+                        }
+                        fetchUsersByKeys(listKeysDates,list_dates);
+                    }
+                });
 
-                listUser_Dates = new ArrayList<>();
-                assert value != null;
-                for (QueryDocumentSnapshot document : value) {
-                    Datetime datetime = document.toObject(Datetime.class);
-                    listUser_Dates.add(datetime);
 
-                }
-                customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+    }
 
-            }
+
+    public void fetchUsersByKeys(ArrayList<String> userKeys, ArrayList<Datetime> list_dates) {
+        if (userKeys == null || userKeys.isEmpty()) {
+            Log.d("FirestoreData", "No user keys provided for filtering");
+            return;
+        }
+
+        db.collection(USERS_TABLE)
+                .whereIn("key", userKeys)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            // Handle Firestore error
+                            Log.e("FirestoreData", "Error fetching users: " + error.getMessage());
+                            return;
+                        }
+
+                        if (value == null || value.isEmpty()) {
+                            // Handle case when no users are found
+                            Log.d("FirestoreData", "No users found");
+                            return;
+                        }
+
+                        // Print the value of 'value' variable
+                        Log.d("FirestoreData", "ValueKeys: " + value.size());
+
+                        // Process retrieved users
+                        int i = 0;
+                        for (QueryDocumentSnapshot document : value) {
+                            User customer = document.toObject(User.class);
+                            customer.setDateTime(list_dates.get(i++));
+                            customersWantedList.add(customer);
+                        }
+
+                        // Notify listener with retrieved users
+                        customerCallBack.onFetchCustomerComplete(customersWantedList);
+                    }
                 });
     }
+
+
 
     public void fetchUserDates() {
 
@@ -168,27 +222,28 @@ public class Database {
 
     }
 
-    private void fetchUsersByKeys(ArrayList<String> userKeys,ArrayList<Datetime> list_dates) {
-        db.collection(USERS_TABLE)
-                .whereIn("key", userKeys) //  "key" is the field name in the "users" collection
+    public void fetchUserDatesByKey(String uid) {
+
+        db.collection(TIMES_TABLE).whereEqualTo("key",uid)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
+
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null) {
-                            // Handle error
-                            return;
-                        }
-                        int i =0;
-                            for (QueryDocumentSnapshot document : value) {
-                                User customer = document.toObject(User.class); // Changed !! => User to Customer
-                            customer.setDateTime(list_dates.get(i++));
-                                customersWantedList.add(customer);
-                            }
 
-                        customerCallBack.onFetchCustomerComplete(customersWantedList);
+                        listUser_Dates = new ArrayList<>();
+                        assert value != null;
+                        for (QueryDocumentSnapshot document : value) {
+                            Datetime datetime = document.toObject(Datetime.class);
+                            listUser_Dates.add(datetime);
+
+                        }
+                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+
                     }
                 });
     }
+
+
 
 
     public void createAccount(String email, String password, User userData) {
@@ -271,15 +326,60 @@ public class Database {
                         userCallBack.onUserFetchDataComplete(user);
                     } else {
                         // User object is null, handle appropriately
-                        userCallBack.onUserFetchDataComplete(null);
+                        try {
+                            userCallBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 } else {
                     // Document does not exist or there was an error, handle appropriately
-                    userCallBack.onUserFetchDataComplete(null);
+                    try {
+                        userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
     }
+
+    public void fetchManagerData(String uid){
+        db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.exists()) {
+                    Manager manager = value.toObject(Manager.class);
+                    if (manager != null) {
+                        if(manager.getImagePath() != null){
+                            manager.setImageUrl(downloadImageUrl(manager.getImagePath()));
+                        }
+                        manager.setKey(value.getId());
+                        try {
+                            userCallBack.onUserFetchDataComplete(manager);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        // User object is null, handle appropriately
+                        try {
+                            userCallBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    // Document does not exist or there was an error, handle appropriately
+                    try {
+                        userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+    }
+
 
 
     public void fetchProducts() {

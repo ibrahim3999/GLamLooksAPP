@@ -140,7 +140,6 @@ public class TimesFragment extends Fragment {
         recyclerViewCustomers.setAdapter(customerAdapter);
         // Fetch DateTimes from the database and update the list
         database.fetchManagerData(database.getCurrentUser().getUid());
-//        database.fetchUserDatesByService(currentManager.getService().getServiceName());
 
     }
 }
