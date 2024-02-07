@@ -2,8 +2,10 @@ package com.example.glamlooksapp.fragments.user;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
@@ -30,10 +33,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.example.glamlooksapp.utils.Datetime;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment implements ManagerAddedCallback {
 
     ImageView hair_cut, hair_color, nails, laser, shaving;
     private Database database;
@@ -42,6 +44,8 @@ public class HomeFragment extends Fragment{
     private  ArrayList<Datetime> datetimes ;
 
     TextView appointmentsText;
+
+    ManagerAddedCallback managerAddedCallback;
 
     public HomeFragment() {// Required empty public constructor
     }
@@ -53,6 +57,7 @@ public class HomeFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
         datetimes = new ArrayList<Datetime>();
+
         findViews(view);
         initVars();
         getDatetimesFromDB();
@@ -146,10 +151,52 @@ public class HomeFragment extends Fragment{
         });
 
 
-
         database.fetchUserDatesByKey(currentUser.getKey());
 
     }
+
+
+
+    @Override
+    public void onManagerAdded(String serviceName) {
+        // Handle the addition of a new manager
+        // Update UI accordingly
+        Drawable drawable = null;
+        showToast("AddedNewManager");
+
+        hair_cut.setContentDescription(serviceName);
+        if(serviceName.equals("HairCut")) {
+            showToast("AddedNManager1");
+// Using ResourcesCompat.getDrawable() without specifying a theme (null)
+            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.haircut, null);
+            hair_cut.setAutofillHints("HairCut");
+            hair_cut.setImageDrawable(drawable);
+        }
+        if(serviceName.equals("Laser")) {
+            showToast("AddedNManager2");
+            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.laser, null);
+            laser.setImageDrawable(drawable);
+        }
+        if(serviceName.equals("Shaving")) {
+            showToast("AddedNManager3");
+            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.shaving, null);
+            shaving.setImageDrawable(drawable);
+
+        }
+        if(serviceName.equals("Nails")) {
+            showToast("AddedNManager4");
+            drawable = ResourcesCompat.getDrawable(getResources(), R.drawable.nails, null);
+            nails.setImageDrawable(drawable);
+
+        }
+
+    }
+
+
+
+
+
+
 
     private void showDateTimePicker(final String serviceName) {
 
@@ -226,9 +273,17 @@ public class HomeFragment extends Fragment{
         datePickerDialog.show();
     }
 
+
+
+
+
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+
+
+
 
     private void addQueueToDB(String serviceName, long timestamp) {
 
@@ -248,6 +303,17 @@ public class HomeFragment extends Fragment{
 
         sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     private void getDatetimesFromDB() {

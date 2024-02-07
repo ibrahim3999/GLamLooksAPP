@@ -19,7 +19,6 @@ public class User extends FirebaseKey implements Serializable {
 
     private Datetime datetime;
 
-//    private String key;
 
     public User(User user) {
         this.setKey(user.getKey());
@@ -32,6 +31,20 @@ public class User extends FirebaseKey implements Serializable {
         this.setPassword(user.getPassword());
         this.setPhoneNumber(user.getPhoneNumber());
         this.setImageUrl(user.getImageUrl());
+    }
+
+    public User(String key, String firstname, String email, String lastname, String password, String phoneNumber,
+                int accountType, String imagePath, String imageUrl, Datetime datetime) {
+        super(key);
+        this.firstname = firstname;
+        this.email = email;
+        this.lastname = lastname;
+        this.password = password;
+        this.phoneNumber =phoneNumber;
+        this.datetime =datetime;
+        this.account_type = accountType;
+        this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
     }
 
 
@@ -94,26 +107,9 @@ public class User extends FirebaseKey implements Serializable {
     }
 
     public  void setAccount_type(int account_type){this.account_type = account_type;}
-    public User(String firstname, String email, String lastname, String password,String phoneNumber,Datetime datetime,String key) {
-        this.firstname = firstname;
-        this.email = email;
-        this.lastname = lastname;
-        this.password = password;
-        this.phoneNumber =phoneNumber;
-        this.account_type = 1;
-        this.datetime =datetime;
-        this.key = key;
-    }
 
-    public User(String firstname, String email, String lastname, String password,String phoneNumber,String key) {
-        this.key = key;
-        this.firstname = firstname;
-        this.email = email;
-        this.lastname = lastname;
-        this.password = password;
-        this.phoneNumber =phoneNumber;
-        this.account_type = 1;
-    }
+
+
 
     public User(){}
 

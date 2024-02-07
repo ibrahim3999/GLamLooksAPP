@@ -96,8 +96,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/haircut"
-                    android:contentDescription="@string/haircut"/>
+                    android:contentDescription=" "/>
 
             </androidx.cardview.widget.CardView>
 
@@ -113,8 +112,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/nails"
-                    android:contentDescription="@string/nails"/>
+                    android:contentDescription=" "/>
 
             </androidx.cardview.widget.CardView>
 
@@ -129,8 +127,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/hair_color"
-                    android:contentDescription="@string/hair_color"/>
+                    android:contentDescription=" "/>
 
             </androidx.cardview.widget.CardView>
 
@@ -145,8 +142,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/laser"
-                    android:contentDescription="@string/laser"/>
+                    android:contentDescription=" "/>
 
             </androidx.cardview.widget.CardView>
 
@@ -161,8 +157,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@android:color/white"
-                    android:src="@drawable/shaving"
-                    android:contentDescription="@string/shaving"/>
+                    android:contentDescription=" "/>
 
 
             </androidx.cardview.widget.CardView>

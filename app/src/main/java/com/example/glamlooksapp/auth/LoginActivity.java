@@ -122,12 +122,12 @@ public class LoginActivity extends AppCompatActivity {
                 if (user!=null) {
                     int type = user.getAccount_type();
                     if(type==0) {
-                        Toast.makeText(LoginActivity.this,"Hello Customer",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello " + user.getFirstname(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                         startActivity(intent);
                         finish();
                     }else{
-                        Toast.makeText(LoginActivity.this,"Hello Manager",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello " +user.getFirstname(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         startActivity(intent);
                         finish();

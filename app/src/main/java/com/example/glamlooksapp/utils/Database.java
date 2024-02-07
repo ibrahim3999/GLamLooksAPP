@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
+import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +47,8 @@ public class Database {
     private ProductCallBack productCallBack;
     private CustomerCallBack customerCallBack;
 
+    private ManagerAddedCallback managerAddedListener;
+
     private UserCallBack userCallBack;
 
     public static final String CATEGORIES_TABLE = "Categories";
@@ -63,6 +66,7 @@ public class Database {
 
     private ArrayList<Datetime> list_dates;
 
+
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -72,6 +76,10 @@ public class Database {
         list_dates = new ArrayList<Datetime>();
         listKeysDates = new ArrayList<>();
         listUser_Dates = new ArrayList<>();
+    }
+
+    public void setOnManagerAddedListener(ManagerAddedCallback listener) {
+        this.managerAddedListener = listener;
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -183,8 +191,6 @@ public class Database {
     }
 
 
-
-
     public void createAccount(String email, String password, User userData) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -214,7 +220,6 @@ public class Database {
                     }
                 });
     }
-
 
 
 
@@ -250,7 +255,6 @@ public class Database {
                     }
                 });
     }
-
 
 
     public void fetchUserData(String uid){
