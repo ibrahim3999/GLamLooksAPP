@@ -17,6 +17,7 @@ import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.UpdateProfileActivity;
 import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
@@ -73,7 +74,12 @@ public class ProfileFragmentC extends Fragment {
     }
 
     private void initVars() {
+
         database.setUserCallBack(new UserCallBack() {
+
+            @Override
+            public void onUserFetchDataComplete(Manager manager) {}
+
             @Override
             public void onUserFetchDataComplete(User user) {
                 setCurrentUser(user);

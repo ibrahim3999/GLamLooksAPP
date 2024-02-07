@@ -16,13 +16,16 @@ import android.widget.Toast;
 import com.example.glamlooksapp.Adapter.CustomerAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.utils.CustomerManager;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
+import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 
@@ -35,6 +38,7 @@ public class TimesFragment extends Fragment {
 
 
     Database database;
+    Manager currentManager = null;
 
 
     AppCompatActivity activity;
@@ -55,18 +59,43 @@ public class TimesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_times, container, false);
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
-
         database = new Database();
         customersList = new ArrayList<>();
 
         initViews();
-        initRecyclerView();
         intiVars();
+        initRecyclerView();
+
         return view;
     }
 
 
     private void intiVars() {
+
+        database.setUserCallBack(new UserCallBack() {
+
+            @Override
+            public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
+
+                currentManager = new Manager(manager);
+                if(currentManager!=null) {
+                    Toast.makeText(activity, currentManager.getService().getServiceName(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(activity, "NO", Toast.LENGTH_SHORT).show();
+                }
+                database.fetchUserDatesByService(currentManager.getService().getServiceName());
+
+            }
+            @Override
+            public void onUserFetchDataComplete(User user) {
+
+            }
+
+            @Override
+            public void onUpdateComplete(Task<Void> task) {
+
+            }
+        });
 
 
         database.setCustomerCallBack(new CustomerCallBack() {
@@ -96,14 +125,13 @@ public class TimesFragment extends Fragment {
             }
 
         });
-
     }
 
         private void initViews() {
         CustomerManager customerManager = CustomerManager.getInstance();
         customerAdapter = new CustomerAdapter(getContext(), customerManager.getCustomerList());
         recyclerViewCustomers.setAdapter(customerAdapter);
-    }
+            }
 
     private void initRecyclerView() {
         customersList = new ArrayList<>();
@@ -111,6 +139,8 @@ public class TimesFragment extends Fragment {
         recyclerViewCustomers.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewCustomers.setAdapter(customerAdapter);
         // Fetch DateTimes from the database and update the list
-        database.fetchUserDates();
+        database.fetchManagerData(database.getCurrentUser().getUid());
+//        database.fetchUserDatesByService(currentManager.getService().getServiceName());
+
     }
 }

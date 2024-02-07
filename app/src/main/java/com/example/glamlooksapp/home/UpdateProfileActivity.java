@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
 import com.example.glamlooksapp.utils.Generic;
 import com.google.android.gms.tasks.Task;
@@ -94,6 +95,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private void initVars() {
         db = new Database();
         db.setUserCallBack(new UserCallBack() {
+
+            @Override
+            public void onUserFetchDataComplete(Manager manager) {}
+
             @Override
             public void onUserFetchDataComplete(User user) {
 

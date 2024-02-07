@@ -1,11 +1,15 @@
 package com.example.glamlooksapp.utils;
 import android.net.Uri;
+import android.util.Log;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
+import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +50,8 @@ public class Database {
     private ProductCallBack productCallBack;
     private CustomerCallBack customerCallBack;
 
+    private ManagerAddedCallback managerAddedListener;
+
     private UserCallBack userCallBack;
 
     public static final String CATEGORIES_TABLE = "Categories";
@@ -63,6 +69,7 @@ public class Database {
 
     private ArrayList<Datetime> list_dates;
 
+
     public Database(){
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -72,6 +79,10 @@ public class Database {
         list_dates = new ArrayList<Datetime>();
         listKeysDates = new ArrayList<>();
         listUser_Dates = new ArrayList<>();
+    }
+
+    public void setOnManagerAddedListener(ManagerAddedCallback listener) {
+        this.managerAddedListener = listener;
     }
 
     public void setAuthCallBack(AuthCallBack authCallBack){
@@ -139,18 +150,25 @@ public class Database {
                 });
     }
 
-    public void fetchUserDates() {
 
-        db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void fetchUserDatesByService(String serviceName) {
+
+        db.collection(TIMES_TABLE).whereEqualTo("serviceName",serviceName)
+        .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                assert value != null;
+                Log.d("FirestoreData", "ValueKeys2: " + value.size());
 
                 listKeysDates = new ArrayList<>();
                 assert value != null;
+                int i =0;
                 for (QueryDocumentSnapshot document : value) {
+                    i++;
                     Datetime datetime = document.toObject(Datetime.class);
                     list_dates.add(datetime);
                     String uid = datetime.getKey();
+                    Log.d("FirestoreData", "ValueKeys: "+ Integer.toString(i) + uid);
                     listKeysDates.add(uid);
                 }
                 fetchUsersByKeys(listKeysDates,list_dates);
@@ -160,27 +178,47 @@ public class Database {
 
     }
 
-    private void fetchUsersByKeys(ArrayList<String> userKeys,ArrayList<Datetime> list_dates) {
+
+    private void fetchUsersByKeys(ArrayList<String> userKeys, ArrayList<Datetime> list_dates) {
+        if (userKeys == null || userKeys.isEmpty()) {
+            Log.d("FirestoreData", "No user keys provided for filtering");
+            return;
+        }
+
         db.collection(USERS_TABLE)
-                .whereIn("key", userKeys) //  "key" is the field name in the "users" collection
+                .whereIn("key", userKeys)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            // Handle error
+                            // Handle Firestore error
+                            Log.e("FirestoreData", "Error fetching users: " + error.getMessage());
                             return;
                         }
-                        int i =0;
-                            for (QueryDocumentSnapshot document : value) {
-                                User customer = document.toObject(User.class); // Changed !! => User to Customer
-                            customer.setDateTime(list_dates.get(i++));
-                                customersWantedList.add(customer);
-                            }
 
+                        if (value == null || value.isEmpty()) {
+                            // Handle case when no users are found
+                            Log.d("FirestoreData", "No users found");
+                            return;
+                        }
+
+                        // Print the value of 'value' variable
+                        Log.d("FirestoreData", "ValueKeys: " + value.size());
+
+                        // Process retrieved users
+                        int i = 0;
+                        for (QueryDocumentSnapshot document : value) {
+                            User customer = document.toObject(User.class);
+                            customer.setDateTime(list_dates.get(i++));
+                            customersWantedList.add(customer);
+                        }
+
+                        // Notify listener with retrieved users
                         customerCallBack.onFetchCustomerComplete(customersWantedList);
                     }
                 });
     }
+
 
 
 
@@ -214,7 +252,6 @@ public class Database {
                     }
                 });
     }
-
 
 
 
@@ -252,7 +289,6 @@ public class Database {
     }
 
 
-
     public void fetchUserData(String uid){
         db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -267,16 +303,59 @@ public class Database {
                         userCallBack.onUserFetchDataComplete(user);
                     } else {
                         // User object is null, handle appropriately
-                        userCallBack.onUserFetchDataComplete(null);
+                        try {
+                            userCallBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 } else {
                     // Document does not exist or there was an error, handle appropriately
-                    userCallBack.onUserFetchDataComplete(null);
+                    try {
+                        userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         });
     }
 
+    public void fetchManagerData(String uid){
+        db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.exists()) {
+                    Manager manager = value.toObject(Manager.class);
+                    if (manager != null) {
+                        if(manager.getImagePath() != null){
+                            manager.setImageUrl(downloadImageUrl(manager.getImagePath()));
+                        }
+                        manager.setKey(value.getId());
+                        try {
+                            userCallBack.onUserFetchDataComplete(manager);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        // User object is null, handle appropriately
+                        try {
+                            userCallBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    // Document does not exist or there was an error, handle appropriately
+                    try {
+                        userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+    }
 
     public void fetchProducts() {
         db.collection(PRODUCTS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {

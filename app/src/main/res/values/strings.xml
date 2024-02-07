@@ -61,4 +61,8 @@
     <string name="whatsapp">WhatsApp</string>
     <string name="thursday_9_00_to_12_00_n_13_00_to_18_00">Thursday: 9:00 to 12:00\n 13:00 to 18:00</string>
     <string name="your_upcoming_appointments_n" />
+    <string name="manager">Manager?</string>
+    <string name="service_name">Service Name</string>
+    <string name="costservice">CostService</string>
+    <string name="duration">duration</string>
 </resources>
