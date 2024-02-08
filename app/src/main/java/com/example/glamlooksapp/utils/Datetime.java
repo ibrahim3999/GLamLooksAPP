@@ -14,14 +14,17 @@ public class Datetime {
 
     private String key;
 
+    private String uid;
+
 
     public Datetime() {
     }
 
-    public Datetime(String serviceName, Timestamp timestamp, String key) {
+    public Datetime(String serviceName, Timestamp timestamp, String key,String uid) {
         this.serviceName = serviceName;
         this.timestamp = timestamp;
         this.key = key;
+        this.uid = uid;
     }
 
     public String getServiceName() {
@@ -47,6 +50,15 @@ public class Datetime {
     public String getKey() {
         return this.key;
     }
+
+    public void setUUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getUUid() {
+        return this.uid;
+    }
+
 
     @Override
     public String toString() {

@@ -293,7 +293,7 @@ public class HomeFragment extends Fragment implements ManagerAddedCallback {
         datetime.setServiceName(serviceName);
         datetime.setTimestamp(timestampDB);
         datetime.setKey(database.getCurrentUser().getUid());
-
+        datetime.setUUid("");
         User currentUser = new User();
 
         currentUser.setKey(database.getCurrentUser().getUid());

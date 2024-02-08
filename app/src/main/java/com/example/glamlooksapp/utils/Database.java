@@ -261,20 +261,52 @@ public class Database {
                 });
     }
 
-    public void saveUserTimes(Datetime dateTime, User customer){
+//    public void saveUserTimes(Datetime dateTime, User customer){
+//
+//
+//        this.db.collection(TIMES_TABLE).document().set(dateTime)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        if(task.isSuccessful())
+//                            customerCallBack.onAddICustomerComplete(task);
+//                        else
+//                            customerCallBack.onAddICustomerComplete(task);
+//                    }
+//                });
+//    }
 
+    public void saveUserTimes(Datetime dateTime, User customer) {
+        // Get a reference to the Firestore collection
+        CollectionReference timesCollection = db.collection(TIMES_TABLE);
 
-        this.db.collection(TIMES_TABLE).document().set(dateTime)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
-                            customerCallBack.onAddICustomerComplete(task);
-                        else
-                            customerCallBack.onAddICustomerComplete(task);
-                    }
+        // Add a new document with an auto-generated ID
+        timesCollection.add(dateTime)
+                .addOnSuccessListener(documentReference -> {
+                    // Get the auto-generated ID of the new document
+                    String dateTimeId = documentReference.getId();
+
+                    // Set the auto-generated ID in the Datetime object
+                    dateTime.setUUid(dateTimeId);
+
+                    // Update the document with the generated ID
+                    timesCollection.document(dateTimeId).set(dateTime)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    // If successful, call the callback with the generated ID
+                                    customerCallBack.onAddICustomerComplete(task);
+                                } else {
+                                    // If not successful, call the callback with null
+                                    customerCallBack.onAddICustomerComplete(null);
+                                }
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    // Handle any errors
+                    customerCallBack.onAddICustomerComplete(null);
                 });
     }
+
 
 
 
@@ -441,5 +473,17 @@ public class Database {
     }
 
 
+    public void deleteUserTime(String datetimeUid) {
+        db.collection(TIMES_TABLE)
+                .document(datetimeUid)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("FirestoreData", "DocumentSnapshot successfully deleted!");
+                    } else {
+                        Log.w("FirestoreData", "Error deleting document", task.getException());
+                    }
+                });
+    }
 
 }
