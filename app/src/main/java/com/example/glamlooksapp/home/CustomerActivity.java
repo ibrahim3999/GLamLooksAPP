@@ -34,14 +34,14 @@ public class CustomerActivity extends AppCompatActivity {
         database = new Database();
         customer_Binding = ActivityCustomerBinding.inflate(getLayoutInflater());
         setContentView(customer_Binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new HomeFragment(CustomerActivity.this));
 
 
         customer_Binding.bottomNavigationC.setOnItemSelectedListener(item->
         {
             switch (item.getItemId()){
                 case R.id.navigation_homeC:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment(CustomerActivity.this));
                     break;
 
                 case R.id.navigation_about:

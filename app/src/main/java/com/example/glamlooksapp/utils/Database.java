@@ -54,7 +54,6 @@ public class Database {
 
     private UserCallBack userCallBack;
 
-    public static final String CATEGORIES_TABLE = "Categories";
     public static final String PRODUCTS_TABLE = "Products";
     private ArrayList<Product> productList;  // Add this list to store products
     ArrayList<User> customersWantedList ;
@@ -63,11 +62,10 @@ public class Database {
 
     private ArrayList<Datetime> listUser_Dates;
 
-    public ArrayList<Datetime> getList_dates() {
-        return list_dates;
-    }
 
     private ArrayList<Datetime> list_dates;
+
+    private ArrayList<Manager> list_managers;
 
 
     public Database(){
@@ -79,6 +77,7 @@ public class Database {
         list_dates = new ArrayList<Datetime>();
         listKeysDates = new ArrayList<>();
         listUser_Dates = new ArrayList<>();
+        list_managers = new ArrayList<>();
     }
 
     public void setOnManagerAddedListener(ManagerAddedCallback listener) {
@@ -114,22 +113,7 @@ public class Database {
     }
 
 
-    public void fetchUserDates(DatetimeCallback datetimeCallback) {
-        db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                list_dates.clear(); // Clear the list before updating
 
-                for (QueryDocumentSnapshot document : value) {
-                    Datetime datetime = document.toObject(Datetime.class);
-                    list_dates.add(datetime);
-                    String uid = datetime.getKey();
-                    listKeysDates.add(uid);
-                }
-                datetimeCallback.onDatetimeFetchComplete(list_dates);
-            }
-        });
-    }
 
     public void fetchUserDatesByService(String serviceName) {
 
@@ -201,27 +185,6 @@ public class Database {
 
 
 
-    public void fetchUserDates() {
-
-        db.collection(TIMES_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                listKeysDates = new ArrayList<>();
-                assert value != null;
-                for (QueryDocumentSnapshot document : value) {
-                    Datetime datetime = document.toObject(Datetime.class);
-                    list_dates.add(datetime);
-                    String uid = datetime.getKey();
-                    listKeysDates.add(uid);
-                }
-                fetchUsersByKeys(listKeysDates,list_dates);
-            }
-        });
-
-
-    }
-
     public void fetchUserDatesByKey(String uid) {
 
         db.collection(TIMES_TABLE).whereEqualTo("key",uid)
@@ -261,20 +224,6 @@ public class Database {
                 });
     }
 
-//    public void saveUserTimes(Datetime dateTime, User customer){
-//
-//
-//        this.db.collection(TIMES_TABLE).document().set(dateTime)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        if(task.isSuccessful())
-//                            customerCallBack.onAddICustomerComplete(task);
-//                        else
-//                            customerCallBack.onAddICustomerComplete(task);
-//                    }
-//                });
-//    }
 
     public void saveUserTimes(Datetime dateTime, User customer) {
         // Get a reference to the Firestore collection
@@ -333,15 +282,7 @@ public class Database {
                 });
     }
 
-    public void updateUser(String uid,User user){
-        this.db.collection(USERS_TABLE).document(uid).set(user)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        userCallBack.onUpdateComplete(task);
-                    }
-                });
-    }
+
 
 
     public void fetchUserData(String uid){
@@ -411,6 +352,38 @@ public class Database {
             }
         });
     }
+
+
+    public void fetchManagersData() {
+        db.collection(USERS_TABLE)
+                .whereEqualTo("account_type", 1) // Add condition to fetch only managers with account_type = 1
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            // Handle error
+                            return;
+                        }
+
+                        for (DocumentSnapshot document : value) {
+                            Manager manager = document.toObject(Manager.class);
+                            if (manager != null) {
+                                if (manager.getImagePath() != null) {
+                                    manager.setImageUrl(downloadImageUrl(manager.getImagePath()));
+                                }
+                                manager.setKey(document.getId());
+                                list_managers.add(manager);
+                                managerAddedListener.onManagerFetchDataComplete(list_managers);
+
+                            }
+                        }
+
+                        // Handle case where no managers with account_type = 1 are found
+                        managerAddedListener.onManagerFetchDataComplete(null);
+                    }
+                });
+    }
+
 
 
 

@@ -12,13 +12,13 @@ public class Manager extends User {
                    String phoneNumber, int account_type, String imagePath, String imageUrl,
                    Datetime datetime, Service service) {
         super(key, firstname, email, lastname, password, phoneNumber, account_type, imagePath, imageUrl, datetime);
-        this.service = service;
+        this.service = service != null ? service : new Service();
     }
 
 
     public Manager(String key, String firstname, String email, String lastname, String password,
                    String phoneNumber, int account_type, String imagePath, String imageUrl,
-                     Service service) throws NoSuchAlgorithmException {
+                   Service service) throws NoSuchAlgorithmException {
         this.setAccount_type(account_type);
         this.setKeyI(key);
         this.setEmail(email);
@@ -29,8 +29,8 @@ public class Manager extends User {
         this.setImageUrl(imageUrl);
         // Generate a random salt
         byte[] salt = PasswordUtils.generateSalt();
-        this.setPassword(PasswordUtils.hashPassword(password,salt));
-        this.service = service;
+        this.setPassword(PasswordUtils.hashPassword(password, salt));
+        this.service = service != null ? service : new Service();
     }
 
 
@@ -44,10 +44,11 @@ public class Manager extends User {
         this.setImagePath(manager.getImagePath());
         this.setImageUrl(manager.getImageUrl());
         // Generate a random salt
-//        byte[] salt = PasswordUtils.generateSalt();
-//        this.setPassword(PasswordUtils.hashPassword(password,salt));
+//    byte[] salt = PasswordUtils.generateSalt();
+//    this.setPassword(PasswordUtils.hashPassword(password,salt));
         this.setService(manager.getService());
     }
+
     // Empty constructor
     public Manager() {}
 
@@ -59,6 +60,14 @@ public class Manager extends User {
     }
 
     public void setService(Service service) {
-        this.service = service;
+        if (service != null) {
+            if (this.service == null) {
+                this.service = new Service();
+            }
+            this.service.setServiceName(service.getServiceName());
+            this.service.setDuration(service.getDuration());
+            this.service.setPrice(service.getPrice());
+        }
     }
+
 }
