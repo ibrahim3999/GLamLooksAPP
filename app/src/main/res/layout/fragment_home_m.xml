@@ -13,6 +13,20 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="55dp">
 
+        <!-- TextView above the CircleImageView -->
+        <TextView
+            android:id="@+id/glamLooksTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GlamLooks"
+            android:textColor="@color/Lavender"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/editAccount_IV_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/editAccount_IV_image"
             android:layout_width="150dp"
@@ -22,98 +36,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.536"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/glamLooksTextView"
             app:layout_constraintVertical_bias="0.049" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:id="@+id/topLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_alignParentTop="true">
-
-        <!-- Settings button on the leftmost part -->
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/nav_settings"
-            android:layout_gravity="start"
-            android:contentDescription="settings" />
-
-        <!-- "GlamLooks" logo centered in the row with a slightly adjusted left margin -->
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/login"
-            android:textAlignment="center"
-            android:textColor="@color/Lavender"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            android:layout_marginStart="4dp" />
-    </LinearLayout>
-
-    <!-- RecyclerView aligned to the right side -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewServices"
+    <!-- Guideline to position RecyclerView below the CircleImageView -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/topLayout"
-        android:layout_alignParentEnd="true"
-        android:padding="16dp"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
 
-    <TableLayout
-        android:id="@+id/dateTable"
+    <!-- RecyclerView aligned below the CircleImageView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewServices"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/topLayout"
-        android:layout_marginTop="410dp">
-
-        <TableRow>
-            <TextView
-                android:id="@+id/dateHeadline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:padding="8dp" />
-            <!-- Add more headers as needed -->
-
-        </TableRow>
-
-        <TableRow>
-            <ScrollView
-                android:id="@+id/scrollView2"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/dateHeadline"
-                android:fillViewport="true"
-                >
-
-                <TextView
-                    android:id="@+id/upcomingAppointments"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/your_upcoming_appointments_n"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:padding="8dp" />
-
-            </ScrollView>
-
-
-        </TableRow>
-
-
-    </TableLayout>
-
-
-
+        android:layout_height="match_parent"
+        android:layout_below="@id/editAccount_ConstraintLayout_profileImg"
+        android:layout_marginTop="60dp"
+        android:padding="16dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3" />
 
 </RelativeLayout>

@@ -64,9 +64,9 @@ public class Datetime {
     public String toString() {
         return
 
-                 serviceName + " " + timestamp.toDate().toString()
+                 serviceName + " " ;
 
-                ;
+
     }
     public String getFormattedTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());

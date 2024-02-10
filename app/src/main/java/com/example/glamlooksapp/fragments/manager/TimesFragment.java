@@ -36,7 +36,6 @@ public class TimesFragment extends Fragment {
     private CustomerAdapter customerAdapter;
     private ArrayList<User> customersList;
 
-
     Database database;
     Manager currentManager = null;
 

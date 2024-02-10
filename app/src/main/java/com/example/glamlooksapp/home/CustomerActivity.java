@@ -1,5 +1,7 @@
 package com.example.glamlooksapp.home;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,10 +12,12 @@ import androidx.fragment.app.FragmentManager;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityCustomerBinding;
+import com.example.glamlooksapp.fragments.manager.TimesFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.fragments.user.HomeFragment;
 import com.example.glamlooksapp.fragments.user.ProductsFragment;
 import com.example.glamlooksapp.fragments.user.ProfileFragmentC;
+import com.example.glamlooksapp.fragments.user.TimesCusFragment;
 import com.example.glamlooksapp.utils.Database;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -74,10 +78,15 @@ public class CustomerActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.nav_menu, menu);
         return true;
     }
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case R.id.times:
+                Toast.makeText(this,"Times",Toast.LENGTH_SHORT).show();
+                replaceFragment(new TimesCusFragment(CustomerActivity.this));
+                return true;
 
             case R.id.settings:
                 Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();

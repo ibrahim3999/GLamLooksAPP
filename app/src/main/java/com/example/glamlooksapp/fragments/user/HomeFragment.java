@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
     private Database database;
     private ArrayList<Datetime> datetimes = new ArrayList<>();
-    private TextView appointmentsText;
+//    private TextView appointmentsText;
     private RecyclerView recyclerViewServices;
     private ServiceAdapter managerAdapter;
     private ArrayList<Manager> managerList = new ArrayList<>();
@@ -62,15 +62,12 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         View view = inflater.inflate(R.layout.fragment_home_m, container, false);
         database = new Database();
         recyclerViewServices = view.findViewById(R.id.recyclerViewServices);
-        findViews(view);
         initRecyclerView();
-//        getDatetimesFromDB();
+
         return view;
     }
 
-    private void findViews(View view) {
-        appointmentsText = view.findViewById(R.id.upcomingAppointments);
-    }
+
 
     private void initRecyclerView() {
         managerList = new ArrayList<>();
@@ -80,21 +77,13 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         database.fetchManagersData();
     }
 
-//    private void getDatetimesFromDB() {
-//        database.fetchUserDates(new DatetimeCallback() {
-//            @Override
-//            public void onDatetimeFetchComplete(ArrayList<Datetime> Update) {
-//                datetimes = Update;
-//            }
-//        });
-//    }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        findViews(view);
         initRecyclerView();
-//        getDatetimesFromDB();
+
         initVars();
     }
 
@@ -105,10 +94,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         database.setCustomerCallBack(new CustomerCallBack() {
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes) {
-                appointmentsText.setText("");
-                for (Datetime appointment : datetimes) {
-                    appointmentsText.append(" " + appointment.getServiceName() + ": " + appointment.getFormattedDate() + " " + appointment.getFormattedTime() + "\n");
-                }
+
             }
 
             @Override
@@ -234,7 +220,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         User currentUser = new User();
 
         currentUser.setKey(database.getCurrentUser().getUid());
-        currentUser.setDateTime(datetime);///??New added ,should check!!
+        currentUser.setDateTime(datetime);
 
         database.saveUserTimes(datetime,currentUser);
 
