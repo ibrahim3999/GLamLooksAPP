@@ -37,9 +37,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
-
-
-
     private EditText emailEditText, passwordEditText;
     private Button loginButton;
     private Button gmail_button;
@@ -78,14 +75,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initVars() {
         database = new Database();
-
-
         database.setAuthCallBack(new AuthCallBack() {
             @Override
             public void onLoginComplete(Task<AuthResult> task) {
                 login_PB_loading.setVisibility(View.INVISIBLE);
                 if (task.isSuccessful()) {
-
 
                     if (database.getCurrentUser() != null) {
                         // Fetch user data
@@ -95,8 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Handle the case where login failed
                         Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
-
-                    Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
                 } else {
                     String error = task.getException().getMessage().toString();
                     Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
@@ -126,7 +119,10 @@ public class LoginActivity extends AppCompatActivity {
 //                newUser.setLastname("roban");
 //                database.updateUser(uid,newUser);
 
-
+                if(user.getDeleted() == 1){
+                    Toast.makeText(LoginActivity.this,"Account has been deleted",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (user!=null) {
                     int type = user.getAccount_type();
                     if(type==0) {

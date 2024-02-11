@@ -1,62 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- res/layout/products_item.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="100dp"
     android:layout_height="120dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:background="@drawable/manager_border"
-    >
+    android:background="@drawable/customer_border"
+    android:padding="16dp">
+
     <TextView
         android:id="@+id/textViewFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textSize="16sp"
-        />
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
     <TextView
         android:id="@+id/textViewLastName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp"
         android:layout_below="@id/textViewFirstName"
-        />
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textViewPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp"
         android:layout_below="@id/textViewLastName"
-        />
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textViewServiceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp"
         android:layout_below="@id/textViewPhoneNumber"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/textViewServiceDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp"
         android:layout_below="@id/textViewServiceName"
-        />
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/textViewServicePrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp"
         android:layout_below="@id/textViewServiceDuration"
-        />
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
 </RelativeLayout>

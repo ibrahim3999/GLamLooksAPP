@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        initRecyclerView();
+        //initRecyclerView();
 
         initVars();
     }
@@ -113,16 +113,17 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
             public void onManagerFetchDataComplete(ArrayList<Manager> managerArrayList) {
                 if (managerArrayList != null) {
                     Log.d("FirestoreData", "Size of ArrayList Managers is " + managerArrayList.size());
-                    Toast.makeText(activity, "FetchDoneManagers", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, "FetchDoneManagers", Toast.LENGTH_SHORT).show();
 
                     managerList.clear();
                     managerList.addAll(managerArrayList);
                     if (managerList.isEmpty()) {
-                        Toast.makeText(activity, "There are no new managers!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Nothing To Show", Toast.LENGTH_SHORT).show();
                     }
                     managerAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(activity, "Managers list is null", Toast.LENGTH_SHORT).show();
+                    Log.d("FirestoreData", "Managers list is null");
+                    //Toast.makeText(activity, "Managers list is null", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -157,7 +158,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
                         int dayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK);
                         if (dayOfWeek == Calendar.FRIDAY || dayOfWeek == Calendar.SATURDAY) {
                             showToast("Please select another day " +
-                                    " than Friday or Saturday.");
+                                    " than Tuesday or Saturday.");
                             return;
                         } else {
 

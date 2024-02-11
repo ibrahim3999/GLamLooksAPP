@@ -19,6 +19,8 @@ public class User extends FirebaseKey implements Serializable {
 
     private Datetime datetime;
 
+    private int deleted; // 0 for not deleted, 1 for deleted
+
 
     public User(User user) {
         this.setKey(user.getKey());
@@ -31,6 +33,7 @@ public class User extends FirebaseKey implements Serializable {
         this.setPassword(user.getPassword());
         this.setPhoneNumber(user.getPhoneNumber());
         this.setImageUrl(user.getImageUrl());
+        this.setDeleted(user.getDeleted());
     }
 
     public User(String key, String firstname, String email, String lastname, String password, String phoneNumber,
@@ -45,8 +48,16 @@ public class User extends FirebaseKey implements Serializable {
         this.account_type = accountType;
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
+        this.setDeleted(0);
     }
 
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
 
     public String getImagePath() {
         return imagePath;
@@ -119,6 +130,7 @@ public class User extends FirebaseKey implements Serializable {
         if(this.lastname == null || this.lastname.isEmpty()) return false;
         if(this.email == null || this.email.isEmpty()) return false;
         if(this.password == null || this.password.isEmpty()) return false;
+        if(this.getDeleted() == 1) return false;
         return this.phoneNumber != null && !this.phoneNumber.isEmpty();
     }
 

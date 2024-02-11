@@ -13,6 +13,8 @@ import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -111,8 +113,6 @@ public class Database {
                     }
                 });
     }
-
-
 
 
     public void fetchUserDatesByService(String serviceName) {
@@ -418,7 +418,7 @@ public class Database {
 
                         for (DocumentSnapshot document : value) {
                             Manager manager = document.toObject(Manager.class);
-                            if (manager != null) {
+                            if (manager != null && manager.getDeleted() == 0) {
                                 if (manager.getImagePath() != null) {
                                     manager.setImageUrl(downloadImageUrl(manager.getImagePath()));
                                 }

@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Service Name: "
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -20,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/textViewServNameLabel"
         android:layout_marginStart="8dp"
-        android:background="@drawable/lavender_border"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -28,7 +29,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewServName"
-        android:text="Time/Date: "
+        android:text="Date: "
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -38,8 +40,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewServName"
         android:layout_toEndOf="@id/textViewTimeDateLabel"
+        android:textColor="@color/black"
         android:layout_marginStart="8dp"
-        android:background="@drawable/lavender_border"
         android:textSize="16sp" />
 
     <TextView
@@ -47,6 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTimeDate"
+        android:textColor="@color/black"
         android:text="Time: "
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -57,8 +60,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTimeDate"
         android:layout_toEndOf="@id/textViewTimeLabel"
+        android:textColor="@color/black"
         android:layout_marginStart="8dp"
-        android:background="@drawable/lavender_border"
         android:textSize="16sp" />
 
     <TextView
@@ -66,7 +69,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTime"
-        android:text="Manager Name: "
+        android:text="Worker's Name: "
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -77,7 +81,7 @@
         android:layout_below="@id/textViewTime"
         android:layout_toEndOf="@id/texManagerNameLabel"
         android:layout_marginStart="8dp"
-        android:background="@drawable/lavender_border"
+        android:textColor="@color/black"
         android:textSize="16sp" />
 
     <TextView
@@ -86,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/texManagerName"
         android:text="Duration: "
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -95,8 +100,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/texManagerName"
         android:layout_toEndOf="@id/texDurationLabel"
+        android:textColor="@color/black"
         android:layout_marginStart="8dp"
-        android:background="@drawable/lavender_border"
         android:textSize="16sp" />
 
 
@@ -108,8 +113,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Call Manager"
+        android:layout_marginBottom="25dp"
+        android:text="Approve \n Arrival"
         android:onClick="callManager" />
 
     <LinearLayout
