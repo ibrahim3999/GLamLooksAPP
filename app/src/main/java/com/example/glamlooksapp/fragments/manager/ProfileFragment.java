@@ -12,6 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
@@ -75,6 +76,8 @@ public class ProfileFragment extends Fragment {
 
     private void initVars() {
         database.setUserCallBack(new UserCallBack() {
+
+
 
             @Override
             public void onUserFetchDataComplete(Manager manager) {}

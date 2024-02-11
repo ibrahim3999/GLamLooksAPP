@@ -2,45 +2,33 @@ package com.example.glamlooksapp.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.OnTextViewClickListener;
-import com.example.glamlooksapp.utils.Database;
-import com.example.glamlooksapp.utils.Datetime;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.Service;
-import com.example.glamlooksapp.utils.User;
 
 import java.util.ArrayList;
-
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceViewHolder> {
 
     private Context context;
-    private ArrayList<Manager> manager_ArrayList;
-    Database database = new Database();
+    private ArrayList<Manager> managerArrayList;
     private OnTextViewClickListener onTextViewClickListener;
 
-    public ServiceAdapter(Context context, ArrayList<Manager> maangerArrayList, OnTextViewClickListener listener) {
+    public ServiceAdapter(Context context, ArrayList<Manager> managerArrayList, OnTextViewClickListener listener) {
         this.context = context;
-        this.manager_ArrayList = maangerArrayList;
+        this.managerArrayList = managerArrayList;
         this.onTextViewClickListener = listener;
     }
-
 
     @NonNull
     @Override
@@ -49,13 +37,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         return new ServiceViewHolder(view);
     }
 
-    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ServiceViewHolder holder, int position) {
-        Manager manager = manager_ArrayList.get(position);
+        Manager manager = managerArrayList.get(position);
         Service service = manager.getService();
-        if (service != null) {
 
+        if (service != null) {
             String serviceName = service.getServiceName();
             holder.textViewServiceName.setTextColor(Color.BLUE);
             holder.textViewFirstName.setText(manager.getFirstname());
@@ -66,59 +54,34 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
             holder.textViewServiceName.setOnClickListener(v -> {
                 if (onTextViewClickListener != null) {
-                    onTextViewClickListener.onTextViewClicked(position);
+                    onTextViewClickListener.onTextViewClicked(position, manager.getKey()); // Pass manager ID to listener
                 }
             });
-
-//            holder.callBtn.setOnClickListener(v -> {
-//                Intent intent = new Intent(Intent.ACTION_DIAL);
-//                String phoneNumber = holder.textViewPhoneNumber.getText().toString();
-//                intent.setData(Uri.parse("tel:" + manager.getPhoneNumber()));
-//                context.startActivity(intent);
-//            });
-
         } else {
             // Handle the case where the Service object is null
             holder.textViewServiceName.setText("Service Not Available");
         }
-
-
     }
 
-
-
-
-
-        @Override
-        public int getItemCount () {
-            return manager_ArrayList.size();
-        }
-
-        static class ServiceViewHolder extends RecyclerView.ViewHolder {
-            TextView textViewServiceName;
-            TextView textViewFirstName;
-            TextView textViewLastName;
-            TextView textViewPhoneNumber;
-
-            TextView textViewServiceDuration;
-
-            TextView textViewServicePrice;
-
-
-            public ServiceViewHolder(@NonNull View itemView) {
-                super(itemView);
-
-                textViewServiceName = itemView.findViewById(R.id.textViewServiceName);
-                textViewFirstName = itemView.findViewById(R.id.textViewFirstName);
-                textViewLastName = itemView.findViewById(R.id.textViewLastName);
-                textViewPhoneNumber = itemView.findViewById(R.id.textViewPhoneNumber);
-                textViewServiceDuration = itemView.findViewById(R.id.textViewServiceDuration);
-                textViewServicePrice = itemView.findViewById(R.id.textViewServicePrice);
-
-
-            }
-        }
-
+    @Override
+    public int getItemCount() {
+        return managerArrayList.size();
     }
 
+    static class ServiceViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewServiceName;
+        TextView textViewFirstName;
+        TextView textViewLastName;
+        TextView textViewServiceDuration;
+        TextView textViewServicePrice;
 
+        public ServiceViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textViewServiceName = itemView.findViewById(R.id.textViewServiceName);
+            textViewFirstName = itemView.findViewById(R.id.textViewFirstName);
+            textViewLastName = itemView.findViewById(R.id.textViewLastName);
+            textViewServiceDuration = itemView.findViewById(R.id.textViewServiceDuration);
+            textViewServicePrice = itemView.findViewById(R.id.textViewServicePrice);
+        }
+    }
+}

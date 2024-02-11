@@ -65,4 +65,9 @@
     <string name="service_name">Service Name</string>
     <string name="costservice">CostService</string>
     <string name="duration">duration</string>
+    <string name="call_manager">Call Manager</string>
+    <string name="service_namee">Service Name:</string>
+    <string name="time_date">Time/Date:</string>
+    <string name="manager_name">Manager Name:</string>
+    <string name="durationn">Duration:</string>
 </resources>

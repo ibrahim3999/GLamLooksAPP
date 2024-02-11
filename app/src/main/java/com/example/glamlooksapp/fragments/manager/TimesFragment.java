@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.Adapter.CustomerAdapter;
+import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
@@ -72,6 +73,7 @@ public class TimesFragment extends Fragment {
     private void intiVars() {
 
         database.setUserCallBack(new UserCallBack() {
+
 
             @Override
             public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {

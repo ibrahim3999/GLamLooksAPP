@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.CustomerActivity;
 import com.example.glamlooksapp.home.ManagerActivity;
@@ -110,6 +111,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
         database.setUserCallBack(new UserCallBack() {
+
+
 
             @Override
             public void onUserFetchDataComplete(Manager manager) {}

@@ -15,16 +15,25 @@ public class Datetime {
     private String key;
 
     private String uid;
-
+    private String managerId;
 
     public Datetime() {
     }
 
-    public Datetime(String serviceName, Timestamp timestamp, String key,String uid) {
+    public Datetime(String serviceName, Timestamp timestamp, String key,String uid,String managerId) {
         this.serviceName = serviceName;
         this.timestamp = timestamp;
         this.key = key;
         this.uid = uid;
+        this.managerId = managerId;
+    }
+
+    public Datetime(Datetime datetime) {
+        this.serviceName = datetime.getServiceName();
+        this.timestamp = datetime.getTimestamp();
+        this.key = datetime.getKey();
+        this.uid = datetime.getUUid();
+        this.managerId = datetime.getManagerId();
     }
 
     public String getServiceName() {
@@ -53,6 +62,14 @@ public class Datetime {
 
     public void setUUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(String managerId) {
+        this.managerId = managerId;
     }
 
     public String getUUid() {

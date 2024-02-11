@@ -3,75 +3,113 @@ package com.example.glamlooksapp.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
+import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
+import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
+import com.google.android.gms.tasks.Task;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.CustomersViewHolder> {
 
-
     private Context context;
     private ArrayList<Datetime> datetimeArrayList;
-    Database database = new Database();
+    private Database database = new Database();
 
     public CustomersAdapter(Context context, ArrayList<Datetime> datetimeArrayList) {
         this.context = context;
         this.datetimeArrayList = datetimeArrayList;
     }
 
-
     @NonNull
     @Override
-    public CustomersAdapter.CustomersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CustomersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.date_item, parent, false);
-        return new CustomersAdapter.CustomersViewHolder(view);
+        return new CustomersViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomersAdapter.CustomersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomersViewHolder holder, int position) {
         Datetime datetime = datetimeArrayList.get(position);
-        String serviceName = datetime.getServiceName() + " " ;
-        holder.textViewServiceName.setText(serviceName);
+        String serviceName = datetime.getServiceName() + " ";
+        holder.textViewServName.setText(serviceName);
         holder.textViewTimeDate.setText(datetime.getFormattedDate());
         holder.textViewTime.setText(datetime.getFormattedTime());
 
 
 
+        // Fetch manager's data by ID
+        String managerId = datetime.getManagerId();
+        Log.d("ManagerId", datetime.getManagerId());
 
+        database.fetchManagerData(managerId, new UserCallBack() {
+            @Override
+            public void onUserFetchDataComplete(Manager manager) {
+                if (manager != null) {
+                    // Set manager's data in the ViewHolder
+                    String manager_name = manager.getFirstname() + " " + manager.getLastname();
+                    holder.texManagerName.setText(manager_name);
+                    holder.texDuration.setText(manager.getService().getDuration());
+                    Log.d("UserCallBack", "onUserFetchDataComplete is called1");
+
+                    holder.callBtnM.setOnClickListener(v -> {
+                        Intent intent = new Intent(Intent.ACTION_DIAL);
+                        intent.setData(Uri.parse("tel:" + manager.getPhoneNumber()));
+                        context.startActivity(intent);
+                    });
+
+                } else {
+                    Log.d("UserCallBack", "onUserFetchDataComplete is called400");
+                }
+                // Log message to indicate that onUserFetchDataComplete is called
+                Log.d("UserCallBack", "onUserFetchDataComplete is called2");
+            }
+
+            @Override
+            public void onUserFetchDataComplete(User user) {
+                // Log message to indicate that onUserFetchDataComplete is called
+                Log.d("UserCallBack", "onUserFetchDataComplete is called3");
+            }
+
+            @Override
+            public void onUpdateComplete(Task<Void> task) {
+                // Log message to indicate that onUpdateComplete is called
+                Log.d("UserCallBack", "onUpdateComplete is called4");
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {
         return datetimeArrayList.size();
     }
 
-    static class CustomersViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewServiceName;
-        TextView textViewTimeDate,textViewTime;
+    public static class CustomersViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewServName, textViewTimeDate, textViewTime, texManagerName, texDuration;
+        Button callBtnM;
         public CustomersViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewServiceName = itemView.findViewById(R.id.textViewServiceName);
+            textViewServName = itemView.findViewById(R.id.textViewServName);
             textViewTimeDate = itemView.findViewById(R.id.textViewTimeDate);
             textViewTime = itemView.findViewById(R.id.textViewTime);
-
-
+            texManagerName = itemView.findViewById(R.id.texManagerName);
+            texDuration = itemView.findViewById(R.id.texDuration);
+            callBtnM = itemView.findViewById(R.id.callBtnM);
         }
     }
-
-
 }

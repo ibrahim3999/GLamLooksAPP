@@ -132,7 +132,9 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     }
 
 
-    private void showDateTimePicker(final String serviceName) {
+    private void showDateTimePicker(final String serviceName, Datetime datetime) {
+
+        Datetime new_datetime = new Datetime(datetime);
 
         // Get the current date and time
         final Calendar currentDate = Calendar.getInstance();
@@ -177,9 +179,10 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
                                                 String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
                                                         currentDate.get(Calendar.HOUR_OF_DAY),
                                                         currentDate.get(Calendar.MINUTE));
+                                            new_datetime.setServiceName(serviceName);
 
                                                 // Add queue -> database
-                                                addQueueToDB(serviceName, currentDate.getTimeInMillis());
+                                                addQueueToDB(new_datetime, currentDate.getTimeInMillis());
                                                 // ShowDates();
                                             //}
                                         }
@@ -208,12 +211,12 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     }
 
 
-    private void addQueueToDB(String serviceName, long timestamp) {
+    private void addQueueToDB(Datetime current_dateTime, long timestamp) {
 
         Timestamp timestampDB = new Timestamp(timestamp / 1000, 0);
 
-        Datetime datetime = new Datetime();
-        datetime.setServiceName(serviceName);
+        Datetime datetime = new Datetime(current_dateTime);
+//        datetime.setServiceName(serviceName);
         datetime.setTimestamp(timestampDB);
         datetime.setKey(database.getCurrentUser().getUid());
         datetime.setUUid("");
@@ -224,7 +227,6 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
         database.saveUserTimes(datetime,currentUser);
 
-        sendMessageToManager(Database.MANAGER_UID,"You Have a New TSchedule");
     }
 
     private boolean isUnavailableTime(int hour, int minute) {
@@ -252,15 +254,25 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
 
     @Override
-    public void onTextViewClicked(int position) {
+   public void onTextViewClicked(int position, String managerId) {
         // Retrieve the corresponding Manager object from the managerList
         Manager manager = managerList.get(position);
 
         // Get the service name from the Manager object
         String serviceName = manager.getService().getServiceName();
 
+        // Create a Datetime object with the details of the manager
+        Datetime datetime = new Datetime();
+        datetime.setServiceName(serviceName);
+        datetime.setTimestamp(new Timestamp(System.currentTimeMillis() / 1000, 0));
+        datetime.setKey(database.getCurrentUser().getUid());
+        datetime.setUUid("");
+        datetime.setManagerId(managerId); // Set the manager ID
+
         // Show the date and time picker dialog
-        showDateTimePicker(serviceName);
+        showDateTimePicker(serviceName, datetime);
+//        sendMessageToManager(manager.getKey(),"You Have a New TSchedule");
+
     }
 
 

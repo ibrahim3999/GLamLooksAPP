@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.utils.Database;
@@ -95,6 +96,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private void initVars() {
         db = new Database();
         db.setUserCallBack(new UserCallBack() {
+
 
             @Override
             public void onUserFetchDataComplete(Manager manager) {}

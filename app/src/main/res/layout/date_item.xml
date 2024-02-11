@@ -3,42 +3,123 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:background="@drawable/customer_border"
-    >
-
+    android:background="@drawable/customer_border">
 
     <TextView
-        android:id="@+id/textViewServiceName"
+        android:id="@+id/textViewServNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textSize="18sp"
+        android:text="Service Name: "
+        android:textSize="16sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/textViewServName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/textViewServNameLabel"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/lavender_border"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewTimeDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewServName"
+        android:text="Time/Date: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewTimeDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewServiceName"
+        android:layout_below="@id/textViewServName"
+        android:layout_toEndOf="@id/textViewTimeDateLabel"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="36dp"
+        android:background="@drawable/lavender_border"
         android:textSize="16sp" />
 
+    <TextView
+        android:id="@+id/textViewTimeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTimeDate"
+        android:text="Time: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textViewTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTimeDate"
+        android:layout_toEndOf="@id/textViewTimeLabel"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="36dp"
+        android:background="@drawable/lavender_border"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/texManagerNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTime"
+        android:text="Manager Name: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/texManagerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewTime"
+        android:layout_toEndOf="@id/texManagerNameLabel"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/lavender_border"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/texDurationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texManagerName"
+        android:text="Duration: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/texDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texManagerName"
+        android:layout_toEndOf="@id/texDurationLabel"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/lavender_border"
         android:textSize="16sp" />
 
 
+    <Button
+        android:id="@+id/callBtnM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Call Manager"
+        android:onClick="callManager" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texDuration"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp">
+
+
+    </LinearLayout>
 </RelativeLayout>

@@ -353,6 +353,57 @@ public class Database {
         });
     }
 
+    public void fetchManagerData(String managerId, UserCallBack userCallBack) {
+        // Check if the managerId is not null
+        if (managerId == null) {
+            // Handle the case when managerId is null
+            return;
+        }
+
+        CollectionReference managersRef = db.collection(USERS_TABLE);
+
+        // Query the manager document by managerId
+        managersRef.document(managerId).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document != null && document.exists()) {
+                    // Convert the document snapshot to a Manager object
+                    Manager manager = document.toObject(Manager.class);
+                    if (manager != null) {
+                        // Callback to notify that manager data has been fetched successfully
+                        try {
+                            userCallBack.onUserFetchDataComplete(manager);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else {
+                        // Callback to handle the case when manager object is null
+                        try {
+                            userCallBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    // Callback to handle the case when document does not exist
+                    try {
+                        userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else {
+                // Callback to handle the case when fetching manager data fails
+                try {
+                    userCallBack.onUserFetchDataComplete(null);
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+
 
     public void fetchManagersData() {
         db.collection(USERS_TABLE)
