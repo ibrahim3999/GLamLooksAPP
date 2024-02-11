@@ -8,20 +8,6 @@
     tools:context=".fragments.user.AboutUFragment"
     tools:ignore="ExtraText">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/back_button"
-        android:src="@drawable/ic_custom_back_arrow" />
-
     <TextView
         android:id="@+id/aboutUsText"
         android:layout_width="wrap_content"
@@ -142,16 +128,6 @@
         android:layout_below="@id/AddressText"
         android:layout_centerHorizontal="true"
         android:textColor="@color/Lavender"/>
-
-    <Button
-        android:id="@+id/WhatsappButton"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:text="@string/whatsapp"
-        android:textSize="11sp"
-        android:layout_below="@id/TalkToUs"
-        android:layout_centerHorizontal="true"
-        android:onClick="openWhatsApp"/>
 
     />
 

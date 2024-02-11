@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class User extends FirebaseKey implements Serializable {
 
+    public static final int ACCOUNT_TYPE_MANAGER = 1;
     private String firstname;
     private String email;
     private String lastname;
@@ -20,6 +21,8 @@ public class User extends FirebaseKey implements Serializable {
     private Datetime datetime;
 
     private int deleted; // 0 for not deleted, 1 for deleted
+
+
 
 
     public User(User user) {

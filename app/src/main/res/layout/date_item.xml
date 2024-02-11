@@ -105,17 +105,16 @@
         android:textSize="16sp" />
 
 
-    <Button
-        android:id="@+id/callBtnM"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageButton
+        android:id="@+id/removeButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="25dp"
-        android:text="Approve \n Arrival"
-        android:onClick="callManager" />
+        android:layout_alignParentTop="true"
+        android:src="@drawable/baseline_delete_forever_24"
+        android:onClick="callManager"
+
+         />
 
     <LinearLayout
         android:layout_width="wrap_content"

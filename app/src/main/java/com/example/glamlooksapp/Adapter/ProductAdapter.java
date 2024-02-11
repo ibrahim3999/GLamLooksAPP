@@ -59,6 +59,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         ImageView imageViewProduct;
         TextView textViewProductName;
         TextView textViewProductPrice;
+        int deleted; // 0 for not deleted, 1 for deleted
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);

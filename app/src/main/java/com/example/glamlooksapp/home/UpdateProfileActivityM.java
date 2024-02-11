@@ -1,10 +1,5 @@
 package com.example.glamlooksapp.home;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -19,14 +14,20 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
+import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.utils.Database;
+import com.example.glamlooksapp.utils.Generic;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
-import com.example.glamlooksapp.utils.Generic;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -35,11 +36,9 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Objects;
 
-import com.example.glamlooksapp.R;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UpdateProfileActivity extends AppCompatActivity {
+public class UpdateProfileActivityM extends AppCompatActivity {
     private Uri selectedImageUri;
     private Database db;
     private CircleImageView editAccount_IV_image;
@@ -48,7 +47,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private TextInputLayout editAccount_TF_phone;
     private ProgressBar editAccount_PB_loading;
     private Button editAccount_BTN_updateAccount;
-    private User currentUser;
+    private Manager currentManager;
     private FloatingActionButton editAccount_FBTN_uploadImage;
     private TextInputLayout editAccount_service_name;
     private TextInputLayout editAccount_service_duration;
@@ -58,28 +57,32 @@ public class UpdateProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_profile);
+        setContentView(R.layout.activity_update_profile_m);
 
         Intent intent = getIntent();
-        currentUser = (User) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        currentManager = (Manager) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
         if(!Generic.checkPermissions(this)) {
             Generic.requestPermissions(this);
         }
         findViews();
         initVars();
-        displayUser(currentUser);
+        displayUser(currentManager);
     }
 
-    private void displayUser(User user) {
-        editAccount_TF_firstName.getEditText().setText(user.getFirstname());
-        editAccount_TF_lastName.getEditText().setText(user.getLastname());
-        editAccount_TF_phone.getEditText().setText(user.getPhoneNumber());
+    private void displayUser(Manager manager) {
+        editAccount_TF_firstName.getEditText().setText(manager.getFirstname());
+        editAccount_TF_lastName.getEditText().setText(manager.getLastname());
+        editAccount_TF_phone.getEditText().setText(manager.getPhoneNumber());
+        editAccount_service_name.getEditText().setText(manager.getService().getServiceName());
+        editAccount_service_duration.getEditText().setText(manager.getService().getDuration());
+        editAccount_service_price.getEditText().setText(Double.toString(manager.getService().getPrice()));
 
-        if(user.getImageUrl() != null){
+
+        if(manager.getImageUrl() != null){
             // set image profile
             Glide
                     .with(this)
-                    .load(user.getImageUrl())
+                    .load(manager.getImageUrl())
                     .centerCrop()
                     .into(editAccount_IV_image);
         }
@@ -94,6 +97,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
         editAccount_BTN_updateAccount = findViewById(R.id.editAccount_BTN_updateAccount);
         editAccount_FBTN_uploadImage = findViewById(R.id.editAccount_FBTN_uploadImage);
         editAccount_TF_phone = findViewById(R.id.editAccount_TF_phone);
+        editAccount_service_name = findViewById(R.id.editAccount_service_name);
+        editAccount_service_duration = findViewById(R.id.edit_account_service_duration);
+        editAccount_service_price = findViewById(R.id.edit_account_service_price);
+
     }
 
 
@@ -113,10 +120,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
             @Override
             public void onUpdateComplete(Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(UpdateProfileActivity.this, "Profile update success",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateProfileActivityM.this, "Profile update success",Toast.LENGTH_SHORT).show();
                     finish();
                 }else {
-                    Toast.makeText(UpdateProfileActivity.this, task.getException().getMessage().toString() ,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateProfileActivityM.this, task.getException().getMessage().toString() ,Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -126,39 +133,39 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                User user = new User();
+                Manager manager = new Manager();
 
 
-                user.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
-                user.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
-                user.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
-                user.setEmail(currentUser.getEmail());
-                user.setAccount_type(currentUser.getAccount_type());
+                manager.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
+                manager.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
+                manager.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
+                manager.setEmail(currentManager.getEmail());
+                manager.setAccount_type(currentManager.getAccount_type());
                 String uid = db.getCurrentUser().getUid();
-                user.setKey(uid);
+                manager.setKey(uid);
 
                 if(selectedImageUri != null){
                     // save image
-                    String ext = Generic.getFileExtension(UpdateProfileActivity.this, selectedImageUri);
+                    String ext = Generic.getFileExtension(UpdateProfileActivityM.this, selectedImageUri);
                     String path = Database.USERS_PROFILE_IMAGES + uid + "." + ext;
                     db.uploadImage(selectedImageUri, path);
 //                    if(!db.uploadImage(selectedImageUri, path)){
 //                        return;
 //                    }
-                    user.setImagePath(path);
+                    manager.setImagePath(path);
                 }
 
-                db.updateUser(user);
+                db.updateManager(manager);
             }
         });
 
         editAccount_FBTN_uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Generic.checkPermissions(UpdateProfileActivity.this)){
+                if(Generic.checkPermissions(UpdateProfileActivityM.this)){
                     showImageSourceDialog();
                 }else{
-                    Toast.makeText(UpdateProfileActivity.this, "no permissions to access camera", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UpdateProfileActivityM.this, "no permissions to access camera", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -166,7 +173,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     private void showImageSourceDialog() {
         CharSequence[] items = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileActivityM.this);
         builder.setTitle("Choose Image Source");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
@@ -207,17 +214,17 @@ public class UpdateProfileActivity extends AppCompatActivity {
                                 Intent intent = result.getData();
                                 assert intent != null;
                                 selectedImageUri = intent.getData();
-                                final InputStream imageStream = UpdateProfileActivity.this.getContentResolver().openInputStream(selectedImageUri);
+                                final InputStream imageStream = UpdateProfileActivityM.this.getContentResolver().openInputStream(selectedImageUri);
                                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                                 editAccount_IV_image.setImageBitmap(selectedImage);
                             }
                             catch (FileNotFoundException e) {
                                 e.printStackTrace();
-                                Toast.makeText(UpdateProfileActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                Toast.makeText(UpdateProfileActivityM.this, "Something went wrong", Toast.LENGTH_LONG).show();
                             }
                             break;
                         case Activity.RESULT_CANCELED:
-                            Toast.makeText(UpdateProfileActivity.this, "Gallery canceled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateProfileActivityM.this, "Gallery canceled", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }
@@ -233,10 +240,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
                             Intent intent = result.getData();
                             Bitmap bitmap = (Bitmap)  intent.getExtras().get("data");
                             editAccount_IV_image.setImageBitmap(bitmap);
-                            selectedImageUri = Generic.getImageUri(UpdateProfileActivity.this, bitmap);
+                            selectedImageUri = Generic.getImageUri(UpdateProfileActivityM.this, bitmap);
                             break;
                         case Activity.RESULT_CANCELED:
-                            Toast.makeText(UpdateProfileActivity.this, "Camera canceled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateProfileActivityM.this, "Camera canceled", Toast.LENGTH_SHORT).show();
                             break;
                     }
                 }

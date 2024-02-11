@@ -74,7 +74,7 @@ public class TimesCusFragment extends Fragment {
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes) {
                 if (!datetimes.isEmpty()) {
-                    Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
 
                     customerDatesList.clear();
                     customerDatesList.addAll(datetimes);

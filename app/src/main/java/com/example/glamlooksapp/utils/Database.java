@@ -282,7 +282,15 @@ public class Database {
                 });
     }
 
-
+    public void updateManager(Manager manager){
+        this.db.collection(USERS_TABLE).document(manager.getKey()).set(manager)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        userCallBack.onUpdateComplete(task);
+                    }
+                });
+    }
 
 
     public void fetchUserData(String uid){

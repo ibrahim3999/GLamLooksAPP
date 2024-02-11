@@ -111,7 +111,7 @@ public class TimesFragment extends Fragment {
             @Override
             public void onFetchCustomerComplete(ArrayList<User> customers) {
                 if (!customers.isEmpty()) {
-                    Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
 
                     customersList.clear();
                     customersList.addAll(customers);

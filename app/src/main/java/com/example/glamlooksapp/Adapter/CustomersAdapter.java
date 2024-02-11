@@ -1,5 +1,6 @@
 package com.example.glamlooksapp.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,10 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         this.datetimeArrayList = datetimeArrayList;
     }
 
+    public void removeItem(int position) {
+        datetimeArrayList.remove(position);
+    }
+
     @NonNull
     @Override
     public CustomersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,14 +49,12 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomersViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CustomersViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Datetime datetime = datetimeArrayList.get(position);
         String serviceName = datetime.getServiceName() + " ";
         holder.textViewServName.setText(serviceName);
         holder.textViewTimeDate.setText(datetime.getFormattedDate());
         holder.textViewTime.setText(datetime.getFormattedTime());
-
-
 
         // Fetch manager's data by ID
         String managerId = datetime.getManagerId();
@@ -66,10 +70,13 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
                     holder.texDuration.setText(manager.getService().getDuration());
                     Log.d("UserCallBack", "onUserFetchDataComplete is called1");
 
-                    holder.callBtnM.setOnClickListener(v -> {
-                        Intent intent = new Intent(Intent.ACTION_DIAL);
-                        intent.setData(Uri.parse("tel:" + manager.getPhoneNumber()));
-                        context.startActivity(intent);
+                    holder.removeButton.setOnClickListener(v -> {
+                        String datetimeUid = datetime.getKey();
+
+                        database.deleteUserTime(datetimeUid);
+
+                        datetimeArrayList.remove(position);
+                        notifyDataSetChanged();
                     });
 
                 } else {
@@ -101,7 +108,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
     public static class CustomersViewHolder extends RecyclerView.ViewHolder {
         TextView textViewServName, textViewTimeDate, textViewTime, texManagerName, texDuration;
-        Button callBtnM;
+        ImageButton removeButton;
         public CustomersViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewServName = itemView.findViewById(R.id.textViewServName);
@@ -109,7 +116,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             textViewTime = itemView.findViewById(R.id.textViewTime);
             texManagerName = itemView.findViewById(R.id.texManagerName);
             texDuration = itemView.findViewById(R.id.texDuration);
-            callBtnM = itemView.findViewById(R.id.callBtnM);
+            removeButton = itemView.findViewById(R.id.removeButton);
         }
     }
 }

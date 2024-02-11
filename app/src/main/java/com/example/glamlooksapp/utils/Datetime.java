@@ -16,6 +16,7 @@ public class Datetime {
 
     private String uid;
     private String managerId;
+    private int deleted;
 
     public Datetime() {
     }
@@ -26,6 +27,7 @@ public class Datetime {
         this.key = key;
         this.uid = uid;
         this.managerId = managerId;
+        this.deleted = 0;
     }
 
     public Datetime(Datetime datetime) {
@@ -34,6 +36,15 @@ public class Datetime {
         this.key = datetime.getKey();
         this.uid = datetime.getUUid();
         this.managerId = datetime.getManagerId();
+        this.deleted = datetime.getDeleted();
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 
     public String getServiceName() {

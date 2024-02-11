@@ -17,6 +17,7 @@ import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.UpdateProfileActivity;
+import com.example.glamlooksapp.home.UpdateProfileActivityM;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
@@ -97,13 +98,21 @@ public class ProfileFragment extends Fragment {
         fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (currentUser.getAccount_type() == User.ACCOUNT_TYPE_MANAGER) {
+                    if(activity != null) {
+                        Intent intent = new Intent(activity, UpdateProfileActivityM.class);
+                        intent.putExtra(USER_INTENT_KEY, currentUser);
+                        startActivity(intent);
+                    }
+                }else{
+                    if(activity != null) {
+                        Intent intent = new Intent(activity, UpdateProfileActivity.class);
+                        intent.putExtra(USER_INTENT_KEY, currentUser);
+                        startActivity(intent);
 
-                if(activity != null) {
-                    Intent intent = new Intent(activity, UpdateProfileActivity.class);
-                    intent.putExtra(USER_INTENT_KEY, currentUser);
-                    startActivity(intent);
-
+                    }
                 }
+
             }
         });
 
