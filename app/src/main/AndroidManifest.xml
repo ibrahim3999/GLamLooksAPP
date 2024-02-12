@@ -29,6 +29,9 @@
             android:name=".home.UpdateProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".home.UpdateProfileActivityM"
+            android:exported="false" />
+        <activity
             android:name=".home.ManagerActivity"
             android:exported="true"
             android:launchMode="singleTop" />

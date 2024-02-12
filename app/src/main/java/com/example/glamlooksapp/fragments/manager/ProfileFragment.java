@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private TextView fProfile_TV_name;
     private CardView fProfile_CV_editDetails;
     private CardView fProfile_CV_logout;
-    private User currentUser ;
+    private Manager currentUser ;
     private Database database;
     private AppCompatActivity activity;
 
@@ -44,22 +44,22 @@ public class ProfileFragment extends Fragment {
 
     public ProfileFragment(AppCompatActivity activity) {
         // Required empty public constructor
-        database = new Database();
+//        database = new Database();
         this.activity = activity;
     }
 
-    public void setCurrentUser(User user){
+    public void setCurrentUser(Manager user){
         this.currentUser = user;
         displayUser(user);
     }
 
-    private void displayUser(User user) {
-        fProfile_TV_name.setText(user.getFirstname());
-        if(user.getImageUrl() != null){
+    private void displayUser(Manager manager) {
+        fProfile_TV_name.setText(manager.getFirstname());
+        if(manager.getImageUrl() != null){
             // set image profile
             Glide
                     .with(activity)
-                    .load(user.getImageUrl())
+                    .load(manager.getImageUrl())
                     .centerCrop()
                     .into(fProfile_IV_profileImage);
         }
@@ -70,6 +70,7 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        database = new Database();
         findViews(view);
         initVars();
         return view;
@@ -81,11 +82,13 @@ public class ProfileFragment extends Fragment {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {}
+            public void onUserFetchDataComplete(Manager manager) {
+                setCurrentUser(manager);
+            }
 
             @Override
             public void onUserFetchDataComplete(User user) {
-                setCurrentUser(user);
+
             }
 
             @Override
@@ -94,25 +97,17 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        database.fetchUserData(database.getCurrentUser().getUid());
+
         fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentUser.getAccount_type() == User.ACCOUNT_TYPE_MANAGER) {
-                    if(activity != null) {
-                        Intent intent = new Intent(activity, UpdateProfileActivityM.class);
-                        intent.putExtra(USER_INTENT_KEY, currentUser);
-                        startActivity(intent);
-                    }
-                }else{
-                    if(activity != null) {
-                        Intent intent = new Intent(activity, UpdateProfileActivity.class);
-                        intent.putExtra(USER_INTENT_KEY, currentUser);
-                        startActivity(intent);
 
-                    }
+                if(activity != null) {
+                    Intent intent = new Intent(activity, UpdateProfileActivityM.class);
+                    intent.putExtra(USER_INTENT_KEY, currentUser);
+                    startActivity(intent);
+
                 }
-
             }
         });
 
@@ -136,6 +131,7 @@ public class ProfileFragment extends Fragment {
         fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImage);
         fProfile_TV_name = view.findViewById(R.id.fProfile_TV_name);
         fProfile_CV_editDetails = view.findViewById(R.id.fProfile_CV_editDetails);
+        database.fetchManagerData(database.getCurrentUser().getUid());
     }
 
 }

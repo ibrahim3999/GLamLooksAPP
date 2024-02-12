@@ -94,7 +94,7 @@ public class ProfileFragmentC extends Fragment {
             }
         });
 
-        database.fetchUserData(database.getCurrentUser().getUid());
+
         fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +128,7 @@ public class ProfileFragmentC extends Fragment {
         fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImageC);
         fProfile_TV_name = view.findViewById(R.id.fProfile_TV_nameC);
         fProfile_CV_editDetails = view.findViewById(R.id.fProfile_CV_editDetailsC);
+        database.fetchUserData(database.getCurrentUser().getUid());
     }
 
 }

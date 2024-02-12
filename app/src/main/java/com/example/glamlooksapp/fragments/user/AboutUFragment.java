@@ -16,7 +16,6 @@ import com.example.glamlooksapp.R;
 public class AboutUFragment extends Fragment {
 
 
-    Button btnWhatsapp;
 
 
     @Override
@@ -33,18 +32,10 @@ public class AboutUFragment extends Fragment {
     }
 
     private void initViews(View view) {
-        btnWhatsapp = view.findViewById(R.id.WhatsappButton);
     }
 
     private void playActions() {
-        btnWhatsapp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowMessage("This feature is not supported yet");
 
-            }
-
-        });
 
     }
 

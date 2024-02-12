@@ -27,6 +27,7 @@ import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Generic;
 import com.example.glamlooksapp.utils.Manager;
+import com.example.glamlooksapp.utils.Service;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,6 +35,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -59,11 +61,14 @@ public class UpdateProfileActivityM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile_m);
 
+
         Intent intent = getIntent();
-        currentManager = (Manager) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
-        if(!Generic.checkPermissions(this)) {
-            Generic.requestPermissions(this);
+        Serializable serializable = intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        if (serializable instanceof Manager) {
+            currentManager = (Manager) serializable;
         }
+
+
         findViews();
         initVars();
         displayUser(currentManager);
@@ -139,6 +144,13 @@ public class UpdateProfileActivityM extends AppCompatActivity {
                 manager.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
                 manager.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
                 manager.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
+                String serviceName = Objects.requireNonNull(editAccount_service_name.getEditText()).getText().toString();
+                double price = Double.valueOf(Objects.requireNonNull(editAccount_service_price.getEditText()).getText().toString());
+                String duration = Objects.requireNonNull(editAccount_service_duration.getEditText()).getText().toString();
+
+                Service managerService = new Service(serviceName, price, duration);
+                manager.setService(managerService);
+
                 manager.setEmail(currentManager.getEmail());
                 manager.setAccount_type(currentManager.getAccount_type());
                 String uid = db.getCurrentUser().getUid();

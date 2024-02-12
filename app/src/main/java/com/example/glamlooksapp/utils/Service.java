@@ -23,6 +23,12 @@ public class Service extends FirebaseKey implements Serializable {
         this.duration = duration;
     }
 
+    public void setService(Service service){
+        this.setDuration(service.getDuration());
+        this.setPrice(service.getPrice());
+        this.setServiceName(service.getServiceName());
+    }
+
     public Service(){}
 
 
