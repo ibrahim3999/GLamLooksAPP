@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class Datetime {
 
@@ -106,6 +107,23 @@ public class Datetime {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date dateTime = timestamp.toDate();
         return sdf.format(dateTime);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Datetime)) {
+            return false;
+        }
+        Datetime other = (Datetime) obj;
+        return Objects.equals(managerId, other.managerId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(managerId);
     }
 
 }

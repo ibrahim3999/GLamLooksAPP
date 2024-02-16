@@ -1,0 +1,14 @@
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/button_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:rowCount="7"
+    android:columnCount="3"
+    android:orientation="vertical"
+    android:background="@color/your_background_color"
+    android:padding="@dimen/your_padding"
+    android:layout_margin="@dimen/your_margin">
+
+    <!-- This GridLayout will hold the dynamically added buttons -->
+
+</GridLayout>

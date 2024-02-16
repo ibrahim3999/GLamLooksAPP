@@ -15,4 +15,5 @@
     <color name="lightGray">#BDBDBD</color>
     <color name="Blue">#2196F3</color>
     <color name="colorPrimary">#3F51B5</color>
+    <color name="your_background_color">#FFFFFFFF</color>
 </resources>

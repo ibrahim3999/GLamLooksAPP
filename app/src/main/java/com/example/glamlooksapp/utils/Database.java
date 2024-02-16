@@ -3,6 +3,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+
+import static com.google.firebase.appcheck.internal.util.Logger.TAG;
 
 
 public class Database {
@@ -205,6 +208,29 @@ public class Database {
                     }
                 });
     }
+    public void fetchUserDatesByKeyAndDate(String uid,String formattedDate, CustomerCallBack customerCallBack) {
+        db.collection(TIMES_TABLE)
+                .whereEqualTo("managerId", uid)
+                .whereEqualTo("formattedDate", formattedDate)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e(TAG, "Error fetching user dates by key and date: ", error);
+                            return;
+                        }
+
+                        listUser_Dates = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : value) {
+                            Datetime datetime = document.toObject(Datetime.class);
+                            listUser_Dates.add(datetime);
+                        }
+
+                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+                    }
+                });
+    }
+
 
 
 
@@ -256,6 +282,36 @@ public class Database {
                 });
     }
 
+    public void saveUserTimes(Datetime dateTime, User customer,CustomerCallBack callBack) {
+        // Get a reference to the Firestore collection
+        CollectionReference timesCollection = db.collection(TIMES_TABLE);
+
+        // Add a new document with an auto-generated ID
+        timesCollection.add(dateTime)
+                .addOnSuccessListener(documentReference -> {
+                    // Get the auto-generated ID of the new document
+                    String dateTimeId = documentReference.getId();
+
+                    // Set the auto-generated ID in the Datetime object
+                    dateTime.setUUid(dateTimeId);
+
+                    // Update the document with the generated ID
+                    timesCollection.document(dateTimeId).set(dateTime)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    // If successful, call the callback with the generated ID
+                                    callBack.onAddICustomerComplete(task);
+                                } else {
+                                    // If not successful, call the callback with null
+                                    callBack.onAddICustomerComplete(null);
+                                }
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    // Handle any errors
+                    callBack.onAddICustomerComplete(null);
+                });
+    }
 
 
 
@@ -271,7 +327,6 @@ public class Database {
                     }
                 });
     }
-
     public void updateUser(User user){
         this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -291,6 +346,7 @@ public class Database {
                     }
                 });
     }
+
 
 
     public void fetchUserData(String uid){
@@ -317,6 +373,37 @@ public class Database {
                     // Document does not exist or there was an error, handle appropriately
                     try {
                         userCallBack.onUserFetchDataComplete(null);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+    }
+    public void fetchUserData(String uid,UserCallBack callBack){
+        db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null && value.exists()) {
+                    User user = value.toObject(User.class);
+                    if (user != null) {
+                        if(user.getImagePath() != null){
+                            user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                        }
+                        user.setKey(value.getId());
+                        callBack.onUserFetchDataComplete(user);
+                    } else {
+                        // User object is null, handle appropriately
+                        try {
+                            callBack.onUserFetchDataComplete(null);
+                        } catch (NoSuchAlgorithmException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    // Document does not exist or there was an error, handle appropriately
+                    try {
+                        callBack.onUserFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
@@ -517,5 +604,44 @@ public class Database {
                     }
                 });
     }
+    public void fetchDatesByManagerId(String managerId, DatetimeCallback callback) {
+        // Check if managerId is not null
+        if (managerId == null) {
+            // Handle the case when managerId is null
+            return;
+        }
+
+        // Get a reference to the Firestore collection
+        CollectionReference datesCollection = db.collection(TIMES_TABLE);
+
+        // Query the collection for dates with matching managerId
+        datesCollection.whereEqualTo("managerId", managerId)
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        // Handle Firestore error
+                        Log.e("FirestoreData", "Error fetching dates by managerId: ", error);
+                        return;
+                    }
+
+                    // Create a list to store retrieved dates
+                    ArrayList<Datetime> datesList = new ArrayList<>();
+
+                    // Check if the query result is not empty
+                    if (value != null && !value.isEmpty()) {
+                        // Loop through each document in the query result
+                        for (QueryDocumentSnapshot document : value) {
+                            // Convert Firestore document to Datetime object
+                            Datetime datetime = document.toObject(Datetime.class);
+                            // Add the datetime object to the list
+                            datesList.add(datetime);
+                        }
+                    }
+
+                    // Call the callback method with the retrieved dates
+                    callback.onDatetimeFetchComplete(datesList);
+                });
+    }
+
+
 
 }

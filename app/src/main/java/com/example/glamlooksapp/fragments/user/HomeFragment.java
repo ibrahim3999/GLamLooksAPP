@@ -3,12 +3,15 @@ package com.example.glamlooksapp.fragments.user;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +41,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -52,6 +56,9 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     private ServiceAdapter managerAdapter;
     private ArrayList<Manager> managerList = new ArrayList<>();
     private AppCompatActivity activity;
+    private  Manager manager ;
+    private Manager currentManager = null;
+
 
     public HomeFragment(AppCompatActivity appCompatActivity) {
         activity = appCompatActivity;
@@ -90,6 +97,8 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     private void initVars() {
         User currentUser = new User();
         currentUser.setKey(database.getCurrentUser().getUid());
+
+
 
         database.setCustomerCallBack(new CustomerCallBack() {
             @Override
@@ -161,42 +170,21 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
                                     " than Tuesday or Saturday.");
                             return;
                         } else {
+                           Datetime date =new Datetime();
 
-                            // Time picker dialog
-                            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(
-                                    requireContext(),
-                                    R.style.CustomTimePicker,
-                                    new TimePickerDialog.OnTimeSetListener() {
-                                        @Override
-                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                            currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                            currentDate.set(Calendar.MINUTE, minute);
-
-//                                            if (isUnavailableTime(hourOfDay, minute)) {
-//                                                // Handle the case when the chosen time is unavailable
-//                                                showToast("Selected time is unavailable. Please choose another time.");
-//                                            } else {
-                                                // The chosen time is available, proceed with your logic
-                                                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
-                                                        currentDate.get(Calendar.HOUR_OF_DAY),
-                                                        currentDate.get(Calendar.MINUTE));
-                                            new_datetime.setServiceName(serviceName);
-
-                                                // Add queue -> database
-                                                addQueueToDB(new_datetime, currentDate.getTimeInMillis());
-                                                // ShowDates();
-                                            //}
-                                        }
-                                    },
-                                    currentDate.get(Calendar.HOUR_OF_DAY),
-                                    currentDate.get(Calendar.MINUTE),
-                                    true,
-                                    datetimes
-                            );
+                            Timestamp timestamp =new Timestamp(currentDate.getTime());
+                            date.setTimestamp(timestamp);
+                            date.setTimestamp(timestamp);
+                            date.setServiceName(serviceName);
+                            date.setManagerId(manager.getKey());
+                            date.setKey(database.getCurrentUser().getUid());
+                         // database.fetchUserDatesByKeyAndDate(manager.getKey(),date.getFormattedDate());
 
 
-                            // Show the time picker dialog
-                            timePickerDialog.show();
+
+                            DynamicButtonsFragment fragment = new DynamicButtonsFragment(date);
+                            replaceFragment(fragment);
+
                         }
                     }
                 },
@@ -212,23 +200,8 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     }
 
 
-    private void addQueueToDB(Datetime current_dateTime, long timestamp) {
 
-        Timestamp timestampDB = new Timestamp(timestamp / 1000, 0);
 
-        Datetime datetime = new Datetime(current_dateTime);
-//        datetime.setServiceName(serviceName);
-        datetime.setTimestamp(timestampDB);
-        datetime.setKey(database.getCurrentUser().getUid());
-        datetime.setUUid("");
-        User currentUser = new User();
-
-        currentUser.setKey(database.getCurrentUser().getUid());
-        currentUser.setDateTime(datetime);
-
-        database.saveUserTimes(datetime,currentUser);
-
-    }
 
     private boolean isUnavailableTime(int hour, int minute) {
         for (Datetime notAvailableTime : datetimes) {
@@ -257,7 +230,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     @Override
    public void onTextViewClicked(int position, String managerId) {
         // Retrieve the corresponding Manager object from the managerList
-        Manager manager = managerList.get(position);
+        manager = managerList.get(position);
 
         // Get the service name from the Manager object
         String serviceName = manager.getService().getServiceName();
@@ -281,4 +254,52 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
+    private void replaceFragment(Fragment fragment){
+
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        fragmentTransaction.replace(R.id.fragmentContainerC ,fragment);
+
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+    }
+
+
 }
+
+ /*
+                            // Time picker dialog
+                            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(
+                                    requireContext(),
+                                    R.style.CustomTimePicker,
+                                    new TimePickerDialog.OnTimeSetListener() {
+                                        @Override
+                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                            currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                                            currentDate.set(Calendar.MINUTE, minute);
+//
+                                                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
+                                                        currentDate.get(Calendar.HOUR_OF_DAY),
+                                                        currentDate.get(Calendar.MINUTE));
+                                            new_datetime.setServiceName(serviceName);
+
+                                                // Add queue -> database
+                                               // addQueueToDB(new_datetime, currentDate.getTimeInMillis());
+                                                // ShowDates();
+                                            //}
+                                        }
+                                    },
+                                    currentDate.get(Calendar.HOUR_OF_DAY),
+                                    currentDate.get(Calendar.MINUTE),
+                                    true,
+                                    datetimes
+                            );
+
+
+
+
+                            // Show the time picker dialog
+                            timePickerDialog.show();*/

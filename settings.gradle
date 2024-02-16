@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "GlamLooksApp"
+rootProject.name = "GLamLooksApp.app"
 include ':app'

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="your_padding">16dp</dimen> <!-- Example padding value -->
+    <dimen name="your_margin">8dp</dimen> <!-- Example margin value -->
+</resources>

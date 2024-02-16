@@ -52,10 +52,10 @@
     <!-- RecyclerView aligned below the CircleImageView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewServices"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="401dp"
+        android:layout_height="348dp"
         android:layout_below="@id/editAccount_ConstraintLayout_profileImg"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="130dp"
         android:padding="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3" />

@@ -28,7 +28,9 @@ public class CustomerActivity extends AppCompatActivity {
     private Database database;
     private ActivityCustomerBinding customer_Binding;
 
+    public CustomerActivity (){
 
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
