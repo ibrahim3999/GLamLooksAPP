@@ -1,6 +1,8 @@
 package com.example.glamlooksapp.fragments.user;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -41,6 +43,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     private User user;
     private View view;
     private ViewGroup buttonContainer;
+    private AppCompatActivity activity = (AppCompatActivity) getActivity();
 
 
     public DynamicButtonsFragment(Datetime current_dateTime) {
@@ -222,9 +225,11 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                         }
                         if (!hasPastAppointments) {
                             database.saveUserTimes(current_dateTime, user, DynamicButtonsFragment.this);
-                        } else {
-                                Toast.makeText(getContext(), "You cannot make two appointments for the same employer ", Toast.LENGTH_SHORT).show();
-          //                  getActivity().getSupportFragmentManager().popBackStack();
+                            Toast.makeText(getContext(), "An appointment was made", Toast.LENGTH_SHORT).show();
+                            flag();
+                        } else if(hasPastAppointments ){
+                            Toast.makeText(getContext(), "You cannot make two appointments for the same employer ", Toast.LENGTH_SHORT).show();
+                            flag();
                         }
                     } else {
                         // Handle the case where datetimes is null
@@ -235,5 +240,9 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                 }
             }
         });
+    }
+
+    private void flag() {
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 }
