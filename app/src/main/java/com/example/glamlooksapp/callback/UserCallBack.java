@@ -11,6 +11,7 @@ public interface UserCallBack {
     void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException;
     void onUserFetchDataComplete(User user);
     void onUpdateComplete(Task<Void> task);
+    void onDeleteComplete(Task<Void> task); // New method for deletion
 
 //    void onManagerDataFetched(Manager manager);
 

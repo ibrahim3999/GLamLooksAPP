@@ -143,6 +143,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onUpdateComplete(Task<Void> task) {
 
             }
+
+            @Override
+            public void onDeleteComplete(Task<Void> task) {
+
+            }
         });
 
         login_BTN_signup.setOnClickListener(new View.OnClickListener() {

@@ -120,6 +120,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 }
 
             }
+
+            @Override
+            public void onDeleteComplete(Task<Void> task) {
+
+            }
         });
 
         editAccount_BTN_updateAccount.setOnClickListener(new View.OnClickListener() {

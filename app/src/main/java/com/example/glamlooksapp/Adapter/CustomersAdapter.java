@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.CustomersViewHolder> {
 
     private Context context;
+    private static  String TAG= "CustomersAdapter";
     private ArrayList<Datetime> datetimeArrayList;
     private Database database = new Database();
 
@@ -72,8 +74,32 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
                     holder.removeButton.setOnClickListener(v -> {
                         String datetimeUid = datetime.getKey();
+                       // Log.d(TAG,datetime.getUUid());
+                        database.deleteUserTime(datetimeUid, new UserCallBack() {
+                            @Override
+                            public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
 
-                        database.deleteUserTime(datetimeUid);
+                            }
+
+                            @Override
+                            public void onUserFetchDataComplete(User user) {
+
+                            }
+
+                            @Override
+                            public void onUpdateComplete(Task<Void> task) {
+
+                            }
+
+                            @Override
+                            public void onDeleteComplete(Task<Void> task) {
+                                if(task != null){
+                                    Log.d(TAG,"Deleting an appointment queue");
+                                }else {
+                                    Log.e(TAG,"Falied Deleted");
+                                }
+                            }
+                        });
 
                         datetimeArrayList.remove(position);
                         notifyDataSetChanged();
@@ -96,6 +122,11 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             public void onUpdateComplete(Task<Void> task) {
                 // Log message to indicate that onUpdateComplete is called
                 Log.d("UserCallBack", "onUpdateComplete is called4");
+            }
+
+            @Override
+            public void onDeleteComplete(Task<Void> task) {
+
             }
         });
     }

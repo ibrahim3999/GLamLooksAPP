@@ -96,6 +96,11 @@ public class TimesFragment extends Fragment {
             public void onUpdateComplete(Task<Void> task) {
 
             }
+
+            @Override
+            public void onDeleteComplete(Task<Void> task) {
+
+            }
         });
 
 

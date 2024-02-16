@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     private AppCompatActivity activity;
     private  Manager manager ;
     private Manager currentManager = null;
+    private LinearLayout appointmentsContainer;
 
 
     public HomeFragment(AppCompatActivity appCompatActivity) {
@@ -70,7 +73,6 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         database = new Database();
         recyclerViewServices = view.findViewById(R.id.recyclerViewServices);
         initRecyclerView();
-
         return view;
     }
 
@@ -270,36 +272,3 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
 }
 
- /*
-                            // Time picker dialog
-                            CustomTimePickerDialog timePickerDialog = new CustomTimePickerDialog(
-                                    requireContext(),
-                                    R.style.CustomTimePicker,
-                                    new TimePickerDialog.OnTimeSetListener() {
-                                        @Override
-                                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                            currentDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                                            currentDate.set(Calendar.MINUTE, minute);
-//
-                                                String formattedTime = String.format(Locale.getDefault(), "%02d:%02d",
-                                                        currentDate.get(Calendar.HOUR_OF_DAY),
-                                                        currentDate.get(Calendar.MINUTE));
-                                            new_datetime.setServiceName(serviceName);
-
-                                                // Add queue -> database
-                                               // addQueueToDB(new_datetime, currentDate.getTimeInMillis());
-                                                // ShowDates();
-                                            //}
-                                        }
-                                    },
-                                    currentDate.get(Calendar.HOUR_OF_DAY),
-                                    currentDate.get(Calendar.MINUTE),
-                                    true,
-                                    datetimes
-                            );
-
-
-
-
-                            // Show the time picker dialog
-                            timePickerDialog.show();*/

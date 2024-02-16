@@ -166,6 +166,11 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
+    public void onDeleteComplete(Task<Void> task) {
+
+    }
+
+    @Override
     public void onAddICustomerComplete(Task<Void> task) {
         if (task != null) {
             Log.d(TAG, "Complete ");

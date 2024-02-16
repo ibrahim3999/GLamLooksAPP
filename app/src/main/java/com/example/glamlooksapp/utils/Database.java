@@ -604,6 +604,21 @@ public class Database {
                     }
                 });
     }
+    public void deleteUserTime(String datetimeUid, UserCallBack callBack) {
+        db.collection(TIMES_TABLE)
+                .document(datetimeUid)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("FirestoreData", "DocumentSnapshot successfully deleted!");
+                        // Call the callback method to notify completion
+                        callBack.onDeleteComplete(task);
+                    } else {
+                        Log.w("FirestoreData", "Error deleting document", task.getException());
+                    }
+                });
+    }
+
     public void fetchDatesByManagerId(String managerId, DatetimeCallback callback) {
         // Check if managerId is not null
         if (managerId == null) {
