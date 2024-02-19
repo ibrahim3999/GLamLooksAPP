@@ -63,6 +63,8 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     private LinearLayout appointmentsContainer;
 
 
+    public HomeFragment(){}
+
     public HomeFragment(AppCompatActivity appCompatActivity) {
         activity = appCompatActivity;
     }
@@ -181,8 +183,9 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
 
 
-                            DynamicButtonsFragment fragment = new DynamicButtonsFragment(date);
-                            replaceFragment(fragment);
+                           // DynamicButtonsFragment fragment = new DynamicButtonsFragment(date);
+                          //  replaceFragment(fragment);
+                            replaceFragment(new DynamicButtonsFragment(date));
 
                         }
                     }
@@ -246,7 +249,6 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerC ,fragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
