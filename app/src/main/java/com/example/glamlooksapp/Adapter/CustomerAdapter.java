@@ -48,7 +48,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         holder.textViewCustomerName.setText(fullName);
         holder.textViewPN.setText(String.valueOf(customer.getPhoneNumber()));
         Datetime datetime = customer.getDateTime();
-        holder.textViewTime.setText(datetime.toString());
+        holder.textViewTime.setText(datetime.getFormattedTime());
+        holder.textViewDate.setText(datetime.getFormattedDate());
 
         holder.callBtn.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -80,7 +81,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     static class CustomerViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewCustomer;
         TextView textViewCustomerName;
-        TextView textViewPN, textViewTime;
+        TextView textViewPN, textViewTime,textViewDate;
         Button callBtn;
         ImageButton removeButton;
 
@@ -91,8 +92,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             textViewPN = itemView.findViewById(R.id.textViewPN);
             callBtn = itemView.findViewById(R.id.callButton);
             textViewTime = itemView.findViewById(R.id.textViewTime);
+            textViewDate = itemView.findViewById(R.id.textViewDate);
             removeButton = itemView.findViewById(R.id.removeButton);
-
         }
     }
 }

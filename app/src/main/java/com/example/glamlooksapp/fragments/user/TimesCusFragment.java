@@ -118,7 +118,6 @@ public class TimesCusFragment extends Fragment {
         recycleViewDates.setAdapter(customerAdapter);
         // Fetch All DateTimes for each Customer by uid.
         database.fetchUserDatesByKey(database.getCurrentUser().getUid());
-
     }
 
 

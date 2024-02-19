@@ -118,32 +118,72 @@ public class Database {
     }
 
 
-    public void fetchUserDatesByService(String serviceName) {
-
-        db.collection(TIMES_TABLE).whereEqualTo("serviceName",serviceName)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        assert value != null;
-                        Log.d("FirestoreData", "ValueKeys2: " + value.size());
-
-                        listKeysDates = new ArrayList<>();
-                        assert value != null;
-                        int i =0;
-                        for (QueryDocumentSnapshot document : value) {
-                            i++;
-                            Datetime datetime = document.toObject(Datetime.class);
-                            list_dates.add(datetime);
-                            String uid = datetime.getKey();
-                            Log.d("FirestoreData", "ValueKeys: "+ Integer.toString(i) + uid);
-                            listKeysDates.add(uid);
-                        }
-                        fetchUsersByKeys(listKeysDates,list_dates);
+//    public void fetchUserDatesByService(String serviceName) {
+//
+//        db.collection(TIMES_TABLE).whereEqualTo("serviceName",serviceName)
+//                .orderBy("formattedDate")
+//                .orderBy("formattedTime")
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                        assert value != null;
+//                        Log.d("fetchUserDatesByService", "serviceName: " + serviceName);
+//
+//                        Log.d("fetchUserDatesByService", "ValueKeys2: " + value.size());
+//
+//                        listKeysDates = new ArrayList<>();
+//                        assert value != null;
+//                        int i =0;
+//                        for (QueryDocumentSnapshot document : value) {
+//                            i++;
+//                            Datetime datetime = document.toObject(Datetime.class);
+//                            list_dates.add(datetime);
+//                            String uid = datetime.getKey();
+//                            Log.d("fetchUserDatesByService", "ValueKeys: "+ Integer.toString(i) + uid);
+//                            listKeysDates.add(uid);
+//                        }
+//                        fetchUsersByKeys(listKeysDates,list_dates);
+//                    }
+//                });
+//    }
+public void fetchUserDatesByService(String serviceName) {
+    db.collection(TIMES_TABLE)
+            .whereEqualTo("serviceName", serviceName)
+            .orderBy("formattedDate")
+            .orderBy("formattedTime")
+            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.e(TAG, "Error fetching documents: ", error);
+                        return;
                     }
-                });
 
+                    if (value == null || value.isEmpty()) {
+                        Log.d(TAG, "No data found");
+                        return;
+                    }
 
-    }
+                    Log.d("fetchUserDatesByService", "serviceName: " + serviceName);
+                    Log.d("fetchUserDatesByService", "ValueKeys2: " + value.size());
+
+                    listKeysDates = new ArrayList<>();
+                    list_dates = new ArrayList<>(); // Initialize the list
+                    int i = 0;
+                    for (QueryDocumentSnapshot document : value) {
+                        i++;
+                        Datetime datetime = document.toObject(Datetime.class);
+                        list_dates.add(datetime);
+                        String uid = datetime.getKey();
+                        Log.d("fetchUserDatesByService", "ValueKeys: " + i + uid);
+                        listKeysDates.add(uid);
+                    }
+
+                    fetchUsersByKeys(listKeysDates, list_dates);
+                }
+            });
+}
 
 
     public void fetchUsersByKeys(ArrayList<String> userKeys, ArrayList<Datetime> list_dates) {
@@ -188,26 +228,54 @@ public class Database {
 
 
 
-    public void fetchUserDatesByKey(String uid) {
+//    public void fetchUserDatesByKey(String uid) {
+//
+//        db.collection(TIMES_TABLE).whereEqualTo("key",uid)
+//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//
+//                    @Override
+//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//
+//                        listUser_Dates = new ArrayList<>();
+//                        assert value != null;
+//                        for (QueryDocumentSnapshot document : value) {
+//                            Datetime datetime = document.toObject(Datetime.class);
+//                            listUser_Dates.add(datetime);
+//
+//                        }
+//                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+//
+//                    }
+//                });
+//    }
+public void fetchUserDatesByKey(String uid) {
+    db.collection(TIMES_TABLE)
+            .whereEqualTo("key", uid)
+            .orderBy("formattedDate")
+            .orderBy("formattedTime")
+            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.e(TAG, "Error fetching documents: ", error);
+                        return;
+                    }
 
-        db.collection(TIMES_TABLE).whereEqualTo("key",uid)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-                        listUser_Dates = new ArrayList<>();
-                        assert value != null;
+                    listUser_Dates = new ArrayList<>();
+                    if (value != null) {
                         for (QueryDocumentSnapshot document : value) {
                             Datetime datetime = document.toObject(Datetime.class);
                             listUser_Dates.add(datetime);
-
                         }
-                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
-
                     }
-                });
-    }
+
+                    customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+                }
+            });
+}
+
+
+
     public void fetchUserDatesByKeyAndDate(String uid,String formattedDate, CustomerCallBack customerCallBack) {
         db.collection(TIMES_TABLE)
                 .whereEqualTo("managerId", uid)
@@ -580,9 +648,9 @@ public class Database {
     }
 
     public String downloadImageUrl(String imagePath){
-      Task<Uri> task =  mStorage.getReference(imagePath).getDownloadUrl();
-      while(!task.isComplete());
-      return task.getResult().toString();
+        Task<Uri> task =  mStorage.getReference(imagePath).getDownloadUrl();
+        while(!task.isComplete());
+        return task.getResult().toString();
     }
 
     public boolean uploadImage(Uri selectedImageUri, String path) {

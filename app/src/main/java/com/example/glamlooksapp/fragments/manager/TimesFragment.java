@@ -24,10 +24,11 @@ import com.example.glamlooksapp.utils.Datetime;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class TimesFragment extends Fragment {
@@ -72,8 +73,8 @@ public class TimesFragment extends Fragment {
 
     private void intiVars() {
 
-        database.setUserCallBack(new UserCallBack() {
 
+        database.setUserCallBack(new UserCallBack() {
 
             @Override
             public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
@@ -96,17 +97,19 @@ public class TimesFragment extends Fragment {
             public void onUpdateComplete(Task<Void> task) {
 
             }
-
             @Override
-            public void onDeleteComplete(Task<Void> task) {
+            public void onDeleteComplete(Task<Void> task) {}
 
-            }
         });
 
 
         database.setCustomerCallBack(new CustomerCallBack() {
             @Override
-            public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes){}
+            public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes){
+
+                // Notify adapter of changes
+                customerAdapter.notifyDataSetChanged();
+            }
 
             @Override
             public void onAddICustomerComplete(Task<Void> task) {
@@ -116,10 +119,28 @@ public class TimesFragment extends Fragment {
             @Override
             public void onFetchCustomerComplete(ArrayList<User> customers) {
                 if (!customers.isEmpty()) {
-                    //Toast.makeText(activity, "FetchDone", Toast.LENGTH_SHORT).show();
 
                     customersList.clear();
                     customersList.addAll(customers);
+                    // Sort the list by date and time
+
+//                    Collections.sort(customersList, new Comparator<User>() {
+//                        @Override
+//                        public int compare(User u1, User u2) {
+//                            // Get Datetime objects from each User object
+//                            Datetime dt1 = u1.getDateTime();
+//                            Datetime dt2 = u2.getDateTime();
+//
+//                            // Compare dates first
+//                            int dateComparison = dt1.getFormattedDate().compareTo(dt2.getFormattedDate());
+//                            if (dateComparison != 0) {
+//                                return dateComparison; // If dates are not equal, return dateComparison
+//                            } else {
+//                                // If dates are equal, compare times
+//                                return dt1.getFormattedTime().compareTo(dt2.getFormattedTime());
+//                            }
+//                        }
+//                    });
                     if (customersList.isEmpty()) {
                         Toast.makeText(activity, "There are no new dates!", Toast.LENGTH_SHORT).show();
                     }
@@ -133,11 +154,11 @@ public class TimesFragment extends Fragment {
         });
     }
 
-        private void initViews() {
+    private void initViews() {
         CustomerManager customerManager = CustomerManager.getInstance();
         customerAdapter = new CustomerAdapter(getContext(), customerManager.getCustomerList());
         recyclerViewCustomers.setAdapter(customerAdapter);
-            }
+    }
 
     private void initRecyclerView() {
         customersList = new ArrayList<>();
@@ -146,6 +167,5 @@ public class TimesFragment extends Fragment {
         recyclerViewCustomers.setAdapter(customerAdapter);
         // Fetch DateTimes from the database and update the list
         database.fetchManagerData(database.getCurrentUser().getUid());
-
     }
 }

@@ -73,7 +73,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
                     Log.d("UserCallBack", "onUserFetchDataComplete is called1");
 
                     holder.removeButton.setOnClickListener(v -> {
-                        String datetimeUid = datetime.getUUid();
+                        String datetimeUid = datetime.getKey();
                        // Log.d(TAG,datetime.getUUid());
                         database.deleteUserTime(datetimeUid, new UserCallBack() {
                             @Override
@@ -130,8 +130,6 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             }
         });
     }
-
-
 
 
     @Override
