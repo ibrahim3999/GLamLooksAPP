@@ -3,6 +3,7 @@ package com.example.glamlooksapp.Adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +60,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             });
         } else {
             // Handle the case where the Service object is null
-            holder.textViewServiceName.setText("Service Not Available");
+            Log.d("ServiceAdapter", "Service Not Available");
         }
     }
 

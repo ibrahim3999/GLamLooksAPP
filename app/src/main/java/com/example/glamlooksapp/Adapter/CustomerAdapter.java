@@ -58,7 +58,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
         });
 
         holder.removeButton.setOnClickListener(v -> {
-            String datetimeUid = datetime.getKey();
+            String datetimeUid = datetime.getUUid();
 
             database.deleteUserTime(datetimeUid);
 

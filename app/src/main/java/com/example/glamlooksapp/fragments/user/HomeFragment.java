@@ -91,7 +91,6 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //initRecyclerView();
 
         initVars();
     }
@@ -123,18 +122,16 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
             @Override
             public void onManagerFetchDataComplete(ArrayList<Manager> managerArrayList) {
                 if (managerArrayList != null) {
-                    Log.d("FirestoreData", "Size of ArrayList Managers is " + managerArrayList.size());
-                    //Toast.makeText(activity, "FetchDoneManagers", Toast.LENGTH_SHORT).show();
+                    Log.d("FireStoreData", "Size of ArrayList Managers is " + managerArrayList.size());
 
                     managerList.clear();
                     managerList.addAll(managerArrayList);
                     if (managerList.isEmpty()) {
-                        Toast.makeText(activity, "Nothing To Show", Toast.LENGTH_SHORT).show();
+                        Log.d("HomeFragment", "Nothing To Show");
                     }
                     managerAdapter.notifyDataSetChanged();
                 } else {
-                    Log.d("FirestoreData", "Managers list is null");
-                    //Toast.makeText(activity, "Managers list is null", Toast.LENGTH_SHORT).show();
+                    Log.d("HomeFragment", "Managers list is null");
                 }
             }
         });
@@ -205,14 +202,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
 
 
-    private boolean isUnavailableTime(int hour, int minute) {
-        for (Datetime notAvailableTime : datetimes) {
-            if (notAvailableTime.getTimestamp().toDate().getHours() == hour && notAvailableTime.getTimestamp().toDate().getMinutes()== minute) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     private void sendMessageToManager(String managerUserId, String message) {
         // Code to send a message/notification to the manager
@@ -251,23 +241,21 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
     }
 
+    private void replaceFragment(Fragment fragment){
+
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerC ,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
 
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void replaceFragment(Fragment fragment){
 
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        fragmentTransaction.replace(R.id.fragmentContainerC ,fragment);
-
-        fragmentTransaction.addToBackStack(null);
-
-        fragmentTransaction.commit();
-    }
 
 
 }

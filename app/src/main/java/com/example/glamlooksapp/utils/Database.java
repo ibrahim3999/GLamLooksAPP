@@ -593,14 +593,16 @@ public class Database {
 
 
     public void deleteUserTime(String datetimeUid) {
+        Log.d("DeleteUserTime", datetimeUid);
+
         db.collection(TIMES_TABLE)
                 .document(datetimeUid)
                 .delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("FirestoreData", "DocumentSnapshot successfully deleted!");
+                        Log.d("DeleteUserTime", "DocumentSnapshot successfully deleted!");
                     } else {
-                        Log.w("FirestoreData", "Error deleting document", task.getException());
+                        Log.w("DeleteUserTime", "Error deleting document", task.getException());
                     }
                 });
     }

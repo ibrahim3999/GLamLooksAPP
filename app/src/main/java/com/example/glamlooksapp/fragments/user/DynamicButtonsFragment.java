@@ -174,7 +174,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     public void onAddICustomerComplete(Task<Void> task) {
         if (task != null) {
             Log.d(TAG, "Complete ");
-            Toast.makeText(getContext(), "Your appointment is scheduled at" + current_dateTime.getFormattedTime(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), "Your appointment is scheduled at" + current_dateTime.getFormattedTime(), Toast.LENGTH_SHORT).show();
             database.fetchUserDatesByKeyAndDate(current_dateTime.getManagerId(), current_dateTime.getFormattedDate(), DynamicButtonsFragment.this);
             getActivity().getSupportFragmentManager().popBackStack();
         } else {
