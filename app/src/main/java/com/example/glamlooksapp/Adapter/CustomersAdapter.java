@@ -2,13 +2,10 @@ package com.example.glamlooksapp.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +38,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
     public void removeItem(int position) {
         datetimeArrayList.remove(position);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -50,6 +48,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         return new CustomersViewHolder(view);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull CustomersViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Datetime datetime = datetimeArrayList.get(position);
@@ -57,6 +56,37 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
         holder.textViewServName.setText(serviceName);
         holder.textViewTimeDate.setText(datetime.getFormattedDate());
         holder.textViewTime.setText(datetime.getFormattedTime());
+
+        holder.removeButton.setOnClickListener(v -> {
+            String datetimeUid = datetime.getUUid();
+
+            database.deleteUserTime(datetimeUid, new UserCallBack() {
+                @Override
+                public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
+
+                }
+
+                @Override
+                public void onUserFetchDataComplete(User user) {
+
+                }
+
+                @Override
+                public void onUpdateComplete(Task<Void> task) {
+
+                }
+
+                @Override
+                public void onDeleteComplete(Task<Void> task) {
+                    if(task != null){
+                        Log.d(TAG,"Deleting an appointment queue");
+                        removeItem(position); // Remove item from RecyclerView
+                    } else {
+                        Log.e(TAG,"Failed Deleted");
+                    }
+                }
+            });
+        });
 
         // Fetch manager's data by ID
         String managerId = datetime.getManagerId();
@@ -70,57 +100,18 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
                     String manager_name = manager.getFirstname() + " " + manager.getLastname();
                     holder.texManagerName.setText(manager_name);
                     holder.texDuration.setText(manager.getService().getDuration());
-                    Log.d("UserCallBack", "onUserFetchDataComplete is called1");
-
-                    holder.removeButton.setOnClickListener(v -> {
-                        String datetimeUid = datetime.getKey();
-                       // Log.d(TAG,datetime.getUUid());
-                        database.deleteUserTime(datetimeUid, new UserCallBack() {
-                            @Override
-                            public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
-
-                            }
-
-                            @Override
-                            public void onUserFetchDataComplete(User user) {
-
-                            }
-
-                            @Override
-                            public void onUpdateComplete(Task<Void> task) {
-
-                            }
-
-                            @Override
-                            public void onDeleteComplete(Task<Void> task) {
-                                if(task != null){
-                                    Log.d(TAG,"Deleting an appointment queue");
-                                }else {
-                                    Log.e(TAG,"Falied Deleted");
-                                }
-                            }
-                        });
-
-                        datetimeArrayList.remove(position);
-                        notifyDataSetChanged();
-                    });
-
                 } else {
                     Log.d("UserCallBack", "onUserFetchDataComplete is called400");
                 }
-                // Log message to indicate that onUserFetchDataComplete is called
-                Log.d("UserCallBack", "onUserFetchDataComplete is called2");
             }
 
             @Override
             public void onUserFetchDataComplete(User user) {
-                // Log message to indicate that onUserFetchDataComplete is called
                 Log.d("UserCallBack", "onUserFetchDataComplete is called3");
             }
 
             @Override
             public void onUpdateComplete(Task<Void> task) {
-                // Log message to indicate that onUpdateComplete is called
                 Log.d("UserCallBack", "onUpdateComplete is called4");
             }
 
@@ -130,7 +121,6 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             }
         });
     }
-
 
     @Override
     public int getItemCount() {

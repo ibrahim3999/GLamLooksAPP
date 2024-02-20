@@ -117,36 +117,6 @@ public class Database {
                 });
     }
 
-
-//    public void fetchUserDatesByService(String serviceName) {
-//
-//        db.collection(TIMES_TABLE).whereEqualTo("serviceName",serviceName)
-//                .orderBy("formattedDate")
-//                .orderBy("formattedTime")
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                        assert value != null;
-//                        Log.d("fetchUserDatesByService", "serviceName: " + serviceName);
-//
-//                        Log.d("fetchUserDatesByService", "ValueKeys2: " + value.size());
-//
-//                        listKeysDates = new ArrayList<>();
-//                        assert value != null;
-//                        int i =0;
-//                        for (QueryDocumentSnapshot document : value) {
-//                            i++;
-//                            Datetime datetime = document.toObject(Datetime.class);
-//                            list_dates.add(datetime);
-//                            String uid = datetime.getKey();
-//                            Log.d("fetchUserDatesByService", "ValueKeys: "+ Integer.toString(i) + uid);
-//                            listKeysDates.add(uid);
-//                        }
-//                        fetchUsersByKeys(listKeysDates,list_dates);
-//                    }
-//                });
-//    }
 public void fetchUserDatesByService(String serviceName) {
     db.collection(TIMES_TABLE)
             .whereEqualTo("serviceName", serviceName)
@@ -228,26 +198,7 @@ public void fetchUserDatesByService(String serviceName) {
 
 
 
-//    public void fetchUserDatesByKey(String uid) {
-//
-//        db.collection(TIMES_TABLE).whereEqualTo("key",uid)
-//                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-//
-//                    @Override
-//                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//
-//                        listUser_Dates = new ArrayList<>();
-//                        assert value != null;
-//                        for (QueryDocumentSnapshot document : value) {
-//                            Datetime datetime = document.toObject(Datetime.class);
-//                            listUser_Dates.add(datetime);
-//
-//                        }
-//                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
-//
-//                    }
-//                });
-//    }
+
 public void fetchUserDatesByKey(String uid) {
     db.collection(TIMES_TABLE)
             .whereEqualTo("key", uid)

@@ -104,6 +104,7 @@ public class TimesFragment extends Fragment {
 
 
         database.setCustomerCallBack(new CustomerCallBack() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes){
 
@@ -122,25 +123,7 @@ public class TimesFragment extends Fragment {
 
                     customersList.clear();
                     customersList.addAll(customers);
-                    // Sort the list by date and time
 
-//                    Collections.sort(customersList, new Comparator<User>() {
-//                        @Override
-//                        public int compare(User u1, User u2) {
-//                            // Get Datetime objects from each User object
-//                            Datetime dt1 = u1.getDateTime();
-//                            Datetime dt2 = u2.getDateTime();
-//
-//                            // Compare dates first
-//                            int dateComparison = dt1.getFormattedDate().compareTo(dt2.getFormattedDate());
-//                            if (dateComparison != 0) {
-//                                return dateComparison; // If dates are not equal, return dateComparison
-//                            } else {
-//                                // If dates are equal, compare times
-//                                return dt1.getFormattedTime().compareTo(dt2.getFormattedTime());
-//                            }
-//                        }
-//                    });
                     if (customersList.isEmpty()) {
                         Toast.makeText(activity, "There are no new dates!", Toast.LENGTH_SHORT).show();
                     }
