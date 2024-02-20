@@ -12,7 +12,8 @@ public class Datetime {
     private String serviceName;
 
     private Timestamp timestamp;
-
+    private String formattedTime;
+    private String formattedDate;
     private String key;
 
     private String uid;
@@ -103,10 +104,19 @@ public class Datetime {
         return sdf.format(dateTime);
     }
 
+
+
     public String getFormattedDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         Date dateTime = timestamp.toDate();
         return sdf.format(dateTime);
+    }
+    public void setFormattedTime(String formattedTime) {
+        this.formattedTime = formattedTime;
+    }
+
+    public void setFormattedDate(String formattedDate) {
+        this.formattedDate = formattedDate;
     }
 
     @Override

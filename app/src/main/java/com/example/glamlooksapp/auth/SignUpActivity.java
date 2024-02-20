@@ -26,7 +26,6 @@ import com.google.android.gms.tasks.Task;
 public class SignUpActivity extends AppCompatActivity {
     private static final int ACCOUNT_TYPE_CUSTOMER = 0;
     private static final int ACCOUNT_TYPE_MANAGER = 1;
-//    private ManagerAddedCallback managerAddedListener;
 
     EditText firstname, lastname, signupEmail, signupPassword, phoneNumber;
     TextView txtV_button_back;
@@ -142,7 +141,6 @@ public class SignUpActivity extends AppCompatActivity {
                     database.createAccount(manager.getEmail(), password, manager);
                 }
 
-//                notifyManagerAdded(serviceName.getText().toString());
 
 
             }
@@ -167,20 +165,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
-
-
-//    public void setOnManagerAddedListener(ManagerAddedCallback listener) {
-//        this.managerAddedListener = listener;
-//    }
-
-    // Call this method when a new manager is added
-//    private void notifyManagerAdded(String serviceName) {
-//        if (managerAddedListener != null) {
-//            managerAddedListener.onManagerAdded(serviceName);
-//        }
-//    }
-
-
 
 
 

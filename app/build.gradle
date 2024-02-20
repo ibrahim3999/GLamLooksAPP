@@ -19,7 +19,9 @@ android {
     viewBinding{
         enabled = true
     }
-
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -47,6 +49,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'org.apache.poi:poi:5.2.2'
+    implementation 'org.apache.poi:poi-ooxml:5.2.2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
 
     // Also add the dependency for the Google Play services library and specify its version
     implementation "com.google.android.gms:play-services-auth:20.7.0"

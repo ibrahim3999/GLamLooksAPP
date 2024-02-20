@@ -94,4 +94,3 @@ public class TimesCusFragment extends Fragment {
         database.fetchUserDatesByKey(database.getCurrentUser().getUid());
     }
 }
-
