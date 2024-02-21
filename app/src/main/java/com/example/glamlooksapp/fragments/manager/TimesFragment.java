@@ -141,10 +141,18 @@ public class TimesFragment extends Fragment {
         XSSFWorkbook workbook = new XSSFWorkbook();
         org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Appointments");
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Name");
-        headerRow.createCell(1).setCellValue("Date");
-        headerRow.createCell(2).setCellValue("Time");
-        headerRow.createCell(3).setCellValue("Money");
+        headerRow.createCell(0).setCellValue("Customer FName");
+        headerRow.createCell(1).setCellValue("Customer LName");
+        headerRow.createCell(2).setCellValue("Customer Phone");
+        headerRow.createCell(3).setCellValue("ServiceName");
+        headerRow.createCell(4).setCellValue("Date");
+        headerRow.createCell(5).setCellValue("Time");
+        headerRow.createCell(6).setCellValue("Employee FName");
+        headerRow.createCell(7).setCellValue("Employee LName");
+        headerRow.createCell(8).setCellValue("Price");
+
+
+
 
         int rowNum = 1;
         for (User customer : customersList) {
@@ -155,10 +163,12 @@ public class TimesFragment extends Fragment {
             row.createCell(1).setCellValue(customer.getLastname());
             row.createCell(2).setCellValue(customer.getPhoneNumber());
             row.createCell(3).setCellValue(datetime.getServiceName());
-            row.createCell(4).setCellValue(datetime.getFormattedTime());
-            row.createCell(5).setCellValue(datetime.getFormattedDate());
+            row.createCell(4).setCellValue(datetime.getFormattedDate());
+            row.createCell(5).setCellValue(datetime.getFormattedTime());
             row.createCell(6).setCellValue(currentManager.getFirstname());
             row.createCell(7).setCellValue(currentManager.getLastname());
+            row.createCell(8).setCellValue(currentManager.getService().getPrice());
+
         }
 
         try {
