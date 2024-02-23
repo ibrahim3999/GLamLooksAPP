@@ -24,6 +24,8 @@ import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 
+import org.apache.poi.ss.formula.functions.DMin;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,6 +33,8 @@ import java.util.Date;
 
 public class DynamicButtonsFragment extends Fragment implements UserCallBack, CustomerCallBack {
     private static final String TAG = "DynamicButtonsFragment";
+    private static final int START_TIME = 11;
+    private static final int END_TIME =18;
     private ArrayList<Datetime> notAvailableDates = new ArrayList<>();
     private ArrayList<Datetime> availableDates = new ArrayList<>();
     ;
@@ -42,20 +46,24 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     private View view;
     private ViewGroup buttonContainer;
     private AppCompatActivity activity;
+    private  Manager currManager;
 
 
-    public DynamicButtonsFragment(Datetime current_dateTime) {
+    public DynamicButtonsFragment(Datetime current_dateTime,Manager manager) {
         this.current_dateTime = current_dateTime;
         activity = new AppCompatActivity();
+        currManager= manager;
     }
 
 
     private void addTimeSlots(View view) {
         buttonContainer = view.findViewById(R.id.button_container);
         Calendar curr = Calendar.getInstance();
-        // Create buttons for each available time slot from 11:00 to 18:00 in half-hour intervals
-        for (int hour = 11; hour <= 18; hour++) {
-                for (int minute = 0; minute < 60; minute += 30) {
+        int duration = Integer.parseInt(currManager.getService().getDuration()); // Parse duration to integer
+        int minute=0;
+        for (int hour = START_TIME; hour <= END_TIME; hour++) {
+                for ( minute = 0; minute < 60; minute += duration){
+
                     // Create button text for the current time slot
                     String buttonText = String.format("%02d:%02d", hour, minute);
 
@@ -64,7 +72,13 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                     //Log.d(TAG, buttonText + "size :" + notAvailableDates);
                     addButton(buttonContainer, buttonText);
                 }
+                if(minute +duration > 60){
+                        minute =minute -60;
+                        if(hour >= END_TIME)break;
+                        hour++;
+                }
             }
+
         }
     }
 

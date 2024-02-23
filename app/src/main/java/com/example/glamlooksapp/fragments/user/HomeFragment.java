@@ -185,7 +185,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
 
                            // DynamicButtonsFragment fragment = new DynamicButtonsFragment(date);
                           //  replaceFragment(fragment);
-                            replaceFragment(new DynamicButtonsFragment(date));
+                            replaceFragment(new DynamicButtonsFragment(date,manager));
 
                         }
                     }
