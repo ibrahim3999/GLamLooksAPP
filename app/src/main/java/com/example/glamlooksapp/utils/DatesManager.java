@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class DatesManager {
     private static DatesManager instance;
     private ArrayList<Datetime> datesList;
-
     private ArrayList<Datetime> dateList;
+
     private DatesManager() {
         // Initialize productList or perform any setup
         datesList = new ArrayList<>();
@@ -19,22 +19,6 @@ public class DatesManager {
             instance = new DatesManager();
         }
         return instance;
-    }
-
-    public ArrayList<Datetime> getCustomerList() {
-        return datesList;
-    }
-
-    public ArrayList<Datetime> getDateList() {
-        return dateList;
-    }
-
-    public void setCustomerList(ArrayList<Datetime> datesList) {
-        this.datesList = datesList;
-    }
-
-    public void setDateList(ArrayList<Datetime> dateList) {
-        this.dateList = dateList;
     }
 
 }

@@ -58,7 +58,6 @@ public class Service extends FirebaseKey implements Serializable {
         this.duration = duration;
     }
 
-
     @Override
     public String toString() {
         return  serviceName + " " +
@@ -66,6 +65,5 @@ public class Service extends FirebaseKey implements Serializable {
                  duration
                 ;
     }
-
 
 }

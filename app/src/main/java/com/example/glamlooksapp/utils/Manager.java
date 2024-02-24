@@ -3,9 +3,7 @@ package com.example.glamlooksapp.utils;
 import java.security.NoSuchAlgorithmException;
 
 public class Manager extends User {
-
     private Service service;
-
     public Manager(String key, String firstname, String email, String lastname, String password,
                    String phoneNumber, int account_type, String imagePath, String imageUrl, Service service)
             throws NoSuchAlgorithmException {
