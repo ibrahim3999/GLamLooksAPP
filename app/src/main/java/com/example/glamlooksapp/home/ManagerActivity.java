@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,7 +18,7 @@ import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.manager.HomeMFragment;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
 import com.example.glamlooksapp.fragments.manager.TimesFragment;
-import com.example.glamlooksapp.fragments.manager.addProducts_PostsFragment;
+import com.example.glamlooksapp.fragments.manager.addProductsFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.utils.Database;
 
@@ -58,7 +57,7 @@ public class ManagerActivity extends AppCompatActivity {
                     break;
 
                 case R.id.addPhotos:
-                    replaceFragment(new addProducts_PostsFragment(ManagerActivity.this));
+                    replaceFragment(new addProductsFragment(ManagerActivity.this));
 
                     Toast.makeText(this,"AddPhotos",Toast.LENGTH_SHORT).show();
                     break;

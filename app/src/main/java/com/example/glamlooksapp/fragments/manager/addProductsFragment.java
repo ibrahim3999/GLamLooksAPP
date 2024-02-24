@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +27,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import static android.app.Activity.RESULT_OK;
-
 import com.example.glamlooksapp.R;
-import com.example.glamlooksapp.home.ManagerActivity;
-import com.example.glamlooksapp.home.UpdateProfileActivity;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Generic;
 import com.example.glamlooksapp.utils.Product;
 import com.example.glamlooksapp.callback.ProductCallBack;
-import com.example.glamlooksapp.utils.ProductManager;
 import com.google.android.gms.tasks.Task;
 
 import java.io.FileNotFoundException;
@@ -43,31 +39,22 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class addProducts_PostsFragment extends Fragment {
-
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
+public class addProductsFragment extends Fragment {
     private AppCompatActivity activity;
-
-    private EditText editTextProductName, editTextProductPrice;
-    private Button btnUploadPhoto, btnAddProduct;
+    private EditText productName, productPrice;
+    private Button uploadPhotoBtn, addProductBtn;
     private ImageView imageViewSelectedPhoto;
-
     private Database database;
     private Uri selectedImageUri;
 
-    public addProducts_PostsFragment(AppCompatActivity activity) {
-    }
+    public addProductsFragment(AppCompatActivity activity) {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_products__posts, container, false);
-
-       findViews(view);
-
+        findViews(view);
         initVars();
-
-
         return view;
     }
 
@@ -82,38 +69,37 @@ public class addProducts_PostsFragment extends Fragment {
         }
     }
 
-
-
+    private void findViews(View view) {
+        // Initialize views
+        productName = view.findViewById(R.id.editTextProductName);
+        productPrice = view.findViewById(R.id.editTextProductPrice);
+        uploadPhotoBtn = view.findViewById(R.id.btnUploadPhoto);
+        addProductBtn = view.findViewById(R.id.btnAddProduct);
+        imageViewSelectedPhoto = view.findViewById(R.id.imageViewSelectedPhoto);
+    }
 
     private void initVars(){
        database = new Database();
-
         database.setProductCallBack(new ProductCallBack() {
             @Override
             public void onAddIProductsComplete(Task<Void> task) {
-
                 if(task.isSuccessful()) {
-                    showToast("Added!");
+                    showToast("Product Added");
+                    Log.d("AddProduct", "success");
                 }
             }
-
             @Override
-            public void onFetchProductsComplete(ArrayList<Product> product) {
-
-            }
+            public void onFetchProductsComplete(ArrayList<Product> product) {}
         });
-
-       btnAddProduct.setOnClickListener(new View.OnClickListener() {
+       addProductBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                if(!checkInputs()) return;
                addProduct();
+               Log.d("AddProduct", "addProductBtn clicked");
            }
        });
-
-
-
-       btnUploadPhoto.setOnClickListener(new View.OnClickListener() {
+       uploadPhotoBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
                if(Generic.checkPermissions(activity)){ // Here the issue with the activity is null !!
@@ -123,18 +109,15 @@ public class addProducts_PostsFragment extends Fragment {
                }
            }
        });
-
     }
-
 
     private void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-
     private boolean checkInputs() {
-        String productName = editTextProductName.getText().toString();
-        String productPrice = editTextProductPrice.getText().toString();
+        String productName = this.productName.getText().toString();
+        String productPrice = this.productPrice.getText().toString();
 
         if(productName.isEmpty()){
             showToast("Name is required!");
@@ -148,16 +131,10 @@ public class addProducts_PostsFragment extends Fragment {
             Toast.makeText(activity, "image is required!", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         return true;
     }
 
-
-
     private void addProduct() {
-        // Implement add product logic here
-        String productName = editTextProductName.getText().toString();
-        String productPrice = editTextProductPrice.getText().toString();
         String uid = database.getCurrentUser().getUid();
         Random random = new Random();
         int randomNumber = 1_000_000 + random.nextInt(9_999_999);
@@ -165,25 +142,16 @@ public class addProducts_PostsFragment extends Fragment {
         String imagePath = "Products/"+uid+"_"+randomNumber+"."+ext;
 
         if (database.uploadImage(selectedImageUri, imagePath)) {
-
-
+            String productName = this.productName.getText().toString();
+            String productPrice = this.productPrice.getText().toString();
             Product product = new Product();
             product.setPrice(Double.parseDouble(productPrice));
             product.setName(productName);
             product.setImagePath(imagePath);
             product.setUid(String.valueOf(randomNumber));
-
             database.uploadProduct(product);
         }
     }
-
-
-
-
-
-
-
-
 
     private void showImageSourceDialog() {
         CharSequence[] items = {"Camera", "Gallery"};
@@ -205,7 +173,6 @@ public class addProducts_PostsFragment extends Fragment {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -234,10 +201,12 @@ public class addProducts_PostsFragment extends Fragment {
                             catch (FileNotFoundException e) {
                                 e.printStackTrace();
                                 Toast.makeText(activity, "Something went wrong", Toast.LENGTH_LONG).show();
+                                Log.e("Gallery", "onActivityResult: ", e);
                             }
                             break;
                         case Activity.RESULT_CANCELED:
                             Toast.makeText(activity, "Gallery canceled", Toast.LENGTH_SHORT).show();
+                            Log.d("Gallery", "onActivityResult: canceled");
                             break;
                     }
                 }
@@ -247,7 +216,6 @@ public class addProducts_PostsFragment extends Fragment {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             Intent intent = result.getData();
@@ -257,21 +225,9 @@ public class addProducts_PostsFragment extends Fragment {
                             break;
                         case Activity.RESULT_CANCELED:
                             Toast.makeText(activity, "Camera canceled", Toast.LENGTH_SHORT).show();
+                            Log.d("Camera", "onActivityResult: canceled");
                             break;
                     }
                 }
             });
-
-
-
-
-    private void findViews(View view) {
-
-        // Initialize views
-        editTextProductName = view.findViewById(R.id.editTextProductName);
-        editTextProductPrice = view.findViewById(R.id.editTextProductPrice);
-        btnUploadPhoto = view.findViewById(R.id.btnUploadPhoto);
-        btnAddProduct = view.findViewById(R.id.btnAddProduct);
-        imageViewSelectedPhoto = view.findViewById(R.id.imageViewSelectedPhoto);
-    }
 }
