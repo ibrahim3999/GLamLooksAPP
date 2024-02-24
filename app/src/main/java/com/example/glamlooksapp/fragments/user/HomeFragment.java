@@ -2,8 +2,6 @@ package com.example.glamlooksapp.fragments.user;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,10 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.glamlooksapp.Adapter.ServiceAdapter;
@@ -30,11 +25,9 @@ import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.callback.OnTextViewClickListener;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
-import com.example.glamlooksapp.utils.managerManager;
-import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.utils.Datetime;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
@@ -43,9 +36,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -98,8 +89,8 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
     }
 
     private void initVars() {
-        User currentUser = new User();
-        currentUser.setKey(database.getCurrentUser().getUid());
+        Customer currentCustomer = new Customer();
+        currentCustomer.setKey(database.getCurrentUser().getUid());
 
 
 
@@ -115,7 +106,7 @@ public class HomeFragment extends Fragment implements OnTextViewClickListener {
             }
 
             @Override
-            public void onFetchCustomerComplete(ArrayList<User> customers) {
+            public void onFetchCustomerComplete(ArrayList<Customer> customers) {
             }
         });
 

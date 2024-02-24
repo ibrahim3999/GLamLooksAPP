@@ -8,17 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.UserCallBack;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
 import java.security.NoSuchAlgorithmException;
@@ -62,12 +61,12 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
             database.deleteUserTime(datetimeUid, new UserCallBack() {
                 @Override
-                public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
+                public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
 
                 }
 
                 @Override
-                public void onUserFetchDataComplete(User user) {
+                public void onCustomerFetchDataComplete(Customer customer) {
 
                 }
 
@@ -94,7 +93,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
 
         database.fetchManagerData(managerId, new UserCallBack() {
             @Override
-            public void onUserFetchDataComplete(Manager manager) {
+            public void onManagerFetchDataComplete(Manager manager) {
                 if (manager != null) {
                     // Set manager's data in the ViewHolder
                     String manager_name = manager.getFirstname() + " " + manager.getLastname();
@@ -106,7 +105,7 @@ public class CustomersAdapter extends RecyclerView.Adapter<CustomersAdapter.Cust
             }
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
                 Log.d("UserCallBack", "onUserFetchDataComplete is called3");
             }
 

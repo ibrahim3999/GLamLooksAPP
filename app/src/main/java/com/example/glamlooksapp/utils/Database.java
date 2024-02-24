@@ -3,8 +3,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.UUID;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -14,14 +13,11 @@ import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.callback.ProductCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,9 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.google.firebase.appcheck.internal.util.Logger.TAG;
 
@@ -61,7 +55,7 @@ public class Database {
 
     public static final String PRODUCTS_TABLE = "Products";
     private ArrayList<Product> productList;  // Add this list to store products
-    ArrayList<User> customersWantedList ;
+    ArrayList<Customer> customersWantedList ;
 
     private ArrayList<String> listKeysDates;
 
@@ -78,7 +72,7 @@ public class Database {
         db = FirebaseFirestore.getInstance();
         mStorage = FirebaseStorage.getInstance();
         productList = new ArrayList<Product>(1000);
-        customersWantedList = new ArrayList<User>(1000);
+        customersWantedList = new ArrayList<Customer>(1000);
         list_dates = new ArrayList<Datetime>();
         listKeysDates = new ArrayList<>();
         listUser_Dates = new ArrayList<>();
@@ -185,7 +179,7 @@ public void fetchUserDatesByService(String serviceName) {
                         // Process retrieved users
                         int i = 0;
                         for (QueryDocumentSnapshot document : value) {
-                            User customer = document.toObject(User.class);
+                            Customer customer = document.toObject(Customer.class);
                             customer.setDateTime(list_dates.get(i++));
                             customersWantedList.add(customer);
                         }
@@ -270,7 +264,7 @@ public void fetchUserDatesByKey(String uid) {
     }
 
 
-    public void saveUserTimes(Datetime dateTime, User customer) {
+    public void saveUserTimes(Datetime dateTime, Customer customer) {
         // Get a reference to the Firestore collection
         CollectionReference timesCollection = db.collection(TIMES_TABLE);
 
@@ -301,7 +295,7 @@ public void fetchUserDatesByKey(String uid) {
                 });
     }
 
-    public void saveUserTimes(Datetime dateTime, User customer,CustomerCallBack callBack) {
+    public void saveUserTimes(Datetime dateTime, Customer customer, CustomerCallBack callBack) {
         // Get a reference to the Firestore collection
         CollectionReference timesCollection = db.collection(TIMES_TABLE);
 
@@ -346,8 +340,8 @@ public void fetchUserDatesByKey(String uid) {
                     }
                 });
     }
-    public void updateUser(User user){
-        this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
+    public void updateUser(Customer customer){
+        this.db.collection(USERS_TABLE).document(customer.getKey()).set(customer)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -373,17 +367,17 @@ public void fetchUserDatesByKey(String uid) {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
-                    User user = value.toObject(User.class);
-                    if (user != null) {
-                        if(user.getImagePath() != null){
-                            user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                    Customer customer = value.toObject(Customer.class);
+                    if (customer != null) {
+                        if(customer.getImagePath() != null){
+                            customer.setImageUrl(downloadImageUrl(customer.getImagePath()));
                         }
-                        user.setKey(value.getId());
-                        userCallBack.onUserFetchDataComplete(user);
+                        customer.setKey(value.getId());
+                        userCallBack.onCustomerFetchDataComplete(customer);
                     } else {
                         // User object is null, handle appropriately
                         try {
-                            userCallBack.onUserFetchDataComplete(null);
+                            userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
@@ -391,7 +385,7 @@ public void fetchUserDatesByKey(String uid) {
                 } else {
                     // Document does not exist or there was an error, handle appropriately
                     try {
-                        userCallBack.onUserFetchDataComplete(null);
+                        userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
@@ -404,17 +398,17 @@ public void fetchUserDatesByKey(String uid) {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (value != null && value.exists()) {
-                    User user = value.toObject(User.class);
-                    if (user != null) {
-                        if(user.getImagePath() != null){
-                            user.setImageUrl(downloadImageUrl(user.getImagePath()));
+                    Customer customer = value.toObject(Customer.class);
+                    if (customer != null) {
+                        if(customer.getImagePath() != null){
+                            customer.setImageUrl(downloadImageUrl(customer.getImagePath()));
                         }
-                        user.setKey(value.getId());
-                        callBack.onUserFetchDataComplete(user);
+                        customer.setKey(value.getId());
+                        callBack.onCustomerFetchDataComplete(customer);
                     } else {
                         // User object is null, handle appropriately
                         try {
-                            callBack.onUserFetchDataComplete(null);
+                            callBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
@@ -422,7 +416,7 @@ public void fetchUserDatesByKey(String uid) {
                 } else {
                     // Document does not exist or there was an error, handle appropriately
                     try {
-                        callBack.onUserFetchDataComplete(null);
+                        callBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
@@ -443,14 +437,14 @@ public void fetchUserDatesByKey(String uid) {
                         }
                         manager.setKey(value.getId());
                         try {
-                            userCallBack.onUserFetchDataComplete(manager);
+                            userCallBack.onManagerFetchDataComplete(manager);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         // User object is null, handle appropriately
                         try {
-                            userCallBack.onUserFetchDataComplete(null);
+                            userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
@@ -458,7 +452,7 @@ public void fetchUserDatesByKey(String uid) {
                 } else {
                     // Document does not exist or there was an error, handle appropriately
                     try {
-                        userCallBack.onUserFetchDataComplete(null);
+                        userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
@@ -486,14 +480,14 @@ public void fetchUserDatesByKey(String uid) {
                     if (manager != null) {
                         // Callback to notify that manager data has been fetched successfully
                         try {
-                            userCallBack.onUserFetchDataComplete(manager);
+                            userCallBack.onManagerFetchDataComplete(manager);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
                     } else {
                         // Callback to handle the case when manager object is null
                         try {
-                            userCallBack.onUserFetchDataComplete(null);
+                            userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
                             throw new RuntimeException(e);
                         }
@@ -501,7 +495,7 @@ public void fetchUserDatesByKey(String uid) {
                 } else {
                     // Callback to handle the case when document does not exist
                     try {
-                        userCallBack.onUserFetchDataComplete(null);
+                        userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
                         throw new RuntimeException(e);
                     }
@@ -509,7 +503,7 @@ public void fetchUserDatesByKey(String uid) {
             } else {
                 // Callback to handle the case when fetching manager data fails
                 try {
-                    userCallBack.onUserFetchDataComplete(null);
+                    userCallBack.onManagerFetchDataComplete(null);
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
                 }

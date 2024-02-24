@@ -15,19 +15,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
-import com.example.glamlooksapp.utils.User;
 
 import java.util.ArrayList;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
 
     private Context context;
-    private ArrayList<User> customerList;
+    private ArrayList<Customer> customerList;
     Database database = new Database();
 
-    public CustomerAdapter(Context context, ArrayList<User> customerList) {
+    public CustomerAdapter(Context context, ArrayList<Customer> customerList) {
         this.context = context;
         this.customerList = customerList;
     }
@@ -43,7 +43,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
-        User customer = customerList.get(position);
+        Customer customer = customerList.get(position);
         String fullName = customer.getFirstname() + " " + customer.getLastname();
         holder.textViewCustomerName.setText(fullName);
         holder.textViewPN.setText(String.valueOf(customer.getPhoneNumber()));

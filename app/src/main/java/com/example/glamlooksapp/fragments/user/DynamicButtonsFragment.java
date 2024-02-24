@@ -17,10 +17,10 @@ import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
 import com.example.glamlooksapp.callback.UserCallBack;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 
@@ -38,7 +38,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     private Database database;
     private Datetime current_dateTime;
     private long timestamp;
-    private User user;
+    private Customer customer;
     private View view;
     private ViewGroup buttonContainer;
     private AppCompatActivity activity;
@@ -142,15 +142,15 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
-    public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
+    public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
 
 
     }
 
 
     @Override
-    public void onUserFetchDataComplete(User user) {
-        if (user != null) {
+    public void onCustomerFetchDataComplete(Customer customer) {
+        if (customer != null) {
             Log.d(TAG, "User Fetch V");
         } else {
             Log.d(TAG, "User data is not available");
@@ -181,7 +181,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
-    public void onFetchCustomerComplete(ArrayList<User> customers) {
+    public void onFetchCustomerComplete(ArrayList<Customer> customers) {
 
     }
 
@@ -229,7 +229,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                         }
 
                         if (!hasPastAppointments) {
-                            database.saveUserTimes(current_dateTime, user, DynamicButtonsFragment.this);
+                            database.saveUserTimes(current_dateTime, customer, DynamicButtonsFragment.this);
                             Toast.makeText(getContext(), "An appointment was made", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "You cannot make two appointments for the same employer ", Toast.LENGTH_SHORT).show();

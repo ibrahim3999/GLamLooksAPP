@@ -12,15 +12,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
-import com.example.glamlooksapp.home.UpdateProfileActivity;
 import com.example.glamlooksapp.home.UpdateProfileActivityM;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
+import com.example.glamlooksapp.utils.Customer;
 import com.google.android.gms.tasks.Task;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -82,12 +80,12 @@ public class ProfileFragment extends Fragment {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {
+            public void onManagerFetchDataComplete(Manager manager) {
                 setCurrentUser(manager);
             }
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
 
             }
 

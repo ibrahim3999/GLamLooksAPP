@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class CustomerManager {
     private static CustomerManager instance;
-    private ArrayList<User> customersList;
+    private ArrayList<Customer> customersList;
 
     private ArrayList<Datetime> dateList;
     private CustomerManager() {
@@ -22,7 +22,7 @@ public class CustomerManager {
         return instance;
     }
 
-    public ArrayList<User> getCustomerList() {
+    public ArrayList<Customer> getCustomerList() {
         return customersList;
     }
 
@@ -30,7 +30,7 @@ public class CustomerManager {
         return dateList;
     }
 
-    public void setCustomerList(ArrayList<User> customersList) {
+    public void setCustomerList(ArrayList<Customer> customersList) {
         this.customersList = customersList;
     }
 
