@@ -15,9 +15,6 @@ import com.example.glamlooksapp.R;
 
 public class AboutUFragment extends Fragment {
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

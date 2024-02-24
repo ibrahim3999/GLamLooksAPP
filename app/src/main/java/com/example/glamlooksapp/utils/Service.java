@@ -3,12 +3,9 @@ package com.example.glamlooksapp.utils;
 import java.io.Serializable;
 
 public class Service extends FirebaseKey implements Serializable {
-
-
     private String serviceName;
     private Double Price;
     private String duration;
-
 
     public Service(String key, String serviceName, Double price, String duration) {
         super(key);
@@ -23,6 +20,12 @@ public class Service extends FirebaseKey implements Serializable {
         this.duration = duration;
     }
 
+    public Service(Service service){
+        this.setServiceName(service.getServiceName());
+        this.setPrice(service.getPrice());
+        this.setDuration(service.getDuration());
+    }
+
     public void setService(Service service){
         this.setDuration(service.getDuration());
         this.setPrice(service.getPrice());
@@ -30,7 +33,6 @@ public class Service extends FirebaseKey implements Serializable {
     }
 
     public Service(){}
-
 
     public String getServiceName() {
         return serviceName;

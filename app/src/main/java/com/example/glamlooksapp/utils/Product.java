@@ -5,20 +5,15 @@ import com.google.firebase.firestore.Exclude;
 
 public class Product extends FirebaseKey{
     private String name;
-    private String description;
     private String uid;
     private String imagePath;
     private String imageUrl;
     private double price;
 
-
-
     public Product() {}
 
-    public Product(String name, String description,String uid,
-                   String imagePath,String imageUrl,double price) {
+    public Product(String name, String uid, String imagePath, String imageUrl, double price) {
         this.name = name;
-        this.description = description;
         this.uid = uid;
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
@@ -40,15 +35,6 @@ public class Product extends FirebaseKey{
 
     public Product setName(String name) {
         this.name = name;
-        return this;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Product setDescription(String description) {
-        this.description = description;
         return this;
     }
 
@@ -77,11 +63,4 @@ public class Product extends FirebaseKey{
         this.imageUrl = imageUrl;
         return this;
     }
-
-
-
-
-
-
-
 }
