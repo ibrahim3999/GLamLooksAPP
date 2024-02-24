@@ -2,34 +2,17 @@
 <!-- res/layout/products_item.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
+    android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@drawable/customer_border"
+    android:background="@drawable/logo4"
+    android:alpha="1.2"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/textViewFirstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/textViewLastName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewFirstName"
-        android:textColor="@color/black"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:textSize="16sp" />
-
-    <TextView
-        android:id="@+id/textViewPhoneNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewLastName"
         android:layout_marginStart="16dp"
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -38,7 +21,7 @@
         android:id="@+id/textViewServiceName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewPhoneNumber"
+        android:layout_below="@id/textViewFirstName"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:textColor="@color/black"
@@ -49,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewServiceName"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="16dp"
         android:textColor="@color/black"
         android:textSize="14sp" />
@@ -58,6 +42,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewServiceDuration"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_marginStart="16dp"
         android:textColor="@color/black"
         android:textSize="16sp" />

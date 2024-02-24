@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/detailsc"
+    android:background="@drawable/logo5"
     tools:context=".fragments.user.AppointmentsListFragment">
 
     <androidx.recyclerview.widget.RecyclerView

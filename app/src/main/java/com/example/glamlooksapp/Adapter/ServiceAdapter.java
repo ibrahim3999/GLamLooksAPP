@@ -47,11 +47,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         if (service != null) {
             String serviceName = service.getServiceName();
             holder.serviceName.setTextColor(Color.BLUE);
-            holder.FirstName.setText(manager.getFirstname());
-            holder.LastName.setText(manager.getLastname());
-            holder.serviceName.setText(serviceName);
-            holder.ServiceDuration.setText(manager.getService().getDuration());
-            holder.ServicePrice.setText(Double.toString(manager.getService().getPrice()));
+            holder.FirstName.setText(manager.getFirstname().trim() + " " + manager.getLastname().trim());
+            holder.serviceName.setText(serviceName.trim().toLowerCase());
+            holder.ServiceDuration.setText("Duration: " + manager.getService().getDuration() + " Minutes");
+            holder.ServicePrice.setText("Price: " + Double.toString(manager.getService().getPrice()) + " ILS");
 
             holder.serviceName.setOnClickListener(v -> {
                 if (onTextViewClickListener != null) {
@@ -72,7 +71,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
     static class ServiceViewHolder extends RecyclerView.ViewHolder {
         TextView serviceName;
         TextView FirstName;
-        TextView LastName;
         TextView ServiceDuration;
         TextView ServicePrice;
 
@@ -80,7 +78,6 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             super(itemView);
             serviceName = itemView.findViewById(R.id.textViewServiceName);
             FirstName = itemView.findViewById(R.id.textViewFirstName);
-            LastName = itemView.findViewById(R.id.textViewLastName);
             ServiceDuration = itemView.findViewById(R.id.textViewServiceDuration);
             ServicePrice = itemView.findViewById(R.id.textViewServicePrice);
         }
