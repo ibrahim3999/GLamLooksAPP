@@ -24,11 +24,11 @@ import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Generic;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.Service;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
@@ -115,10 +115,10 @@ public class UpdateProfileActivityM extends AppCompatActivity {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {}
+            public void onManagerFetchDataComplete(Manager manager) {}
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
 
             }
 

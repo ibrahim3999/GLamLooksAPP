@@ -15,12 +15,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.CustomerActivity;
 import com.example.glamlooksapp.home.ManagerActivity;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
@@ -108,10 +107,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {}
+            public void onManagerFetchDataComplete(Manager manager) {}
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
 
 //                String uid = database.getCurrentUser().getUid();
 //                User newUser = new User(user);
@@ -119,19 +118,19 @@ public class LoginActivity extends AppCompatActivity {
 //                newUser.setLastname("roban");
 //                database.updateUser(uid,newUser);
 
-                if(user.getDeleted() == 1){
+                if(customer.getDeleted() == 1){
                     Toast.makeText(LoginActivity.this,"Account has been deleted",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (user!=null) {
-                    int type = user.getAccount_type();
+                if (customer !=null) {
+                    int type = customer.getAccount_type();
                     if(type==0) {
-                        Toast.makeText(LoginActivity.this,"Hello " + user.getFirstname(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello " + customer.getFirstname(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                         startActivity(intent);
                         finish();
                     }else{
-                        Toast.makeText(LoginActivity.this,"Hello " +user.getFirstname(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Hello " + customer.getFirstname(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                         startActivity(intent);
                         finish();

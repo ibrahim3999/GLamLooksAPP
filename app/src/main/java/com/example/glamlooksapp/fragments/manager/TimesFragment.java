@@ -22,14 +22,13 @@ import com.example.glamlooksapp.Adapter.CustomerAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.CustomerManager;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -43,7 +42,7 @@ public class TimesFragment extends Fragment {
 
     private RecyclerView recyclerViewCustomers;
     private CustomerAdapter customerAdapter;
-    private ArrayList<User> customersList;
+    private ArrayList<Customer> customersList;
 
     Database database;
     Manager currentManager = null;
@@ -85,7 +84,7 @@ public class TimesFragment extends Fragment {
     private void intiVars() {
         database.setUserCallBack(new UserCallBack() {
             @Override
-            public void onUserFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
+            public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
                 currentManager = new Manager(manager);
                 if (currentManager != null) {
                     Toast.makeText(activity, currentManager.getService().getServiceName(), Toast.LENGTH_SHORT).show();
@@ -96,7 +95,7 @@ public class TimesFragment extends Fragment {
             }
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
             }
 
             @Override
@@ -121,7 +120,7 @@ public class TimesFragment extends Fragment {
 
             @SuppressLint("NotifyDataSetChanged")
             @Override
-            public void onFetchCustomerComplete(ArrayList<User> customers) {
+            public void onFetchCustomerComplete(ArrayList<Customer> customers) {
                 if (!customers.isEmpty()) {
                     customersList.clear();
                     customersList.addAll(customers);
@@ -155,7 +154,7 @@ public class TimesFragment extends Fragment {
 
 
         int rowNum = 1;
-        for (User customer : customersList) {
+        for (Customer customer : customersList) {
             Datetime datetime = customer.getDateTime();
 
             Row row = sheet.createRow(rowNum++);

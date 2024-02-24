@@ -12,14 +12,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.home.UpdateProfileActivity;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,7 +30,7 @@ public class ProfileFragmentC extends Fragment {
     private TextView fProfile_TV_name;
     private CardView fProfile_CV_editDetails;
     private CardView fProfile_CV_logout;
-    private User currentUser ;
+    private Customer currentCustomer;
     private Database database;
     private AppCompatActivity activity;
 
@@ -47,18 +46,18 @@ public class ProfileFragmentC extends Fragment {
         this.activity = activity;
     }
 
-    public void setCurrentUser(User user){
-        this.currentUser = user;
-        displayUser(user);
+    public void setCurrentUser(Customer customer){
+        this.currentCustomer = customer;
+        displayUser(customer);
     }
 
-    private void displayUser(User user) {
-        fProfile_TV_name.setText(user.getFirstname());
-        if(user.getImageUrl() != null){
+    private void displayUser(Customer customer) {
+        fProfile_TV_name.setText(customer.getFirstname());
+        if(customer.getImageUrl() != null){
             // set image profile
             Glide
                     .with(activity)
-                    .load(user.getImageUrl())
+                    .load(customer.getImageUrl())
                     .centerCrop()
                     .into(fProfile_IV_profileImage);
         }
@@ -81,11 +80,11 @@ public class ProfileFragmentC extends Fragment {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {}
+            public void onManagerFetchDataComplete(Manager manager) {}
 
             @Override
-            public void onUserFetchDataComplete(User user) {
-                setCurrentUser(user);
+            public void onCustomerFetchDataComplete(Customer customer) {
+                setCurrentUser(customer);
             }
 
             @Override
@@ -106,7 +105,7 @@ public class ProfileFragmentC extends Fragment {
 
                 if(activity != null) {
                     Intent intent = new Intent(activity, UpdateProfileActivity.class);
-                    intent.putExtra(USER_INTENT_KEY, currentUser);
+                    intent.putExtra(USER_INTENT_KEY, currentCustomer);
                     startActivity(intent);
 
                 }

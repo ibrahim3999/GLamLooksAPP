@@ -12,13 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.glamlooksapp.callback.ManagerAddedCallback;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.AuthCallBack;
 import com.example.glamlooksapp.utils.Manager;
 import com.example.glamlooksapp.utils.Service;
-import com.example.glamlooksapp.utils.User;
+import com.example.glamlooksapp.utils.Customer;
 import com.google.firebase.auth.AuthResult;
 import com.google.android.gms.tasks.Task;
 
@@ -105,7 +104,7 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
                 signup_PB_loading.setVisibility(View.VISIBLE);
-                User user = null;
+                Customer customer = null;
                 Manager manager = null;
                 String password = "";
                 if (showAdditionalInfoCheckbox.isChecked()) {
@@ -124,18 +123,18 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                 }else{
-                     user = new User();
-                    user.setEmail(signupEmail.getText().toString());
-                    user.setFirstname(firstname.getText().toString());
-                    user.setLastname(lastname.getText().toString());
-                    user.setPhoneNumber(phoneNumber.getText().toString());
+                     customer = new Customer();
+                    customer.setEmail(signupEmail.getText().toString());
+                    customer.setFirstname(firstname.getText().toString());
+                    customer.setLastname(lastname.getText().toString());
+                    customer.setPhoneNumber(phoneNumber.getText().toString());
                      password = signupPassword.getText().toString().trim();
-                    user.setAccount_type(ACCOUNT_TYPE_CUSTOMER);
+                    customer.setAccount_type(ACCOUNT_TYPE_CUSTOMER);
 
                 }
 
-                if(user!=null) {
-                    database.createAccount(user.getEmail(), password, user);
+                if(customer !=null) {
+                    database.createAccount(customer.getEmail(), password, customer);
                 }
                 if(manager!=null){
                     database.createAccount(manager.getEmail(), password, manager);
@@ -171,7 +170,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     private boolean checkInput() {
-        User customer = new User();
+        Customer customer = new Customer();
         customer.setEmail(signupEmail.getText().toString());
         customer.setFirstname(firstname.getText().toString());
         customer.setLastname(lastname.getText().toString());

@@ -20,12 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.callback.UserCallBack;
 import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
-import com.example.glamlooksapp.utils.User;
 import com.example.glamlooksapp.utils.Generic;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,7 +47,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private TextInputLayout editAccount_TF_phone;
     private ProgressBar editAccount_PB_loading;
     private Button editAccount_BTN_updateAccount;
-    private User currentUser;
+    private Customer currentCustomer;
     private FloatingActionButton editAccount_FBTN_uploadImage;
     private TextInputLayout editAccount_service_name;
     private TextInputLayout editAccount_service_duration;
@@ -61,25 +60,25 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_profile);
 
         Intent intent = getIntent();
-        currentUser = (User) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        currentCustomer = (Customer) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
         if(!Generic.checkPermissions(this)) {
             Generic.requestPermissions(this);
         }
         findViews();
         initVars();
-        displayUser(currentUser);
+        displayUser(currentCustomer);
     }
 
-    private void displayUser(User user) {
-        editAccount_TF_firstName.getEditText().setText(user.getFirstname());
-        editAccount_TF_lastName.getEditText().setText(user.getLastname());
-        editAccount_TF_phone.getEditText().setText(user.getPhoneNumber());
+    private void displayUser(Customer customer) {
+        editAccount_TF_firstName.getEditText().setText(customer.getFirstname());
+        editAccount_TF_lastName.getEditText().setText(customer.getLastname());
+        editAccount_TF_phone.getEditText().setText(customer.getPhoneNumber());
 
-        if(user.getImageUrl() != null){
+        if(customer.getImageUrl() != null){
             // set image profile
             Glide
                     .with(this)
-                    .load(user.getImageUrl())
+                    .load(customer.getImageUrl())
                     .centerCrop()
                     .into(editAccount_IV_image);
         }
@@ -103,10 +102,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
 
             @Override
-            public void onUserFetchDataComplete(Manager manager) {}
+            public void onManagerFetchDataComplete(Manager manager) {}
 
             @Override
-            public void onUserFetchDataComplete(User user) {
+            public void onCustomerFetchDataComplete(Customer customer) {
 
             }
 
@@ -131,16 +130,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                User user = new User();
+                Customer customer = new Customer();
 
 
-                user.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
-                user.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
-                user.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
-                user.setEmail(currentUser.getEmail());
-                user.setAccount_type(currentUser.getAccount_type());
+                customer.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
+                customer.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
+                customer.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
+                customer.setEmail(currentCustomer.getEmail());
+                customer.setAccount_type(currentCustomer.getAccount_type());
                 String uid = db.getCurrentUser().getUid();
-                user.setKey(uid);
+                customer.setKey(uid);
 
                 if(selectedImageUri != null){
                     // save image
@@ -150,10 +149,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
 //                    if(!db.uploadImage(selectedImageUri, path)){
 //                        return;
 //                    }
-                    user.setImagePath(path);
+                    customer.setImagePath(path);
                 }
 
-                db.updateUser(user);
+                db.updateUser(customer);
             }
         });
 

@@ -1,29 +1,19 @@
 package com.example.glamlooksapp.utils;
 
-
 import com.google.firebase.firestore.Exclude;
-import com.google.type.DateTime;
 
 import java.io.Serializable;
 
 public class User extends FirebaseKey implements Serializable {
-
-    public static final int ACCOUNT_TYPE_MANAGER = 1;
     private String firstname;
-    private String email;
     private String lastname;
+    private String email;
     private String password;
     private String phoneNumber;
     private int account_type;
     private String imagePath;
     private String imageUrl;
-
-    private Datetime datetime;
-
     private int deleted; // 0 for not deleted, 1 for deleted
-
-
-
 
     public User(User user) {
         this.setKey(user.getKey());
@@ -32,7 +22,6 @@ public class User extends FirebaseKey implements Serializable {
         this.setFirstname(user.getFirstname());
         this.setLastname(user.getLastname());
         this.setAccount_type(user.getAccount_type());
-        this.setDateTime(user.getDateTime());
         this.setPassword(user.getPassword());
         this.setPhoneNumber(user.getPhoneNumber());
         this.setImageUrl(user.getImageUrl());
@@ -40,17 +29,21 @@ public class User extends FirebaseKey implements Serializable {
     }
 
     public User(String key, String firstname, String email, String lastname, String password, String phoneNumber,
-                int accountType, String imagePath, String imageUrl, Datetime datetime) {
+                int accountType, String imagePath, String imageUrl) {
         super(key);
         this.firstname = firstname;
         this.email = email;
         this.lastname = lastname;
         this.password = password;
         this.phoneNumber =phoneNumber;
-        this.datetime =datetime;
         this.account_type = accountType;
         this.imagePath = imagePath;
         this.imageUrl = imageUrl;
+        this.setDeleted(0);
+    }
+
+    public User(){
+        super();
         this.setDeleted(0);
     }
 
@@ -121,35 +114,8 @@ public class User extends FirebaseKey implements Serializable {
     }
 
     public  void setAccount_type(int account_type){this.account_type = account_type;}
-
-
-
-
-    public User(){}
-
-    @Exclude
-    public boolean isValid(){
-        if(this.firstname == null || this.firstname.isEmpty()) return false;
-        if(this.lastname == null || this.lastname.isEmpty()) return false;
-        if(this.email == null || this.email.isEmpty()) return false;
-        if(this.password == null || this.password.isEmpty()) return false;
-        if(this.getDeleted() == 1) return false;
-        return this.phoneNumber != null && !this.phoneNumber.isEmpty();
-    }
-
-
-    public Datetime getDateTime() {
-        return this.datetime;
-    }
-
-    public void setDateTime(Datetime datetime) {
-        this.datetime = datetime;
-    }
-
     public String getKey(){return key;}
 
     public void setKeyI(String key){this.key= key;}
-
-
 
 }

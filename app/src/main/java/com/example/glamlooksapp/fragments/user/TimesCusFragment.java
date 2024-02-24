@@ -16,9 +16,9 @@ import android.widget.Toast;
 import com.example.glamlooksapp.Adapter.CustomersAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
+import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Datetime;
-import com.example.glamlooksapp.utils.User;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
@@ -80,7 +80,7 @@ public class TimesCusFragment extends Fragment {
             }
 
             @Override
-            public void onFetchCustomerComplete(ArrayList<User> customers) {
+            public void onFetchCustomerComplete(ArrayList<Customer> customers) {
 
             }
         });
