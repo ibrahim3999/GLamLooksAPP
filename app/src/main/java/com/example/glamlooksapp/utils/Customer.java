@@ -3,7 +3,6 @@ package com.example.glamlooksapp.utils;
 import com.google.firebase.database.Exclude;
 
 public class Customer extends User{
-
     private Datetime datetime;
 
     public Customer(Customer customer) {
