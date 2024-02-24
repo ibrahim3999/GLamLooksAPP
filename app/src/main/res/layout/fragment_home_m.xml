@@ -55,7 +55,7 @@
         android:layout_width="401dp"
         android:layout_height="348dp"
         android:layout_below="@id/editAccount_ConstraintLayout_profileImg"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="60dp"
         android:padding="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3" />

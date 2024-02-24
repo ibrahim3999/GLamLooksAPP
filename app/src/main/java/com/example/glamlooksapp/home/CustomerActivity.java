@@ -22,8 +22,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 
 public class CustomerActivity extends AppCompatActivity {
-
-
     private Database database;
     private ActivityCustomerBinding customer_Binding;
 
@@ -65,14 +63,7 @@ public class CustomerActivity extends AppCompatActivity {
             }
             return true;
         });
-
-
-
-
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
