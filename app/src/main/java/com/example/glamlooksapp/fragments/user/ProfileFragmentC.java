@@ -35,7 +35,6 @@ public class ProfileFragmentC extends Fragment {
     private AppCompatActivity activity;
 
 
-
     public ProfileFragmentC() {
 
     }

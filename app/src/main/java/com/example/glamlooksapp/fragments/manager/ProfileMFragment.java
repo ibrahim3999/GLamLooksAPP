@@ -24,25 +24,19 @@ import com.google.android.gms.tasks.Task;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileMFragment extends Fragment {
     public static String USER_INTENT_KEY = "CUSTOMER";
     private CircleImageView fProfile_IV_profileImage;
-    private TextView fProfile_TV_name;
-    private CardView fProfile_CV_editDetails;
-    private CardView fProfile_CV_logout;
-    private Manager currentUser ;
+    private TextView profileName;
+    private CardView profileEditDetails;
+    private CardView profileLogout;
+    private Manager currentUser;
     private Database database;
     private AppCompatActivity activity;
 
+    public ProfileMFragment() {}
 
-
-    public ProfileFragment() {
-
-    }
-
-    public ProfileFragment(AppCompatActivity activity) {
-        // Required empty public constructor
-//        database = new Database();
+    public ProfileMFragment(AppCompatActivity activity) {
         this.activity = activity;
     }
 
@@ -52,7 +46,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void displayUser(Manager manager) {
-        fProfile_TV_name.setText(manager.getFirstname());
+        profileName.setText(manager.getFirstname());
         if(manager.getImageUrl() != null){
             // set image profile
             Glide
@@ -74,11 +68,16 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    private void findViews(View view) {
+        profileLogout = view.findViewById(R.id.fProfile_CV_logout);
+        fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImage);
+        profileName = view.findViewById(R.id.fProfile_TV_name);
+        profileEditDetails = view.findViewById(R.id.fProfile_CV_editDetails);
+        database.fetchManagerData(database.getCurrentUser().getUid());
+    }
+
     private void initVars() {
         database.setUserCallBack(new UserCallBack() {
-
-
-
             @Override
             public void onManagerFetchDataComplete(Manager manager) {
                 setCurrentUser(manager);
@@ -86,26 +85,21 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onCustomerFetchDataComplete(Customer customer) {
-
             }
 
             @Override
             public void onUpdateComplete(Task<Void> task) {
-
             }
 
             @Override
             public void onDeleteComplete(Task<Void> task) {
-
             }
         });
-
-
-        fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
+        profileEditDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(activity != null) {
+                if (activity != null) {
                     Intent intent = new Intent(activity, UpdateProfileActivityM.class);
                     intent.putExtra(USER_INTENT_KEY, currentUser);
                     startActivity(intent);
@@ -113,28 +107,16 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
-        fProfile_CV_logout.setOnClickListener(new View.OnClickListener() {
+        profileLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (activity != null) {
                     Intent intent = new Intent(activity, LoginActivity.class);
                     startActivity(intent);
                     database.logout();
-//                    activity.finish();
                 }
             }
         });
-
-
-    }
-
-    private void findViews(View view) {
-        fProfile_CV_logout = view.findViewById(R.id.fProfile_CV_logout);
-        fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImage);
-        fProfile_TV_name = view.findViewById(R.id.fProfile_TV_name);
-        fProfile_CV_editDetails = view.findViewById(R.id.fProfile_CV_editDetails);
-        database.fetchManagerData(database.getCurrentUser().getUid());
     }
 
 }

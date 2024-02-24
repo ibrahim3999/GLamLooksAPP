@@ -1,13 +1,10 @@
 package com.example.glamlooksapp.fragments.manager;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.glamlooksapp.R;
 
 /**
@@ -16,13 +13,9 @@ import com.example.glamlooksapp.R;
  * create an instance of this fragment.
  */
 public class LogoutMFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -38,7 +31,6 @@ public class LogoutMFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment LogoutMFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static LogoutMFragment newInstance(String param1, String param2) {
         LogoutMFragment fragment = new LogoutMFragment();
         Bundle args = new Bundle();

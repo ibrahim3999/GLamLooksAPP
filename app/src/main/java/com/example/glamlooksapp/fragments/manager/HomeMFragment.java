@@ -11,13 +11,7 @@ import android.view.ViewGroup;
 import com.example.glamlooksapp.R;
 
 public class HomeMFragment extends Fragment {
-
-
-    public HomeMFragment() {
-        // Required empty public constructor
-    }
-
-
+    public HomeMFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
