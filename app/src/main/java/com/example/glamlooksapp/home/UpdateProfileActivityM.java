@@ -23,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.UserCallBack;
-import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.fragments.manager.ProfileMFragment;
 import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Generic;
@@ -63,7 +63,7 @@ public class UpdateProfileActivityM extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        Serializable serializable = intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        Serializable serializable = intent.getSerializableExtra(ProfileMFragment.USER_INTENT_KEY);
         if (serializable instanceof Manager) {
             currentManager = (Manager) serializable;
         }

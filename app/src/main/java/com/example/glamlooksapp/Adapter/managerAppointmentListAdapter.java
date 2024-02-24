@@ -21,22 +21,20 @@ import com.example.glamlooksapp.utils.Datetime;
 
 import java.util.ArrayList;
 
-public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
-
+public class managerAppointmentListAdapter extends RecyclerView.Adapter<managerAppointmentListAdapter.CustomerViewHolder> {
     private Context context;
     private ArrayList<Customer> customerList;
     Database database = new Database();
 
-    public CustomerAdapter(Context context, ArrayList<Customer> customerList) {
+    public managerAppointmentListAdapter(Context context, ArrayList<Customer> customerList) {
         this.context = context;
         this.customerList = customerList;
     }
 
-
     @NonNull
     @Override
     public CustomerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.customer_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.manager_appointment_item, parent, false);
         return new CustomerViewHolder(view);
     }
 
@@ -45,7 +43,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     public void onBindViewHolder(@NonNull CustomerViewHolder holder, int position) {
         Customer customer = customerList.get(position);
         String fullName = customer.getFirstname() + " " + customer.getLastname();
-        holder.textViewCustomerName.setText(fullName);
+        holder.customerName.setText(fullName);
         holder.textViewPN.setText(String.valueOf(customer.getPhoneNumber()));
         Datetime datetime = customer.getDateTime();
         holder.textViewTime.setText(datetime.getFormattedTime());
@@ -57,20 +55,16 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
             intent.setData(Uri.parse("tel:" + customer.getPhoneNumber()));
             context.startActivity(intent);
         });
-
         holder.removeButton.setOnClickListener(v -> {
             String datetimeUid = datetime.getUUid();
-
             database.deleteUserTime(datetimeUid);
-
             customerList.remove(position);
             notifyDataSetChanged();
         });
-
         Glide.with(context)
                 .load(customer.getImageUrl())
-                .placeholder(R.drawable.upload)
-                .into(holder.imageViewCustomer);
+                .placeholder(R.drawable.hair_logo)
+                .into(holder.appointmentIcon);
     }
 
     @Override
@@ -79,16 +73,16 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     }
 
     static class CustomerViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewCustomer;
-        TextView textViewCustomerName;
+        ImageView appointmentIcon;
+        TextView customerName;
         TextView textViewPN, textViewTime,textViewDate;
         Button callBtn;
         ImageButton removeButton;
 
         public CustomerViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewCustomer = itemView.findViewById(R.id.imageViewCustomer);
-            textViewCustomerName = itemView.findViewById(R.id.textViewCustomerName);
+            appointmentIcon = itemView.findViewById(R.id.imageViewCustomer);
+            customerName = itemView.findViewById(R.id.textViewCustomerName);
             textViewPN = itemView.findViewById(R.id.textViewPN);
             callBtn = itemView.findViewById(R.id.callButton);
             textViewTime = itemView.findViewById(R.id.textViewTime);

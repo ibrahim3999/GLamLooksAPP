@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.glamlooksapp.Adapter.CustomerAdapter;
+import com.example.glamlooksapp.Adapter.managerAppointmentListAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.UserCallBack;
@@ -41,7 +41,7 @@ import java.util.ArrayList;
 public class TimesFragment extends Fragment {
 
     private RecyclerView recyclerViewCustomers;
-    private CustomerAdapter customerAdapter;
+    private managerAppointmentListAdapter managerAppointmentListAdapter;
     private ArrayList<Customer> customersList;
 
     Database database;
@@ -111,7 +111,7 @@ public class TimesFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes) {
-                customerAdapter.notifyDataSetChanged();
+                managerAppointmentListAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -128,7 +128,7 @@ public class TimesFragment extends Fragment {
                     if (customersList.isEmpty()) {
                         Toast.makeText(activity, "There are no new dates!", Toast.LENGTH_SHORT).show();
                     }
-                    customerAdapter.notifyDataSetChanged();
+                    managerAppointmentListAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(activity, "Customers list is null", Toast.LENGTH_SHORT).show();
                 }
@@ -196,15 +196,15 @@ public class TimesFragment extends Fragment {
 
     private void initViews() {
         CustomerManager customerManager = CustomerManager.getInstance();
-        customerAdapter = new CustomerAdapter(getContext(), customerManager.getCustomerList());
-        recyclerViewCustomers.setAdapter(customerAdapter);
+        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), customerManager.getCustomerList());
+        recyclerViewCustomers.setAdapter(managerAppointmentListAdapter);
     }
 
     private void initRecyclerView() {
         customersList = new ArrayList<>();
-        customerAdapter = new CustomerAdapter(getContext(), customersList);
+        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), customersList);
         recyclerViewCustomers.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerViewCustomers.setAdapter(customerAdapter);
+        recyclerViewCustomers.setAdapter(managerAppointmentListAdapter);
         database.fetchManagerData(database.getCurrentUser().getUid());
     }
 }

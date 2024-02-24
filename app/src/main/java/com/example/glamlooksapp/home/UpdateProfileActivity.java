@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.glamlooksapp.callback.UserCallBack;
-import com.example.glamlooksapp.fragments.manager.ProfileFragment;
+import com.example.glamlooksapp.fragments.manager.ProfileMFragment;
 import com.example.glamlooksapp.utils.Customer;
 import com.example.glamlooksapp.utils.Database;
 import com.example.glamlooksapp.utils.Manager;
@@ -60,7 +60,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_update_profile);
 
         Intent intent = getIntent();
-        currentCustomer = (Customer) intent.getSerializableExtra(ProfileFragment.USER_INTENT_KEY);
+        currentCustomer = (Customer) intent.getSerializableExtra(ProfileMFragment.USER_INTENT_KEY);
         if(!Generic.checkPermissions(this)) {
             Generic.requestPermissions(this);
         }

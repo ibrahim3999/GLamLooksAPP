@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.glamlooksapp.Adapter.CustomersAdapter;
+import com.example.glamlooksapp.Adapter.customersAppointmentListAdapter;
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.utils.Customer;
@@ -27,7 +27,7 @@ public class TimesCusFragment extends Fragment {
 
     AppCompatActivity activity;
 
-    private CustomersAdapter customerAdapter;
+    private customersAppointmentListAdapter customerAdapter;
     private ArrayList<Datetime> customerDatesList;
     private RecyclerView recycleViewDates;
 
@@ -87,7 +87,7 @@ public class TimesCusFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        customerAdapter = new CustomersAdapter(getContext(), customerDatesList);
+        customerAdapter = new customersAppointmentListAdapter(getContext(), customerDatesList);
         recycleViewDates.setLayoutManager(new LinearLayoutManager(getContext()));
         recycleViewDates.setAdapter(customerAdapter);
         // Fetch All DateTimes for each Customer by uid.

@@ -33,7 +33,6 @@ public class Customer extends User{
         return this.getPhoneNumber() != null && !this.getPhoneNumber().isEmpty();
     }
 
-
     public Datetime getDateTime() {
         return this.datetime;
     }
