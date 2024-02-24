@@ -2,6 +2,7 @@ package com.example.glamlooksapp.fragments.user;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,22 +25,19 @@ import com.google.android.gms.tasks.Task;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class ProfileFragmentC extends Fragment {
+public class ProfileFragment extends Fragment {
     public static String USER_INTENT_KEY = "CUSTOMER";
-    private CircleImageView fProfile_IV_profileImage;
-    private TextView fProfile_TV_name;
-    private CardView fProfile_CV_editDetails;
-    private CardView fProfile_CV_logout;
+    private CircleImageView profileImage;
+    private TextView profileName;
+    private CardView editDetailsBtn;
+    private CardView logoutBtn;
     private Customer currentCustomer;
     private Database database;
     private AppCompatActivity activity;
 
+    public ProfileFragment() {}
 
-    public ProfileFragmentC() {
-
-    }
-
-    public ProfileFragmentC(AppCompatActivity activity) {
+    public ProfileFragment(AppCompatActivity activity) {
         // Required empty public constructor
         database = new Database();
         this.activity = activity;
@@ -51,15 +49,23 @@ public class ProfileFragmentC extends Fragment {
     }
 
     private void displayUser(Customer customer) {
-        fProfile_TV_name.setText(customer.getFirstname());
+        profileName.setText(customer.getFirstname());
         if(customer.getImageUrl() != null){
             // set image profile
             Glide
                     .with(activity)
                     .load(customer.getImageUrl())
                     .centerCrop()
-                    .into(fProfile_IV_profileImage);
+                    .into(profileImage);
         }
+    }
+
+    private void findViews(View view) {
+        logoutBtn = view.findViewById(R.id.fProfile_CV_logoutC);
+        profileImage = view.findViewById(R.id.fProfile_IV_profileImageC);
+        profileName = view.findViewById(R.id.fProfile_TV_nameC);
+        editDetailsBtn = view.findViewById(R.id.fProfile_CV_editDetailsC);
+        database.fetchUserData(database.getCurrentUser().getUid());
     }
 
     @Override
@@ -69,17 +75,15 @@ public class ProfileFragmentC extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile_c, container, false);
         findViews(view);
         initVars();
+        Log.d("ProfileFragment", "onCreateView");
         return view;
     }
 
     private void initVars() {
-
         database.setUserCallBack(new UserCallBack() {
-
-
-
             @Override
-            public void onManagerFetchDataComplete(Manager manager) {}
+            public void onManagerFetchDataComplete(Manager manager) {
+            }
 
             @Override
             public void onCustomerFetchDataComplete(Customer customer) {
@@ -88,21 +92,16 @@ public class ProfileFragmentC extends Fragment {
 
             @Override
             public void onUpdateComplete(Task<Void> task) {
-
             }
 
             @Override
             public void onDeleteComplete(Task<Void> task) {
-
             }
         });
-
-
-        fProfile_CV_editDetails.setOnClickListener(new View.OnClickListener() {
+        editDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(activity != null) {
+                if (activity != null) {
                     Intent intent = new Intent(activity, UpdateProfileActivity.class);
                     intent.putExtra(USER_INTENT_KEY, currentCustomer);
                     startActivity(intent);
@@ -111,27 +110,15 @@ public class ProfileFragmentC extends Fragment {
             }
         });
 
-        fProfile_CV_logout.setOnClickListener(new View.OnClickListener() {
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (activity != null) {
                     Intent intent = new Intent(activity, LoginActivity.class);
                     startActivity(intent);
                     database.logout();
-//                    activity.finish();
                 }
             }
         });
-
-
     }
-
-    private void findViews(View view) {
-        fProfile_CV_logout = view.findViewById(R.id.fProfile_CV_logoutC);
-        fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImageC);
-        fProfile_TV_name = view.findViewById(R.id.fProfile_TV_nameC);
-        fProfile_CV_editDetails = view.findViewById(R.id.fProfile_CV_editDetailsC);
-        database.fetchUserData(database.getCurrentUser().getUid());
-    }
-
 }

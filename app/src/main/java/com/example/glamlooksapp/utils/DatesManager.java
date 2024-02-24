@@ -12,7 +12,6 @@ public class DatesManager {
         // Initialize productList or perform any setup
         datesList = new ArrayList<>();
         dateList = new ArrayList<>();
-
     }
 
     public static synchronized DatesManager getInstance() {

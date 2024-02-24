@@ -8,14 +8,11 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class Datetime {
-
     private String serviceName;
-
     private Timestamp timestamp;
     private String formattedTime;
     private String formattedDate;
     private String key;
-
     private String uid;
     private String managerId;
     private int deleted;

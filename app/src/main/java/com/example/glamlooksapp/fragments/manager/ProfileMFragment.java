@@ -26,10 +26,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileMFragment extends Fragment {
     public static String USER_INTENT_KEY = "CUSTOMER";
-    private CircleImageView fProfile_IV_profileImage;
+    private CircleImageView profileImage;
     private TextView profileName;
-    private CardView profileEditDetails;
-    private CardView profileLogout;
+    private CardView editDetailsBtn;
+    private CardView logoutBtn;
     private Manager currentUser;
     private Database database;
     private AppCompatActivity activity;
@@ -53,7 +53,7 @@ public class ProfileMFragment extends Fragment {
                     .with(activity)
                     .load(manager.getImageUrl())
                     .centerCrop()
-                    .into(fProfile_IV_profileImage);
+                    .into(profileImage);
         }
     }
 
@@ -69,10 +69,10 @@ public class ProfileMFragment extends Fragment {
     }
 
     private void findViews(View view) {
-        profileLogout = view.findViewById(R.id.fProfile_CV_logout);
-        fProfile_IV_profileImage = view.findViewById(R.id.fProfile_IV_profileImage);
+        logoutBtn = view.findViewById(R.id.fProfile_CV_logout);
+        profileImage = view.findViewById(R.id.fProfile_IV_profileImage);
         profileName = view.findViewById(R.id.fProfile_TV_name);
-        profileEditDetails = view.findViewById(R.id.fProfile_CV_editDetails);
+        editDetailsBtn = view.findViewById(R.id.fProfile_CV_editDetails);
         database.fetchManagerData(database.getCurrentUser().getUid());
     }
 
@@ -82,23 +82,16 @@ public class ProfileMFragment extends Fragment {
             public void onManagerFetchDataComplete(Manager manager) {
                 setCurrentUser(manager);
             }
-
             @Override
-            public void onCustomerFetchDataComplete(Customer customer) {
-            }
-
+            public void onCustomerFetchDataComplete(Customer customer) {}
             @Override
-            public void onUpdateComplete(Task<Void> task) {
-            }
-
+            public void onUpdateComplete(Task<Void> task) {}
             @Override
-            public void onDeleteComplete(Task<Void> task) {
-            }
+            public void onDeleteComplete(Task<Void> task) {}
         });
-        profileEditDetails.setOnClickListener(new View.OnClickListener() {
+        editDetailsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (activity != null) {
                     Intent intent = new Intent(activity, UpdateProfileActivityM.class);
                     intent.putExtra(USER_INTENT_KEY, currentUser);
@@ -107,7 +100,7 @@ public class ProfileMFragment extends Fragment {
                 }
             }
         });
-        profileLogout.setOnClickListener(new View.OnClickListener() {
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (activity != null) {
@@ -118,5 +111,4 @@ public class ProfileMFragment extends Fragment {
             }
         });
     }
-
 }

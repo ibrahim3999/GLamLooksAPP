@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/detailsc"
-    tools:context=".fragments.manager.TimesFragment">
+    tools:context=".fragments.manager.AppointmentsListMFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCustomers"

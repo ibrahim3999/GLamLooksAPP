@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -40,25 +41,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UpdateProfileActivity extends AppCompatActivity {
     private Uri selectedImageUri;
-    private Database db;
-    private CircleImageView editAccount_IV_image;
-    private TextInputLayout editAccount_TF_firstName;
-    private TextInputLayout editAccount_TF_lastName;
-    private TextInputLayout editAccount_TF_phone;
+    private Database database;
+    private CircleImageView image;
+    private TextInputLayout firstName;
+    private TextInputLayout lastName;
+    private TextInputLayout phone;
     private ProgressBar editAccount_PB_loading;
-    private Button editAccount_BTN_updateAccount;
+    private Button updateAccountBtn;
     private Customer currentCustomer;
-    private FloatingActionButton editAccount_FBTN_uploadImage;
-    private TextInputLayout editAccount_service_name;
-    private TextInputLayout editAccount_service_duration;
-    private TextInputLayout editAccount_service_price;
-
+    private FloatingActionButton uploadImageBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile);
-
         Intent intent = getIntent();
         currentCustomer = (Customer) intent.getSerializableExtra(ProfileMFragment.USER_INTENT_KEY);
         if(!Generic.checkPermissions(this)) {
@@ -70,98 +66,81 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     private void displayUser(Customer customer) {
-        editAccount_TF_firstName.getEditText().setText(customer.getFirstname());
-        editAccount_TF_lastName.getEditText().setText(customer.getLastname());
-        editAccount_TF_phone.getEditText().setText(customer.getPhoneNumber());
-
+        firstName.getEditText().setText(customer.getFirstname());
+        lastName.getEditText().setText(customer.getLastname());
+        phone.getEditText().setText(customer.getPhoneNumber());
         if(customer.getImageUrl() != null){
             // set image profile
             Glide
                     .with(this)
                     .load(customer.getImageUrl())
                     .centerCrop()
-                    .into(editAccount_IV_image);
+                    .into(image);
         }
     }
 
-
     private void findViews() {
-        editAccount_IV_image = findViewById(R.id.editAccount_IV_image);
-        editAccount_TF_firstName = findViewById(R.id.editAccount_TF_firstName);
-        editAccount_TF_lastName = findViewById(R.id.editAccount_TF_lastName);
+        image = findViewById(R.id.editAccount_IV_image);
+        firstName = findViewById(R.id.editAccount_TF_firstName);
+        lastName = findViewById(R.id.editAccount_TF_lastName);
         editAccount_PB_loading = findViewById(R.id.editAccount_PB_loading);
-        editAccount_BTN_updateAccount = findViewById(R.id.editAccount_BTN_updateAccount);
-        editAccount_FBTN_uploadImage = findViewById(R.id.editAccount_FBTN_uploadImage);
-        editAccount_TF_phone = findViewById(R.id.editAccount_TF_phone);
+        updateAccountBtn = findViewById(R.id.editAccount_BTN_updateAccount);
+        uploadImageBtn = findViewById(R.id.editAccount_FBTN_uploadImage);
+        phone = findViewById(R.id.editAccount_TF_phone);
     }
 
-
     private void initVars() {
-        db = new Database();
-        db.setUserCallBack(new UserCallBack() {
-
-
+        database = new Database();
+        database.setUserCallBack(new UserCallBack() {
             @Override
             public void onManagerFetchDataComplete(Manager manager) {}
-
             @Override
-            public void onCustomerFetchDataComplete(Customer customer) {
-
-            }
+            public void onCustomerFetchDataComplete(Customer customer) {}
 
             @Override
             public void onUpdateComplete(Task<Void> task) {
                 if(task.isSuccessful()){
+                    Log.d("UpdateProfileActivity", "Profile update success");
                     Toast.makeText(UpdateProfileActivity.this, "Profile update success",Toast.LENGTH_SHORT).show();
                     finish();
                 }else {
+                    Log.d("UpdateProfileActivity", "Profile update failed");
                     Toast.makeText(UpdateProfileActivity.this, task.getException().getMessage().toString() ,Toast.LENGTH_SHORT).show();
                 }
-
             }
-
             @Override
-            public void onDeleteComplete(Task<Void> task) {
-
-            }
+            public void onDeleteComplete(Task<Void> task) {}
         });
 
-        editAccount_BTN_updateAccount.setOnClickListener(new View.OnClickListener() {
-
+        updateAccountBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Customer customer = new Customer();
-
-
-                customer.setLastname(Objects.requireNonNull(editAccount_TF_lastName.getEditText()).getText().toString());
-                customer.setFirstname(Objects.requireNonNull(editAccount_TF_firstName.getEditText()).getText().toString());
-                customer.setPhoneNumber(Objects.requireNonNull(editAccount_TF_phone.getEditText()).getText().toString());
+                customer.setLastname(Objects.requireNonNull(lastName.getEditText()).getText().toString());
+                customer.setFirstname(Objects.requireNonNull(firstName.getEditText()).getText().toString());
+                customer.setPhoneNumber(Objects.requireNonNull(phone.getEditText()).getText().toString());
                 customer.setEmail(currentCustomer.getEmail());
                 customer.setAccount_type(currentCustomer.getAccount_type());
-                String uid = db.getCurrentUser().getUid();
+                String uid = database.getCurrentUser().getUid();
                 customer.setKey(uid);
 
                 if(selectedImageUri != null){
-                    // save image
                     String ext = Generic.getFileExtension(UpdateProfileActivity.this, selectedImageUri);
                     String path = Database.USERS_PROFILE_IMAGES + uid + "." + ext;
-                    db.uploadImage(selectedImageUri, path);
-//                    if(!db.uploadImage(selectedImageUri, path)){
-//                        return;
-//                    }
+                    database.uploadImage(selectedImageUri, path);
                     customer.setImagePath(path);
                 }
-
-                db.updateCustomer(customer);
+                Log.d("UpdateProfileActivity", "updating customer");
+                database.updateCustomer(customer);
             }
         });
-
-        editAccount_FBTN_uploadImage.setOnClickListener(new View.OnClickListener() {
+        uploadImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Generic.checkPermissions(UpdateProfileActivity.this)){
                     showImageSourceDialog();
                 }else{
+                    Log.d("UpdateProfileActivity", "no permissions to access camera");
                     Toast.makeText(UpdateProfileActivity.this, "no permissions to access camera", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -189,7 +168,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
     private void openCamera() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraResults.launch(intent);
@@ -204,7 +182,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             try {
@@ -213,14 +190,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
                                 selectedImageUri = intent.getData();
                                 final InputStream imageStream = UpdateProfileActivity.this.getContentResolver().openInputStream(selectedImageUri);
                                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                                editAccount_IV_image.setImageBitmap(selectedImage);
+                                image.setImageBitmap(selectedImage);
                             }
                             catch (FileNotFoundException e) {
                                 e.printStackTrace();
+                                Log.e("UpdateProfileActivity", "Something went wrong");
                                 Toast.makeText(UpdateProfileActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
                             }
                             break;
                         case Activity.RESULT_CANCELED:
+                            Log.e("UpdateProfileActivity", "Gallery canceled");
                             Toast.makeText(UpdateProfileActivity.this, "Gallery canceled", Toast.LENGTH_SHORT).show();
                             break;
                     }
@@ -231,15 +210,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-
                     switch (result.getResultCode()) {
                         case Activity.RESULT_OK:
                             Intent intent = result.getData();
                             Bitmap bitmap = (Bitmap)  intent.getExtras().get("data");
-                            editAccount_IV_image.setImageBitmap(bitmap);
+                            image.setImageBitmap(bitmap);
                             selectedImageUri = Generic.getImageUri(UpdateProfileActivity.this, bitmap);
                             break;
                         case Activity.RESULT_CANCELED:
+                            Log.e("UpdateProfileActivity", "Camera canceled");
                             Toast.makeText(UpdateProfileActivity.this, "Camera canceled", Toast.LENGTH_SHORT).show();
                             break;
                     }
