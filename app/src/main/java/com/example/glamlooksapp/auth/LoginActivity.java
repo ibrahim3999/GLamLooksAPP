@@ -36,10 +36,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText emailEditText, passwordEditText;
-    private Button loginButton;
-    private Button gmail_button;
-    TextView login_BTN_signup;
+    private EditText email, password;
+    private Button loginBtn;
+    private Button gmailBtn;
+    TextView signupRedirectBtn;
     TextView forgotPassword;
     private Database database;
     private GoogleSignInClient client;
@@ -52,23 +52,20 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         findV();
         initVars();
-
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("974118326374-12kl38t0b41ae8f76erb5jd4bn269jf0.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         client = GoogleSignIn.getClient(this,options);
-
     }
 
-
     private void findV() {
-        emailEditText = findViewById(R.id.loginEmail);
-        passwordEditText = findViewById(R.id.login_password);
-        loginButton = findViewById(R.id.login_button);
-        login_BTN_signup = findViewById(R.id.signupRedirectText);
+        email = findViewById(R.id.loginEmail);
+        password = findViewById(R.id.login_password);
+        loginBtn = findViewById(R.id.login_button);
+        signupRedirectBtn = findViewById(R.id.signupRedirectText);
         forgotPassword = findViewById(R.id.forgotPassword);
-        gmail_button = findViewById(R.id.login_gmail_btn);
+        gmailBtn = findViewById(R.id.login_gmail_btn);
         login_PB_loading = findViewById(R.id.login_PB_loading);
     }
 
@@ -79,52 +76,39 @@ public class LoginActivity extends AppCompatActivity {
             public void onLoginComplete(Task<AuthResult> task) {
                 login_PB_loading.setVisibility(View.INVISIBLE);
                 if (task.isSuccessful()) {
-
                     if (database.getCurrentUser() != null) {
                         // Fetch user data
+                        Log.d("LoginActivity", "User logged in successfully");
                         String uid = database.getCurrentUser().getUid();
                         database.fetchUserData(uid);
                     } else {
                         // Handle the case where login failed
+                        Log.d("LoginActivity", "User login failed");
                         Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
                     //Toast.makeText(LoginActivity.this,"Success Login",Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.d("LoginActivity", "User login failed");
                     String error = task.getException().getMessage().toString();
                     Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
-            public void onCreateAccountComplete(boolean status, String err) {
-
-            }
+            public void onCreateAccountComplete(boolean status, String err) {}
         });
 
 
         database.setUserCallBack(new UserCallBack() {
-
-
-
             @Override
             public void onManagerFetchDataComplete(Manager manager) {}
-
             @Override
             public void onCustomerFetchDataComplete(Customer customer) {
-
-//                String uid = database.getCurrentUser().getUid();
-//                User newUser = new User(user);
-//                newUser.setKey(uid);
-//                newUser.setLastname("roban");
-//                database.updateUser(uid,newUser);
-
                 if(customer.getDeleted() == 1){
                     Toast.makeText(LoginActivity.this,"Account has been deleted",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (customer !=null) {
-                    int type = customer.getAccount_type();
-                    if(type==0) {
+                    if(customer.getAccount_type() == 0) {
                         Toast.makeText(LoginActivity.this,"Hello " + customer.getFirstname(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, CustomerActivity.class);
                         startActivity(intent);
@@ -137,19 +121,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
-            public void onUpdateComplete(Task<Void> task) {
-
-            }
-
+            public void onUpdateComplete(Task<Void> task) {}
             @Override
-            public void onDeleteComplete(Task<Void> task) {
-
-            }
+            public void onDeleteComplete(Task<Void> task) {}
         });
 
-        login_BTN_signup.setOnClickListener(new View.OnClickListener() {
+        signupRedirectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
@@ -158,57 +136,52 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+                String email = LoginActivity.this.email.getText().toString().trim();
+                String password = LoginActivity.this.password.getText().toString().trim();
                 login_PB_loading.setVisibility(View.VISIBLE);
-
                 if(email.isEmpty() ){
+                    Log.d("LoginActivity", "Email is empty");
                     Toast.makeText(LoginActivity.this,"request email",Toast.LENGTH_SHORT).show();
                 }
                 else if(password.isEmpty()){
+                    Log.d("LoginActivity", "Password is empty");
                     Toast.makeText(LoginActivity.this,"request password",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     // Perform login
+                    Log.d("LoginActivity", "Performing login");
                     database.loginUser(email, password);
                 }
-
             }
         });
-
-
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ForgotPassword.class);
                 startActivity(intent);
+                Log.d("LoginActivity", "Redirecting to ForgotPassword activity");
                 finish();
             }
         });
-
-        gmail_button.setOnClickListener(new View.OnClickListener() {
+        gmailBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = client.getSignInIntent();
                 startActivityForResult(intent ,1234);
             }
         });
-
         if(database.getCurrentUser() != null){
             String uid = database.getCurrentUser().getUid();
             database.fetchUserData(uid);
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == 1234) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -222,9 +195,11 @@ public class LoginActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     Intent intent = new Intent(getApplicationContext(),CustomerActivity.class);
                                     startActivity(intent);
+                                    Log.d("GoogleSignIn", "User signed in with Google");
                                     finish();
 
                                 }else{
+                                    Log.e("GoogleSignIn", "Error signing in with Google: " + task.getException().getMessage());
                                     Toast.makeText(LoginActivity.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -236,6 +211,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }
