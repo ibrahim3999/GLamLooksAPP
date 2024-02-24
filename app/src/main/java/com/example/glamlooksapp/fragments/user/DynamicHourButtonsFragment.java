@@ -1,18 +1,18 @@
 package com.example.glamlooksapp.fragments.user;
 
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.glamlooksapp.R;
 import com.example.glamlooksapp.callback.CustomerCallBack;
 import com.example.glamlooksapp.callback.DatetimeCallback;
@@ -29,39 +29,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DynamicButtonsFragment extends Fragment implements UserCallBack, CustomerCallBack {
+public class DynamicHourButtonsFragment extends Fragment implements UserCallBack, CustomerCallBack {
     private static final String TAG = "DynamicButtonsFragment";
+    private final Datetime current_dateTime;
+    private final AppCompatActivity activity;
     private ArrayList<Datetime> notAvailableDates = new ArrayList<>();
-    private ArrayList<Datetime> availableDates = new ArrayList<>();
-    ;
-    private ArrayList<Datetime> curr_dateTimes_manager = new ArrayList<>(); //All appointments scheduled with the current manager
     private Database database;
-    private Datetime current_dateTime;
-    private long timestamp;
-    private Customer customer;
     private View view;
     private ViewGroup buttonContainer;
-    private AppCompatActivity activity;
 
-
-    public DynamicButtonsFragment(Datetime current_dateTime) {
+    public DynamicHourButtonsFragment(Datetime current_dateTime) {
         this.current_dateTime = current_dateTime;
         activity = new AppCompatActivity();
     }
-
 
     private void addTimeSlots(View view) {
         buttonContainer = view.findViewById(R.id.button_container);
         Calendar curr = Calendar.getInstance();
         // Create buttons for each available time slot from 11:00 to 18:00 in half-hour intervals
         for (int hour = 11; hour <= 18; hour++) {
-                for (int minute = 0; minute < 60; minute += 30) {
-                    // Create button text for the current time slot
-                    String buttonText = String.format("%02d:%02d", hour, minute);
-
+            for (int minute = 0; minute < 60; minute += 30) {
+                // Create button text for the current time slot
+                String buttonText = String.format("%02d:%02d", hour, minute);
                 if (isAvailableTime(hour, minute)) {
                     // Create a button for the available time slot
-                    //Log.d(TAG, buttonText + "size :" + notAvailableDates);
+                    Log.d(TAG, buttonText + "size :" + notAvailableDates);
                     addButton(buttonContainer, buttonText);
                 }
             }
@@ -74,7 +66,6 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
             // Extract the hour and minute from the not available date
             int notAvailableHour = notAvailableDate.getTimestamp().toDate().getHours();
             int notAvailableMinute = notAvailableDate.getTimestamp().toDate().getMinutes();
-
             // Check if the current time slot conflicts with the not available date
             if (hour == notAvailableHour && minute == notAvailableMinute) {
                 // The time slot is not available
@@ -86,55 +77,35 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         database = new Database();
         View view = inflater.inflate(R.layout.fragment_dynamic_buttons, container, false);
-
-
-        database.fetchUserDatesByKeyAndDate(current_dateTime.getManagerId(), current_dateTime.getFormattedDate(), DynamicButtonsFragment.this);
-
+        database.fetchUserDatesByKeyAndDate(current_dateTime.getManagerId(), current_dateTime.getFormattedDate(), DynamicHourButtonsFragment.this);
         this.view = view;
-
-
         return view;
     }
 
     private void addButton(View view, String buttonText) {
         if (getContext() != null) {
-
-
             Button button = new Button(getContext());
             button.setText(buttonText);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Toast.makeText(getContext(), ""+current_dateTime.getTimestamp().toDate().getHours(),Toast.LENGTH_SHORT).show();
                     Calendar calendar = Calendar.getInstance();
-
                     Date date = current_dateTime.getTimestamp().toDate();
-
-                    String times[] = buttonText.trim().split(":");
-                    //Toast.makeText(getContext(), ""+times[0]+":"+times[1],Toast.LENGTH_SHORT).show();
-
+                    String[] times = buttonText.trim().split(":");
                     calendar.setTime(date);
                     calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(times[0]));
                     calendar.set(Calendar.MINUTE, Integer.parseInt(times[1]));
-
-                    // Create a new Date object with the updated values
                     Date newDate = calendar.getTime();
-
-                    // Convert the new Date object back to a Timestamp
                     Timestamp newTimestamp = new Timestamp(newDate);
-
-                    // Update the Datetime object with the new timestamp
                     current_dateTime.setTimestamp(newTimestamp);
-
-                    database.fetchUserData(database.getCurrentUser().getUid(), DynamicButtonsFragment.this);
+                    database.fetchUserData(database.getCurrentUser().getUid(), DynamicHourButtonsFragment.this);
                     checkPastAppointments();
+                    Log.d(TAG, "Button clicked:");
                 }
             });
-            // You can set onClickListener or any other properties for the button here
             ((ViewGroup) view.findViewById(R.id.button_container)).addView(button);
         } else {
             Log.e(TAG, "buttonContainer is null. Cannot add button.");
@@ -142,12 +113,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
-    public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
-
-
-    }
-
-
+    public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {}
     @Override
     public void onCustomerFetchDataComplete(Customer customer) {
         if (customer != null) {
@@ -156,17 +122,10 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
             Log.d(TAG, "User data is not available");
         }
     }
-
     @Override
-    public void onUpdateComplete(Task<Void> task) {
-
-    }
-
+    public void onUpdateComplete(Task<Void> task) {}
     @Override
-    public void onDeleteComplete(Task<Void> task) {
-
-    }
-
+    public void onDeleteComplete(Task<Void> task) {}
     @Override
     public void onAddICustomerComplete(Task<Void> task) {
         if (task != null) {
@@ -181,12 +140,10 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
     }
 
     @Override
-    public void onFetchCustomerComplete(ArrayList<Customer> customers) {
-
-    }
+    public void onFetchCustomerComplete(ArrayList<Customer> customers) {}
 
     @Override
-    public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes) {
+    public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes){
         if (datetimes != null && !datetimes.isEmpty()) {
             this.notAvailableDates = datetimes;
             clearButtons();
@@ -197,7 +154,6 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
             clearButtons();
             addTimeSlots(view);
         }
-
     }
 
     private void clearButtons() {
@@ -225,11 +181,11 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                         for (Datetime datetime : datetimes) {
                             if (datetime.getManagerId().equals(current_dateTime.getManagerId()) && datetime.getKey().equals(current_dateTime.getKey())) {
                                 hasPastAppointments = true;
+                                break;
                             }
                         }
-
                         if (!hasPastAppointments) {
-                            database.saveCustomerAppointment(current_dateTime, DynamicButtonsFragment.this);
+                            database.saveCustomerAppointment(current_dateTime, DynamicHourButtonsFragment.this);
                             Toast.makeText(getContext(), "An appointment was made", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "You cannot make two appointments for the same employer ", Toast.LENGTH_SHORT).show();

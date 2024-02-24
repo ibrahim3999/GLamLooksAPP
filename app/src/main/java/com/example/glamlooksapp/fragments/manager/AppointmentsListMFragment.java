@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,24 +39,19 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-public class TimesFragment extends Fragment {
-
+public class AppointmentsListMFragment extends Fragment {
     private RecyclerView recyclerViewCustomers;
     private managerAppointmentListAdapter managerAppointmentListAdapter;
-    private ArrayList<Customer> customersList;
-
+    private ArrayList<Customer> appointmentsList;
     Database database;
     Manager currentManager = null;
-
     AppCompatActivity activity;
 
-    public TimesFragment(AppCompatActivity appCompatActivity) {
+    public AppointmentsListMFragment(AppCompatActivity appCompatActivity) {
         activity = appCompatActivity;
     }
 
-    public TimesFragment() {
-        // Required empty public constructor
-    }
+    public AppointmentsListMFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,12 +60,10 @@ public class TimesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_times, container, false);
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
         database = new Database();
-        customersList = new ArrayList<>();
-
+        appointmentsList = new ArrayList<>();
         initViews();
         intiVars();
         initRecyclerView();
-
         Button exportToExcelButton = view.findViewById(R.id.exportToExcelButton);
         exportToExcelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +71,6 @@ public class TimesFragment extends Fragment {
                 exportToExcelAndSendEmail();
             }
         });
-
         return view;
     }
 
@@ -87,45 +80,36 @@ public class TimesFragment extends Fragment {
             public void onManagerFetchDataComplete(Manager manager) throws NoSuchAlgorithmException {
                 currentManager = new Manager(manager);
                 if (currentManager != null) {
-                    Toast.makeText(activity, currentManager.getService().getServiceName(), Toast.LENGTH_SHORT).show();
+                    Log.d("Manager", "onManagerFetchDataComplete: " + currentManager.getFirstname());
+                    //Toast.makeText(activity, currentManager.getService().getServiceName(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity, "NO", Toast.LENGTH_SHORT).show();
+                    Log.d("Manager", "onManagerFetchDataComplete: " + "NO");
+                    //Toast.makeText(activity, "NO", Toast.LENGTH_SHORT).show();
                 }
                 database.fetchUserDatesByService(currentManager.getService().getServiceName());
             }
-
             @Override
-            public void onCustomerFetchDataComplete(Customer customer) {
-            }
-
+            public void onCustomerFetchDataComplete(Customer customer) {}
             @Override
-            public void onUpdateComplete(Task<Void> task) {
-            }
-
+            public void onUpdateComplete(Task<Void> task) {}
             @Override
-            public void onDeleteComplete(Task<Void> task) {
-            }
+            public void onDeleteComplete(Task<Void> task) {}
         });
-
         database.setCustomerCallBack(new CustomerCallBack() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onCompleteFetchUserDates(ArrayList<Datetime> datetimes) {
                 managerAppointmentListAdapter.notifyDataSetChanged();
             }
-
             @Override
-            public void onAddICustomerComplete(Task<Void> task) {
-            }
-
+            public void onAddICustomerComplete(Task<Void> task) {}
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onFetchCustomerComplete(ArrayList<Customer> customers) {
                 if (!customers.isEmpty()) {
-                    customersList.clear();
-                    customersList.addAll(customers);
-
-                    if (customersList.isEmpty()) {
+                    appointmentsList.clear();
+                    appointmentsList.addAll(customers);
+                    if (appointmentsList.isEmpty()) {
                         Toast.makeText(activity, "There are no new dates!", Toast.LENGTH_SHORT).show();
                     }
                     managerAppointmentListAdapter.notifyDataSetChanged();
@@ -149,12 +133,8 @@ public class TimesFragment extends Fragment {
         headerRow.createCell(6).setCellValue("Employee FName");
         headerRow.createCell(7).setCellValue("Employee LName");
         headerRow.createCell(8).setCellValue("Price");
-
-
-
-
         int rowNum = 1;
-        for (Customer customer : customersList) {
+        for (Customer customer : appointmentsList) {
             Datetime datetime = customer.getDateTime();
 
             Row row = sheet.createRow(rowNum++);
@@ -169,7 +149,6 @@ public class TimesFragment extends Fragment {
             row.createCell(8).setCellValue(currentManager.getService().getPrice());
 
         }
-
         try {
             File file = new File(activity.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Appointments.xlsx");
             FileOutputStream fileOut = new FileOutputStream(file);
@@ -201,8 +180,8 @@ public class TimesFragment extends Fragment {
     }
 
     private void initRecyclerView() {
-        customersList = new ArrayList<>();
-        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), customersList);
+        appointmentsList = new ArrayList<>();
+        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), appointmentsList);
         recyclerViewCustomers.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewCustomers.setAdapter(managerAppointmentListAdapter);
         database.fetchManagerData(database.getCurrentUser().getUid());

@@ -27,7 +27,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class CustomTimePickerDialog extends TimePickerDialog {
-
     private static final int TIME_PICKER_INTERVAL = 30;
     private boolean mIgnoreEvent = false;
     private List<Datetime> notAvailableTimes;
@@ -38,18 +37,16 @@ public class CustomTimePickerDialog extends TimePickerDialog {
     private static final int START_MINUTE = 0;
     private static final int END_HOUR = 18;
     private static final int END_MINUTE = 0;
-    private   int CUR_HOUR;
-    private    int CUR_Minute;
+    private int CUR_HOUR;
+    private int CUR_Minute;
 
     public CustomTimePickerDialog(Context context, int themeResId, OnTimeSetListener listener, int hourOfDay, int minute, boolean is24HourView ,List<Datetime> notAvailableTimes) {
         super(context, themeResId, listener, hourOfDay, minute, is24HourView);
         this.notAvailableTimes=notAvailableTimes;
         this.CUR_HOUR =hourOfDay;
         this.CUR_Minute = minute;
-
         updateTimeInterval(hourOfDay, minute);
         enforceInitialTimeRange(hourOfDay, minute);
-
     }
 
     private void updateTimeInterval(int hourOfDay, int minute) {
@@ -66,7 +63,6 @@ public class CustomTimePickerDialog extends TimePickerDialog {
             mIgnoreEvent = false;
         }
     }
- 
     @Override
     public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
         if (!mIgnoreEvent) {
@@ -77,7 +73,6 @@ public class CustomTimePickerDialog extends TimePickerDialog {
         }
 
     }
-
     @Override
     public void onClick(DialogInterface dialog, int which) {
         super.onClick(dialog, which);

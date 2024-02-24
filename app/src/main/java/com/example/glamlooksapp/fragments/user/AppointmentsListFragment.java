@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,23 +24,18 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-public class TimesCusFragment extends Fragment {
-
+public class AppointmentsListFragment extends Fragment {
     AppCompatActivity activity;
-
     private customersAppointmentListAdapter customerAdapter;
     private ArrayList<Datetime> customerDatesList;
     private RecyclerView recycleViewDates;
-
     Database database;
 
-    public TimesCusFragment(AppCompatActivity appCompatActivity) {
+    public AppointmentsListFragment(AppCompatActivity appCompatActivity) {
         activity = appCompatActivity;
     }
 
-    public TimesCusFragment() {
-        // Required empty public constructor
-    }
+    public AppointmentsListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,15 +45,12 @@ public class TimesCusFragment extends Fragment {
         recycleViewDates = view.findViewById(R.id.recycleViewDates);
         database = new Database();
         customerDatesList = new ArrayList<>();
-
         initVars();
         initRecyclerView();
-
         return view;
     }
 
     private void initVars() {
-
         database.setCustomerCallBack(new CustomerCallBack() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -66,23 +59,19 @@ public class TimesCusFragment extends Fragment {
                     customerDatesList.clear();
                     customerDatesList.addAll(datetimes);
                     if (customerDatesList.isEmpty()) {
-                        Toast.makeText(activity, "There are no new dates!", Toast.LENGTH_SHORT).show();
+                        Log.d("AppointmentsListFragment", "No new dates");
+                        Toast.makeText(activity, "No new dates", Toast.LENGTH_SHORT).show();
                     }
                     customerAdapter.notifyDataSetChanged();
                 } else {
+                    Log.d("AppointmentsListFragment", "Dates list is null");
                     Toast.makeText(activity, "Dates list is null", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
-            public void onAddICustomerComplete(Task<Void> task) {
-
-            }
-
+            public void onAddICustomerComplete(Task<Void> task) {}
             @Override
-            public void onFetchCustomerComplete(ArrayList<Customer> customers) {
-
-            }
+            public void onFetchCustomerComplete(ArrayList<Customer> customers) {}
         });
     }
 
@@ -90,7 +79,6 @@ public class TimesCusFragment extends Fragment {
         customerAdapter = new customersAppointmentListAdapter(getContext(), customerDatesList);
         recycleViewDates.setLayoutManager(new LinearLayoutManager(getContext()));
         recycleViewDates.setAdapter(customerAdapter);
-        // Fetch All DateTimes for each Customer by uid.
         database.fetchUserDatesByKey(database.getCurrentUser().getUid());
     }
 }

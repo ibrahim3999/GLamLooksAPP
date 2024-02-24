@@ -17,7 +17,7 @@ import com.example.glamlooksapp.auth.LoginActivity;
 import com.example.glamlooksapp.databinding.ActivityManagerBinding;
 import com.example.glamlooksapp.fragments.manager.HomeMFragment;
 import com.example.glamlooksapp.fragments.manager.ProfileMFragment;
-import com.example.glamlooksapp.fragments.manager.TimesFragment;
+import com.example.glamlooksapp.fragments.manager.AppointmentsListMFragment;
 import com.example.glamlooksapp.fragments.manager.addProductsFragment;
 import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.utils.Database;
@@ -76,7 +76,7 @@ public class ManagerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId()== R.id.times) {
-                replaceFragment(new TimesFragment(ManagerActivity.this));
+                replaceFragment(new AppointmentsListMFragment(ManagerActivity.this));
                 Toast.makeText(this, "TimesManager", Toast.LENGTH_SHORT).show();
                 return true;
             }

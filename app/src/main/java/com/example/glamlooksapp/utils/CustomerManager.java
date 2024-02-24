@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class CustomerManager {
     private static CustomerManager instance;
     private ArrayList<Customer> customersList;
-
     private ArrayList<Datetime> dateList;
     private CustomerManager() {
         // Initialize productList or perform any setup
