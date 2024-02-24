@@ -229,7 +229,7 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                         }
 
                         if (!hasPastAppointments) {
-                            database.saveUserTimes(current_dateTime, customer, DynamicButtonsFragment.this);
+                            database.saveCustomerAppointment(current_dateTime, DynamicButtonsFragment.this);
                             Toast.makeText(getContext(), "An appointment was made", Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(getContext(), "You cannot make two appointments for the same employer ", Toast.LENGTH_SHORT).show();

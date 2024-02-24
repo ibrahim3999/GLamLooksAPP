@@ -33,38 +33,24 @@ import static com.google.firebase.appcheck.internal.util.Logger.TAG;
 
 
 public class Database {
-
-
     public static final String USERS_TABLE = "Customers";
-    public static final String Manager_TABLE = "Managers";
     public static final String TIMES_TABLE = "TSchedule";
     public static final String USERS_PROFILE_IMAGES = "Users/";
-
-    public static final String MANAGER_UID = "Zpa8hiasUAShwkSfwr0GxHXBb5q2";
-
+    public static final String PRODUCTS_TABLE = "Products";
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private FirebaseStorage mStorage;
     private AuthCallBack authCallBack;
     private ProductCallBack productCallBack;
     private CustomerCallBack customerCallBack;
-
     private ManagerAddedCallback managerAddedListener;
-
     private UserCallBack userCallBack;
-
-    public static final String PRODUCTS_TABLE = "Products";
     private ArrayList<Product> productList;  // Add this list to store products
-    ArrayList<Customer> customersWantedList ;
-
-    private ArrayList<String> listKeysDates;
-
-    private ArrayList<Datetime> listUser_Dates;
-
-
-    private ArrayList<Datetime> list_dates;
-
-    private ArrayList<Manager> list_managers;
+    private ArrayList<Customer> customersWantedList ;
+    private ArrayList<String> datesKeysList;
+    private ArrayList<Datetime> userDatesList;
+    private ArrayList<Datetime> appointmentsList;
+    private ArrayList<Manager> managersList;
 
 
     public Database(){
@@ -73,10 +59,10 @@ public class Database {
         mStorage = FirebaseStorage.getInstance();
         productList = new ArrayList<Product>(1000);
         customersWantedList = new ArrayList<Customer>(1000);
-        list_dates = new ArrayList<Datetime>();
-        listKeysDates = new ArrayList<>();
-        listUser_Dates = new ArrayList<>();
-        list_managers = new ArrayList<>();
+        appointmentsList = new ArrayList<Datetime>();
+        datesKeysList = new ArrayList<>();
+        userDatesList = new ArrayList<>();
+        managersList = new ArrayList<>();
     }
 
     public void setOnManagerAddedListener(ManagerAddedCallback listener) {
@@ -132,30 +118,29 @@ public void fetchUserDatesByService(String serviceName) {
                     Log.d("fetchUserDatesByService", "serviceName: " + serviceName);
                     Log.d("fetchUserDatesByService", "ValueKeys2: " + value.size());
 
-                    listKeysDates = new ArrayList<>();
-                    list_dates = new ArrayList<>(); // Initialize the list
+                    datesKeysList = new ArrayList<>();
+                    appointmentsList = new ArrayList<>(); // Initialize the list
+
                     int i = 0;
                     for (QueryDocumentSnapshot document : value) {
                         i++;
                         Datetime datetime = document.toObject(Datetime.class);
-                        list_dates.add(datetime);
+                        appointmentsList.add(datetime);
                         String uid = datetime.getKey();
                         Log.d("fetchUserDatesByService", "ValueKeys: " + i + uid);
-                        listKeysDates.add(uid);
+                        datesKeysList.add(uid);
                     }
 
-                    fetchUsersByKeys(listKeysDates, list_dates);
+                    fetchUsersByKeys(datesKeysList, appointmentsList);
                 }
             });
 }
-
 
     public void fetchUsersByKeys(ArrayList<String> userKeys, ArrayList<Datetime> list_dates) {
         if (userKeys == null || userKeys.isEmpty()) {
             Log.d("FirestoreData", "No user keys provided for filtering");
             return;
         }
-
         db.collection(USERS_TABLE)
                 .whereIn("key", userKeys)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -172,10 +157,8 @@ public void fetchUserDatesByService(String serviceName) {
                             Log.d("FirestoreData", "No users found");
                             return;
                         }
-
                         // Print the value of 'value' variable
                         Log.d("FirestoreData", "ValueKeys: " + value.size());
-
                         // Process retrieved users
                         int i = 0;
                         for (QueryDocumentSnapshot document : value) {
@@ -183,15 +166,11 @@ public void fetchUserDatesByService(String serviceName) {
                             customer.setDateTime(list_dates.get(i++));
                             customersWantedList.add(customer);
                         }
-
                         // Notify listener with retrieved users
                         customerCallBack.onFetchCustomerComplete(customersWantedList);
                     }
                 });
     }
-
-
-
 
 public void fetchUserDatesByKey(String uid) {
     db.collection(TIMES_TABLE)
@@ -206,15 +185,16 @@ public void fetchUserDatesByKey(String uid) {
                         return;
                     }
 
-                    listUser_Dates = new ArrayList<>();
+                    userDatesList = new ArrayList<>();
                     if (value != null) {
+                        Log.e(TAG, "ValueKeys: " + value.size());
                         for (QueryDocumentSnapshot document : value) {
                             Datetime datetime = document.toObject(Datetime.class);
-                            listUser_Dates.add(datetime);
+                            userDatesList.add(datetime);
                         }
                     }
-
-                    customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+                    customerCallBack.onCompleteFetchUserDates(userDatesList);
+                    Log.d("fetchUserDatesByKey", "success");
                 }
             });
 }
@@ -233,20 +213,17 @@ public void fetchUserDatesByKey(String uid) {
                             return;
                         }
 
-                        listUser_Dates = new ArrayList<>();
+                        userDatesList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : value) {
                             Datetime datetime = document.toObject(Datetime.class);
-                            listUser_Dates.add(datetime);
+                            userDatesList.add(datetime);
                         }
 
-                        customerCallBack.onCompleteFetchUserDates(listUser_Dates);
+                        customerCallBack.onCompleteFetchUserDates(userDatesList);
+                        Log.d("fetchUserDatesByKeyAndDate", "success");
                     }
                 });
     }
-
-
-
-
 
     public void createAccount(String email, String password, User userData) {
         this.mAuth.createUserWithEmailAndPassword(email, password)
@@ -254,69 +231,39 @@ public void fetchUserDatesByKey(String uid) {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(getCurrentUser() != null){
+                            Log.d("CreateAccount", "User created");
                             userData.setKeyI(getCurrentUser().getUid());
                             saveUserData(userData);
+                            Log.d("CreateAccount", "success");
                         }else {
+                            Log.e("CreateAccount", "User not created");
                             authCallBack.onCreateAccountComplete(false, task.getException().getMessage().toString());
                         }
                     }
                 });
     }
 
-
-    public void saveUserTimes(Datetime dateTime, Customer customer) {
+    public void saveCustomerAppointment(Datetime dateTime, CustomerCallBack callBack) {
         // Get a reference to the Firestore collection
         CollectionReference timesCollection = db.collection(TIMES_TABLE);
-
         // Add a new document with an auto-generated ID
         timesCollection.add(dateTime)
                 .addOnSuccessListener(documentReference -> {
                     // Get the auto-generated ID of the new document
                     String dateTimeId = documentReference.getId();
-
                     // Set the auto-generated ID in the Datetime object
                     dateTime.setUUid(dateTimeId);
-
-                    // Update the document with the generated ID
-                    timesCollection.document(dateTimeId).set(dateTime)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    // If successful, call the callback with the generated ID
-                                    customerCallBack.onAddICustomerComplete(task);
-                                } else {
-                                    // If not successful, call the callback with null
-                                    customerCallBack.onAddICustomerComplete(null);
-                                }
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    // Handle any errors
-                    customerCallBack.onAddICustomerComplete(null);
-                });
-    }
-
-    public void saveUserTimes(Datetime dateTime, Customer customer, CustomerCallBack callBack) {
-        // Get a reference to the Firestore collection
-        CollectionReference timesCollection = db.collection(TIMES_TABLE);
-
-        // Add a new document with an auto-generated ID
-        timesCollection.add(dateTime)
-                .addOnSuccessListener(documentReference -> {
-                    // Get the auto-generated ID of the new document
-                    String dateTimeId = documentReference.getId();
-
-                    // Set the auto-generated ID in the Datetime object
-                    dateTime.setUUid(dateTimeId);
-
                     // Update the document with the generated ID
                     timesCollection.document(dateTimeId).set(dateTime)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     // If successful, call the callback with the generated ID
                                     callBack.onAddICustomerComplete(task);
+                                    Log.d("saveCustomerAppointment", "success");
                                 } else {
                                     // If not successful, call the callback with null
                                     callBack.onAddICustomerComplete(null);
+                                    Log.e("saveCustomerAppointment", "failure");
                                 }
                             });
                 })
@@ -326,21 +273,24 @@ public void fetchUserDatesByKey(String uid) {
                 });
     }
 
-
-
     public void saveUserData(User user){
         this.db.collection(USERS_TABLE).document(user.getKey()).set(user)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful())
+                        if(task.isSuccessful()) {
                             authCallBack.onCreateAccountComplete(true, "");
-                        else
+                            Log.d("saveUserData", "success"); // Log success
+                        }
+                        else {
                             authCallBack.onCreateAccountComplete(false, Objects.requireNonNull(task.getException()).getMessage());
+                            Log.e("saveUserData", "failure"); // Log failure
+                        }
                     }
                 });
     }
-    public void updateUser(Customer customer){
+
+    public void updateCustomer(Customer customer){
         this.db.collection(USERS_TABLE).document(customer.getKey()).set(customer)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -379,6 +329,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchUserData", "Error fetching user data: ", e);
                             throw new RuntimeException(e);
                         }
                     }
@@ -387,12 +338,14 @@ public void fetchUserDatesByKey(String uid) {
                     try {
                         userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
+                        Log.e("fetchUserData", "Error fetching user data: ", e);
                         throw new RuntimeException(e);
                     }
                 }
             }
         });
     }
+
     public void fetchUserData(String uid,UserCallBack callBack){
         db.collection(USERS_TABLE).document(uid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -410,6 +363,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             callBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchUserData", "Error fetching user data: ", e);
                             throw new RuntimeException(e);
                         }
                     }
@@ -418,6 +372,7 @@ public void fetchUserDatesByKey(String uid) {
                     try {
                         callBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
+                        Log.e("fetchUserData", "Error fetching user data: ", e);
                         throw new RuntimeException(e);
                     }
                 }
@@ -439,6 +394,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             userCallBack.onManagerFetchDataComplete(manager);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchManagerData", "Error fetching manager data: ", e);
                             throw new RuntimeException(e);
                         }
                     } else {
@@ -446,6 +402,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchManagerData", "Error fetching manager data: ", e);
                             throw new RuntimeException(e);
                         }
                     }
@@ -454,6 +411,7 @@ public void fetchUserDatesByKey(String uid) {
                     try {
                         userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
+                        Log.e("fetchManagerData", "Error fetching manager data: ", e);
                         throw new RuntimeException(e);
                     }
                 }
@@ -465,11 +423,10 @@ public void fetchUserDatesByKey(String uid) {
         // Check if the managerId is not null
         if (managerId == null) {
             // Handle the case when managerId is null
+            Log.d("fetchManagerData", "Manager ID is null");
             return;
         }
-
         CollectionReference managersRef = db.collection(USERS_TABLE);
-
         // Query the manager document by managerId
         managersRef.document(managerId).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -482,6 +439,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             userCallBack.onManagerFetchDataComplete(manager);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchManagerData", "Error fetching manager data: ", e);
                             throw new RuntimeException(e);
                         }
                     } else {
@@ -489,6 +447,7 @@ public void fetchUserDatesByKey(String uid) {
                         try {
                             userCallBack.onManagerFetchDataComplete(null);
                         } catch (NoSuchAlgorithmException e) {
+                            Log.e("fetchManagerData", "Error fetching manager data: ", e);
                             throw new RuntimeException(e);
                         }
                     }
@@ -497,6 +456,7 @@ public void fetchUserDatesByKey(String uid) {
                     try {
                         userCallBack.onManagerFetchDataComplete(null);
                     } catch (NoSuchAlgorithmException e) {
+                        Log.e("fetchManagerData", "Error fetching manager data: ", e);
                         throw new RuntimeException(e);
                     }
                 }
@@ -505,13 +465,12 @@ public void fetchUserDatesByKey(String uid) {
                 try {
                     userCallBack.onManagerFetchDataComplete(null);
                 } catch (NoSuchAlgorithmException e) {
+                    Log.e("fetchManagerData", "Error fetching manager data: ", e);
                     throw new RuntimeException(e);
                 }
             }
         });
     }
-
-
 
     public void fetchManagersData() {
         db.collection(USERS_TABLE)
@@ -531,20 +490,18 @@ public void fetchUserDatesByKey(String uid) {
                                     manager.setImageUrl(downloadImageUrl(manager.getImagePath()));
                                 }
                                 manager.setKey(document.getId());
-                                list_managers.add(manager);
-                                managerAddedListener.onManagerFetchDataComplete(list_managers);
+                                managersList.add(manager);
+                                managerAddedListener.onManagerFetchDataComplete(managersList);
 
                             }
                         }
 
                         // Handle case where no managers with account_type = 1 are found
                         managerAddedListener.onManagerFetchDataComplete(null);
+                        Log.d("fetchManagersData", "success");
                     }
                 });
     }
-
-
-
 
     public void fetchProducts() {
         db.collection(PRODUCTS_TABLE).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -564,7 +521,7 @@ public void fetchUserDatesByKey(String uid) {
                     }
                     productList.add(product);
                 }
-
+                Log.d("fetchProducts", "success");
                 productCallBack.onFetchProductsComplete(productList);
             }
         });
@@ -575,18 +532,15 @@ public void fetchUserDatesByKey(String uid) {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("uploadProduct", "success");
                         productCallBack.onAddIProductsComplete(task);
                     }
                 });
     }
 
-
-
     public FirebaseUser getCurrentUser(){
-
         return mAuth.getCurrentUser();
     }
-
 
     public void logout() {
         this.mAuth.signOut();
@@ -595,15 +549,16 @@ public void fetchUserDatesByKey(String uid) {
     public String downloadImageUrl(String imagePath){
         Task<Uri> task =  mStorage.getReference(imagePath).getDownloadUrl();
         while(!task.isComplete());
+        Log.d("DownloadImageUrl", "success");
         return task.getResult().toString();
     }
 
     public boolean uploadImage(Uri selectedImageUri, String path) {
         UploadTask task =  this.mStorage.getReference(path).putFile(selectedImageUri);
         while(!task.isComplete());
+        Log.d("UploadImage", "success");
         return task.isSuccessful();
     }
-
 
     public void deleteUserTime(String datetimeUid) {
         Log.d("DeleteUserTime", datetimeUid);
@@ -613,23 +568,24 @@ public void fetchUserDatesByKey(String uid) {
                 .delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("DeleteUserTime", "DocumentSnapshot successfully deleted!");
+                        Log.d("DeleteUserTime", "success");
                     } else {
                         Log.w("DeleteUserTime", "Error deleting document", task.getException());
                     }
                 });
     }
+
     public void deleteUserTime(String datetimeUid, UserCallBack callBack) {
         db.collection(TIMES_TABLE)
                 .document(datetimeUid)
                 .delete()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("FirestoreData", "DocumentSnapshot successfully deleted!");
+                        Log.d("deleteUserTime", "success");
                         // Call the callback method to notify completion
                         callBack.onDeleteComplete(task);
                     } else {
-                        Log.w("FirestoreData", "Error deleting document", task.getException());
+                        Log.w("deleteUserTime", "Error deleting document", task.getException());
                     }
                 });
     }
@@ -640,22 +596,18 @@ public void fetchUserDatesByKey(String uid) {
             // Handle the case when managerId is null
             return;
         }
-
         // Get a reference to the Firestore collection
         CollectionReference datesCollection = db.collection(TIMES_TABLE);
-
         // Query the collection for dates with matching managerId
         datesCollection.whereEqualTo("managerId", managerId)
                 .addSnapshotListener((value, error) -> {
                     if (error != null) {
                         // Handle Firestore error
-                        Log.e("FirestoreData", "Error fetching dates by managerId: ", error);
+                        Log.e("fetchDatesByManagerId", "Error fetching dates by managerId: ", error);
                         return;
                     }
-
                     // Create a list to store retrieved dates
                     ArrayList<Datetime> datesList = new ArrayList<>();
-
                     // Check if the query result is not empty
                     if (value != null && !value.isEmpty()) {
                         // Loop through each document in the query result
@@ -666,8 +618,8 @@ public void fetchUserDatesByKey(String uid) {
                             datesList.add(datetime);
                         }
                     }
-
                     // Call the callback method with the retrieved dates
+                    Log.d("fetchDatesByManagerId", "success");
                     callback.onDatetimeFetchComplete(datesList);
                 });
     }

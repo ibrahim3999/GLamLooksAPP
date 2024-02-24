@@ -152,7 +152,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     customer.setImagePath(path);
                 }
 
-                db.updateUser(customer);
+                db.updateCustomer(customer);
             }
         });
 
