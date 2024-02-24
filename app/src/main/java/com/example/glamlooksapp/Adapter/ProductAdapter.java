@@ -1,12 +1,12 @@
 package com.example.glamlooksapp.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +18,6 @@ import com.example.glamlooksapp.utils.Product;
 import java.util.List;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
-
     private Context context;
     private List<Product> productList;
 
@@ -27,27 +26,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.productList = productList;
     }
 
-
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.products_item, parent, false);
+        Log.d("product", "onCreateViewHolder: " + productList.size());
         return new ProductViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-
-        holder.textViewProductName.setText(product.getName());
-        holder.textViewProductPrice.setText(String.valueOf(product.getPrice()));
-
-
-        // You need to load the actual image using a library like Glide
+        holder.productName.setText(product.getName());
+        holder.productPrice.setText(String.valueOf(product.getPrice()));
         Glide.with(context)
                 .load(product.getImageUrl()) // Replace with the actual image URL or resource
                 .placeholder(R.drawable.upload)
-                .into(holder.imageViewProduct);
+                .into(holder.productImage);
     }
 
     @Override
@@ -56,16 +51,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageViewProduct;
-        TextView textViewProductName;
-        TextView textViewProductPrice;
-        int deleted; // 0 for not deleted, 1 for deleted
-
+        ImageView productImage;
+        TextView productName;
+        TextView productPrice;
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageViewProduct = itemView.findViewById(R.id.imageViewProduct);
-            textViewProductName = itemView.findViewById(R.id.textViewProductName);
-            textViewProductPrice = itemView.findViewById(R.id.textViewProductPrice);
+            productImage = itemView.findViewById(R.id.imageViewProduct);
+            productName = itemView.findViewById(R.id.textViewProductName);
+            productPrice = itemView.findViewById(R.id.textViewProductPrice);
         }
     }
 }

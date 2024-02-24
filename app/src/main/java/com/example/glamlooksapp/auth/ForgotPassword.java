@@ -19,10 +19,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPassword extends AppCompatActivity {
-
-    // Declaration
-    Button btnReset, btnBack;
-    EditText edtEmail;
+    Button resetBtn, backBtn;
+    EditText email;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     String strEmail;
@@ -36,20 +34,20 @@ public class ForgotPassword extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Reset Button Listener
-        btnReset.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                strEmail = edtEmail.getText().toString().trim();
+                strEmail = email.getText().toString().trim();
                 if (!TextUtils.isEmpty(strEmail)) {
                     ResetPassword();
                 } else {
-                    edtEmail.setError("Email field can't be empty");
+                    email.setError("Email field can't be empty");
                 }
             }
         });
 
         // Back Button Code using OnBackPressedDispatcher
-       btnBack.setOnClickListener(new View.OnClickListener() {
+       backBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                onBackPressed();
@@ -70,15 +68,15 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private void findView() {
-        btnBack = findViewById(R.id.btnForgotPasswordBack);
-        btnReset = findViewById(R.id.btnReset);
-        edtEmail = findViewById(R.id.edtForgotPasswordEmail);
+        backBtn = findViewById(R.id.btnForgotPasswordBack);
+        resetBtn = findViewById(R.id.btnReset);
+        email = findViewById(R.id.edtForgotPasswordEmail);
         progressBar = findViewById(R.id.forgetPasswordProgressbar);
     }
 
     private void ResetPassword() {
         progressBar.setVisibility(View.VISIBLE);
-        btnReset.setVisibility(View.INVISIBLE);
+        resetBtn.setVisibility(View.INVISIBLE);
 
         mAuth.sendPasswordResetEmail(strEmail)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -95,7 +93,7 @@ public class ForgotPassword extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(ForgotPassword.this, "Error :- " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         progressBar.setVisibility(View.INVISIBLE);
-                        btnReset.setVisibility(View.VISIBLE);
+                        resetBtn.setVisibility(View.VISIBLE);
                     }
                 });
     }

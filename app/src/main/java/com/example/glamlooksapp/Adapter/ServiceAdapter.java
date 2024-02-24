@@ -20,7 +20,6 @@ import com.example.glamlooksapp.utils.Service;
 import java.util.ArrayList;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceViewHolder> {
-
     private Context context;
     private ArrayList<Manager> managerArrayList;
     private OnTextViewClickListener onTextViewClickListener;
@@ -35,6 +34,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
     @Override
     public ServiceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.manager_component, parent, false);
+        Log.d("ServiceAdapter", "onCreateViewHolder: " + managerArrayList.size());
         return new ServiceViewHolder(view);
     }
 
@@ -46,14 +46,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
         if (service != null) {
             String serviceName = service.getServiceName();
-            holder.textViewServiceName.setTextColor(Color.BLUE);
-            holder.textViewFirstName.setText(manager.getFirstname());
-            holder.textViewLastName.setText(manager.getLastname());
-            holder.textViewServiceName.setText(serviceName);
-            holder.textViewServiceDuration.setText(manager.getService().getDuration());
-            holder.textViewServicePrice.setText(Double.toString(manager.getService().getPrice()));
+            holder.serviceName.setTextColor(Color.BLUE);
+            holder.FirstName.setText(manager.getFirstname());
+            holder.LastName.setText(manager.getLastname());
+            holder.serviceName.setText(serviceName);
+            holder.ServiceDuration.setText(manager.getService().getDuration());
+            holder.ServicePrice.setText(Double.toString(manager.getService().getPrice()));
 
-            holder.textViewServiceName.setOnClickListener(v -> {
+            holder.serviceName.setOnClickListener(v -> {
                 if (onTextViewClickListener != null) {
                     onTextViewClickListener.onTextViewClicked(position, manager.getKey()); // Pass manager ID to listener
                 }
@@ -70,19 +70,19 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
     }
 
     static class ServiceViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewServiceName;
-        TextView textViewFirstName;
-        TextView textViewLastName;
-        TextView textViewServiceDuration;
-        TextView textViewServicePrice;
+        TextView serviceName;
+        TextView FirstName;
+        TextView LastName;
+        TextView ServiceDuration;
+        TextView ServicePrice;
 
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewServiceName = itemView.findViewById(R.id.textViewServiceName);
-            textViewFirstName = itemView.findViewById(R.id.textViewFirstName);
-            textViewLastName = itemView.findViewById(R.id.textViewLastName);
-            textViewServiceDuration = itemView.findViewById(R.id.textViewServiceDuration);
-            textViewServicePrice = itemView.findViewById(R.id.textViewServicePrice);
+            serviceName = itemView.findViewById(R.id.textViewServiceName);
+            FirstName = itemView.findViewById(R.id.textViewFirstName);
+            LastName = itemView.findViewById(R.id.textViewLastName);
+            ServiceDuration = itemView.findViewById(R.id.textViewServiceDuration);
+            ServicePrice = itemView.findViewById(R.id.textViewServicePrice);
         }
     }
 }

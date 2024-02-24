@@ -2,6 +2,7 @@ package com.example.glamlooksapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,14 +27,13 @@ public class SignUpActivity extends AppCompatActivity {
     private static final int ACCOUNT_TYPE_CUSTOMER = 0;
     private static final int ACCOUNT_TYPE_MANAGER = 1;
 
-    EditText firstname, lastname, signupEmail, signupPassword, phoneNumber;
-    TextView txtV_button_back;
-    EditText serviceName, CostService, duration;
-    Button signupButton;
-    ImageButton backButton;
+    EditText firstName, lastName, email, password, phoneNumber;
+    TextView loginRedirectBtn;
+    EditText serviceName, ServicePrice, serviceDuration;
+    Button signupBtn;
+    ImageButton backBtn;
     private ProgressBar signup_PB_loading;
     private CheckBox showAdditionalInfoCheckbox;
-
     private Database database;
 
 
@@ -46,18 +46,18 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        firstname = findViewById(R.id.firstName);
-        lastname = findViewById(R.id.lastName);
-        signupEmail = findViewById(R.id.signup_email);
-        signupPassword = findViewById(R.id.signup_password);
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
+        email = findViewById(R.id.signup_email);
+        password = findViewById(R.id.signup_password);
         phoneNumber = findViewById(R.id.editTextPhoneNumber);
         signup_PB_loading = findViewById(R.id.signup_PB_loading);
-        txtV_button_back = findViewById(R.id.loginRedirectText_ls);
+        loginRedirectBtn = findViewById(R.id.loginRedirectText_ls);
         serviceName = findViewById(R.id.serviceName);
-        CostService = findViewById(R.id.CostService);
-        duration = findViewById(R.id.Duration);
-        signupButton = findViewById(R.id.signupButton);
-        backButton = findViewById(R.id.customBackButton);
+        ServicePrice = findViewById(R.id.CostService);
+        serviceDuration = findViewById(R.id.Duration);
+        signupBtn = findViewById(R.id.signupButton);
+        backBtn = findViewById(R.id.customBackButton);
         showAdditionalInfoCheckbox = findViewById(R.id.showAdditionalInfoCheckbox);
     }
 
@@ -65,10 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         database = new Database();
         database.setAuthCallBack(new AuthCallBack() {
             @Override
-            public void onLoginComplete(Task<AuthResult> task) {
-                // Handle login completion
-            }
-
+            public void onLoginComplete(Task<AuthResult> task) {}
             @Override
             public void onCreateAccountComplete(boolean status, String err) {
                 signup_PB_loading.setVisibility(View.INVISIBLE);
@@ -79,24 +76,22 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-
         showAdditionalInfoCheckbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (showAdditionalInfoCheckbox.isChecked()) {
                     serviceName.setVisibility(View.VISIBLE);
-                    CostService.setVisibility(View.VISIBLE);
-                    duration.setVisibility(View.VISIBLE);
+                    ServicePrice.setVisibility(View.VISIBLE);
+                    serviceDuration.setVisibility(View.VISIBLE);
                 } else {
                     serviceName.setVisibility(View.GONE);
-                    CostService.setVisibility(View.GONE);
-                    duration.setVisibility(View.GONE);
+                    ServicePrice.setVisibility(View.GONE);
+                    serviceDuration.setVisibility(View.GONE);
                 }
             }
         });
-
-        signupButton.setOnClickListener(new View.OnClickListener() {
+        signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!checkInput()) {
@@ -109,52 +104,50 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = "";
                 if (showAdditionalInfoCheckbox.isChecked()) {
                     manager = new Manager();
-                    manager.setEmail(signupEmail.getText().toString());
-                    manager.setFirstname(firstname.getText().toString());
-                    manager.setLastname(lastname.getText().toString());
+
+                    manager.setEmail(email.getText().toString());
+                    manager.setFirstname(firstName.getText().toString());
+                    manager.setLastname(lastName.getText().toString());
                     manager.setPhoneNumber(phoneNumber.getText().toString());
-                    password = signupPassword.getText().toString().trim();
+                    password = SignUpActivity.this.password.getText().toString().trim();
                     manager.setAccount_type(ACCOUNT_TYPE_MANAGER);
                     Service service = new Service(serviceName.getText().toString(),
-                            Double.valueOf(CostService.getText().toString()),
-                            duration.getText().toString());
-
+                            Double.valueOf(ServicePrice.getText().toString()),
+                            serviceDuration.getText().toString());
                     manager.setService(service);
 
-
                 }else{
-                     customer = new Customer();
-                    customer.setEmail(signupEmail.getText().toString());
-                    customer.setFirstname(firstname.getText().toString());
-                    customer.setLastname(lastname.getText().toString());
+                    customer = new Customer();
+                    customer.setEmail(email.getText().toString());
+                    customer.setFirstname(firstName.getText().toString());
+                    customer.setLastname(lastName.getText().toString());
                     customer.setPhoneNumber(phoneNumber.getText().toString());
-                     password = signupPassword.getText().toString().trim();
+                    password = SignUpActivity.this.password.getText().toString().trim();
                     customer.setAccount_type(ACCOUNT_TYPE_CUSTOMER);
 
                 }
-
                 if(customer !=null) {
-                    database.createAccount(customer.getEmail(), password, customer);
+                    Log.d("createAccount", "customer");
+                    database.createAccount(customer.getEmail().trim(), password, customer);
                 }
                 if(manager!=null){
-                    database.createAccount(manager.getEmail(), password, manager);
+                    Log.d("createAccount", "manager");
+                    database.createAccount(manager.getEmail().trim(), password, manager);
                 }
-
-
-
             }
         });
 
-        txtV_button_back.setOnClickListener(new View.OnClickListener() {
+        loginRedirectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                Log.d("SignUpActivity", "Redirecting to login");
                 startActivity(intent);
                 finish();
             }
         });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
@@ -165,17 +158,13 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-
     private boolean checkInput() {
         Customer customer = new Customer();
-        customer.setEmail(signupEmail.getText().toString());
-        customer.setFirstname(firstname.getText().toString());
-        customer.setLastname(lastname.getText().toString());
+        customer.setEmail(email.getText().toString());
+        customer.setFirstname(firstName.getText().toString());
+        customer.setLastname(lastName.getText().toString());
         customer.setPhoneNumber(phoneNumber.getText().toString());
-        customer.setPassword(signupPassword.getText().toString());
+        customer.setPassword(password.getText().toString());
         String password = customer.getPassword();
         String confirmPassword = customer.getPassword();
 
@@ -183,18 +172,14 @@ public class SignUpActivity extends AppCompatActivity {
             Toast.makeText(SignUpActivity.this, "Please fill all user info!", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         if (password.length() < 8) {
             Toast.makeText(SignUpActivity.this, "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
             return false;
         }
-
         if (!password.equals(confirmPassword)) {
             Toast.makeText(SignUpActivity.this, "Mismatch between password and confirm password", Toast.LENGTH_SHORT).show();
             return false;
         }
-
-
         return true;
     }
 }
