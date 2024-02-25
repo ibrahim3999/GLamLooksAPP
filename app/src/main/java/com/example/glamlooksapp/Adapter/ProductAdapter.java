@@ -44,7 +44,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 .placeholder(R.drawable.upload)
                 .into(holder.productImage);
     }
-
+    // num of products
     @Override
     public int getItemCount() {
         return productList.size();
