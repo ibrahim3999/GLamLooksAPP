@@ -58,15 +58,16 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
 
     private void addTimeSlots(View view) {
         buttonContainer = view.findViewById(R.id.button_container);
+
         Calendar curr = Calendar.getInstance();
+        int currnetHour = curr.get(Calendar.HOUR_OF_DAY);
+        int currnetMinute= curr.get(Calendar.MINUTE);
         int duration = Integer.parseInt(currManager.getService().getDuration()); // Parse duration to integer
         int minute=0;
-        for (int hour = START_TIME; hour <= END_TIME; hour++) {
+        for (int hour = START_TIME; hour < END_TIME; hour++) {
                 for ( minute = 0; minute < 60; minute += duration){
-
                     // Create button text for the current time slot
                     String buttonText = String.format("%02d:%02d", hour, minute);
-
                 if (isAvailableTime(hour, minute)) {
                     // Create a button for the available time slot
                     //Log.d(TAG, buttonText + "size :" + notAvailableDates);
@@ -78,11 +79,25 @@ public class DynamicButtonsFragment extends Fragment implements UserCallBack, Cu
                         hour++;
                 }
             }
-
         }
     }
 
     private boolean isAvailableTime(int hour, int minute) {
+        Date currentDate = new Date();
+        Calendar curr = Calendar.getInstance();
+        curr.setTime(currentDate);
+        int currentHour = curr.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = curr.get(Calendar.MINUTE);
+
+        // Check if the current date matches the appointment date
+        if (curr.getTime().getDate() == current_dateTime.getTimestamp().toDate().getDate()) {
+            // Check if the current time slot is in the past
+            if (hour < currentHour || (hour == currentHour && minute < currentMinute)) {
+                // Time slot is in the past
+                return false;
+            }
+        }
+
         // Loop through the list of not available dates
         for (Datetime notAvailableDate : notAvailableDates) {
             // Extract the hour and minute from the not available date
