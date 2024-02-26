@@ -25,7 +25,7 @@ public class ProductsFragment extends Fragment {
     private ProductAdapter productAdapter;
     private ArrayList<Product> productList;
     Database database;
-
+  //  int check;
     public ProductsFragment() {}
 
     @Override
@@ -65,6 +65,10 @@ public class ProductsFragment extends Fragment {
         productAdapter = new ProductAdapter(getContext(), productList);
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewProducts.setAdapter(productAdapter);
-        database.fetchProducts();
+     //   if(check != 0) {
+            database.fetchProducts();
+     //   }
+      //  check++;
+
     }
 }
