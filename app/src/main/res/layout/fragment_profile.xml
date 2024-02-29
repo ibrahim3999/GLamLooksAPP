@@ -99,10 +99,11 @@
                 android:src="@drawable/baseline_logout_24" />
 
             <TextView
+
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:text="Logout"
+                android:text="@string/logout_remove"
                 android:textColor="@color/gray"
                 android:textSize="20sp" />
         </LinearLayout>
