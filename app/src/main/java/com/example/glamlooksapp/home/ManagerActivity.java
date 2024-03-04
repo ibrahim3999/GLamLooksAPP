@@ -23,8 +23,6 @@ import com.example.glamlooksapp.fragments.user.AboutUFragment;
 import com.example.glamlooksapp.utils.Database;
 
 public class ManagerActivity extends AppCompatActivity {
-
-
     Database database;
 
     ActivityManagerBinding binding;

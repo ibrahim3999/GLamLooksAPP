@@ -71,4 +71,7 @@
     <string name="manager_name">Manager Name:</string>
     <string name="durationn">Duration:</string>
     <string name="glamlooks">GlamLooks</string>
+    <string name="logout_remove">logout_remove</string>
+    <string name="remove_account">Remove Account</string>
+    <string name="remove_account1">Remove Account</string>
 </resources>

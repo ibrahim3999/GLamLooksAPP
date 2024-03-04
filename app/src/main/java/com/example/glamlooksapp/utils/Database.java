@@ -624,7 +624,40 @@ public void fetchUserDatesByKey(String uid) {
                 });
     }
 
+    public void removeUser(String key) {
+        // Delete user from Firebase Authentication
+        Objects.requireNonNull(mAuth.getCurrentUser()).delete();
 
+        // Delete user document from Firestore
+        db.collection(USERS_TABLE)
+                .document(key)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("User deleted successfully", "success");
+                    } else {
+                        Log.w("not success to delete user", "Error deleting document", task.getException());
+                    }
+                });
+    }
+
+    public void getProductsByName(String productName, ProductCallBack callback) {
+        db.collection("products").whereEqualTo("name", productName).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                ArrayList<Product> productList = new ArrayList<>();
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Product product = document.toObject(Product.class);
+                    if(product.getImagePath() != null) {
+                        product.setImageUrl(downloadImageUrl(product.getImagePath()));
+                    }
+                    productList.add(product);
+                }
+                callback.onFetchProductsComplete(productList);
+            } else {
+                Log.d("Database", "Error getting documents: ", task.getException());
+            }
+        });
+    }
 
 
 

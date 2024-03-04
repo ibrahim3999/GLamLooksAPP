@@ -2,6 +2,7 @@ package com.example.glamlooksapp.fragments.manager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,9 +105,11 @@ public class ProfileMFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (activity != null) {
+                    Log.d("RemoveManager", database.getCurrentUser().getUid());
+
+                    database.removeUser(database.getCurrentUser().getUid());
                     Intent intent = new Intent(activity, LoginActivity.class);
                     startActivity(intent);
-                    database.logout();
                 }
             }
         });

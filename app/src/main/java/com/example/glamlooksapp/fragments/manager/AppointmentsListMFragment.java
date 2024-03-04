@@ -61,7 +61,7 @@ public class AppointmentsListMFragment extends Fragment {
         recyclerViewCustomers = view.findViewById(R.id.recyclerViewCustomers);
         database = new Database();
         appointmentsList = new ArrayList<>();
-        initViews();
+        //initViews();
         intiVars();
         initRecyclerView();
         Button exportToExcelButton = view.findViewById(R.id.exportToExcelButton);
@@ -173,11 +173,11 @@ public class AppointmentsListMFragment extends Fragment {
         startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
-    private void initViews() {
-        CustomerManager customerManager = CustomerManager.getInstance();
-        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), customerManager.getCustomerList());
-        recyclerViewCustomers.setAdapter(managerAppointmentListAdapter);
-    }
+//    private void initViews() {
+//        CustomerManager customerManager = CustomerManager.getInstance();
+//        managerAppointmentListAdapter = new managerAppointmentListAdapter(getContext(), customerManager.getCustomerList());
+//        recyclerViewCustomers.setAdapter(managerAppointmentListAdapter);
+//    }
 
     private void initRecyclerView() {
         appointmentsList = new ArrayList<>();

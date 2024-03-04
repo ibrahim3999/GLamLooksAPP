@@ -103,7 +103,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:text="Logout"
+                android:text="@string/remove_account1"
                 android:textColor="@color/gray"
                 android:textSize="20sp" />
         </LinearLayout>

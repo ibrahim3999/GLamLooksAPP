@@ -114,9 +114,11 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (activity != null) {
+                    Log.d("RemoveCustomer", database.getCurrentUser().getUid());
+
+                    database.removeUser(database.getCurrentUser().getUid());
                     Intent intent = new Intent(activity, LoginActivity.class);
                     startActivity(intent);
-                    database.logout();
                 }
             }
         });
