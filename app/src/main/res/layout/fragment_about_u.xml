@@ -26,14 +26,15 @@
         android:textSize="20sp"
         android:layout_below="@id/aboutUsText"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/Lavender"/>
+        android:textColor="@color/Lavender"
+        android:textAlignment="center"/>
 
 
     <TextView
         android:id="@+id/openingHoursSunday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sunday_9_00_to_12_00_n_13_00_to_18_00"
+        android:text="Sunday: 11:00 to 18:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursText"
         android:layout_centerHorizontal="true"
@@ -43,7 +44,7 @@
         android:id="@+id/openingHoursMonday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/monday_9_00_to_11_00_n_13_00_to_18_00"
+        android:text="Monday: 11:00 to 18:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursSunday"
         android:layout_centerHorizontal="true"
@@ -53,7 +54,7 @@
         android:id="@+id/openingHoursTuesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tuesday_closed"
+        android:text="Tuesday: 11:00 to 18:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursMonday"
         android:layout_centerHorizontal="true"
@@ -63,7 +64,7 @@
         android:id="@+id/openingHoursWednesday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/wednesday_9_00_to_12_00_n_13_00_to_18_00"
+        android:text="Wednesday: 11:00 to 18:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursTuesday"
         android:layout_centerHorizontal="true"
@@ -73,7 +74,7 @@
         android:id="@+id/openingHoursThursday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/thursday_9_00_to_12_00_n_13_00_to_18_00"
+        android:text="Thursday: 11:00 to 18:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursWednesday"
         android:layout_centerHorizontal="true"
@@ -83,7 +84,7 @@
         android:id="@+id/openingHoursFriday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/friday_9_00_to_12_00"
+        android:text="Friday: 11:00 to 15:00"
         android:textSize="15sp"
         android:layout_below="@id/openingHoursThursday"
         android:layout_centerHorizontal="true"
@@ -117,17 +118,18 @@
         android:textSize="17sp"
         android:layout_below="@id/phoneText"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/Lavender"/>
+        android:textColor="@color/Lavender"
+        android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/TalkToUs"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/talk_to_us_via_whatsapp"
-        android:textSize="17sp"
         android:layout_below="@id/AddressText"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/Lavender"/>
+        android:layout_marginTop="20dp"
+        android:src="@drawable/logo2"/>
+
 
     />
 

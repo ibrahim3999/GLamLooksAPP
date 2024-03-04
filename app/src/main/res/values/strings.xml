@@ -46,7 +46,7 @@
     <string name="about_us">About Us</string>
     <string name="back_button">Back Button</string>
     <string name="about_us_n">About Us\n</string>
-    <string name="our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n">Our hair salon is open 5 days a week\n We offer a wide range of services\n for you\n\n</string>
+    <string name="our_hair_salon_is_open_5_days_a_week_n_we_offer_a_wide_range_of_services_n_for_you_n_n_n">Our hair salon is open 6 days a week\n We offer a wide range of services\n for you\n</string>
     <string name="sunday_9_00_to_12_00_n_13_00_to_18_00">Sunday: 9:00 to 12:00\n 13:00 to 18:00</string>
     <string name="create_account">create account</string>
     <string name="call">call</string>
@@ -74,4 +74,5 @@
     <string name="logout_remove">logout_remove</string>
     <string name="remove_account">Remove Account</string>
     <string name="remove_account1">Remove Account</string>
+    <string name="hii_manager_welcome_to_glamlooks">Hii Manager, Welcome to GlamLooks!</string>
 </resources>
