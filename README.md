@@ -46,16 +46,12 @@ Our app addresses common challenges faced by hair salons:
    - Respond to customer inquiries promptly.
    - Address concerns and build strong client relationships.
 
-## Installation and Usage
-1. **Installation**:
-   - Download the app from the [App Store](#1^) or [Google Play](#2^).
-   - Follow the setup instructions.
-
-2. **User Roles**:
+## Usage
+1. **User Roles**:
    - Customers: Sign up, explore services, and schedule appointments.
    - Managers: Log in, manage schedules, and oversee product listings.
 
-3. **Stay Connected**:
+2. **Stay Connected**:
    - Use the app to stay informed about appointments and product updates.
    - Reach out to the salon team whenever needed.
 
