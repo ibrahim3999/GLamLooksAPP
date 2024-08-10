@@ -46,6 +46,16 @@ Our app addresses common challenges faced by hair salons:
    - Respond to customer inquiries promptly.
    - Address concerns and build strong client relationships.
 
+
+![WhatsApp Image 2024-08-10 at 16 47 08](https://github.com/user-attachments/assets/1e3a2f18-ce25-43c6-a527-3e33238564d8)
+
+
+
+![WhatsApp Image 2024-08-10 at 16 47 08 (1)](https://github.com/user-attachments/assets/e8bea360-7dee-4bca-8ddf-b92ec2813e45)
+
+
+![WhatsApp Image 2024-08-10 at 16 47 08 (2)](https://github.com/user-attachments/assets/12564e21-b445-40e2-8d3b-dbed9d7e7e71)
+
 ## Usage
 1. **User Roles**:
    - Customers: Sign up, explore services, and schedule appointments.
